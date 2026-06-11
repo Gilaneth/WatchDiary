@@ -1,0 +1,6 @@
+@WatchDiary_HostAddress = http://localhost:5220
+
+GET {{WatchDiary_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
