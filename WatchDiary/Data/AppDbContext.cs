@@ -17,9 +17,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Enums stored as strings in DB
-        modelBuilder.HasPostgresEnum<WatchStatus>();
-        modelBuilder.HasPostgresEnum<CategoryType>();
+        // Map PostgreSQL native enums
+        modelBuilder.HasPostgresEnum<CategoryType>("public", "category_type");
+        modelBuilder.HasPostgresEnum<WatchStatus>("public", "watch_status");
 
         // Many-to-many: Movie <-> Genre
         modelBuilder.Entity<Movie>()
@@ -46,5 +46,62 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Review>().ToTable("review");
         modelBuilder.Entity<WatchList>().ToTable("watch_list");
         modelBuilder.Entity<Collection>().ToTable("collections");
+
+        modelBuilder.Entity<User>(e => {
+                e.Property(u => u.UserId).HasColumnName("user_id");
+                e.Property(u => u.Username).HasColumnName("username");
+                });
+
+        modelBuilder.Entity<Movie>(e => {
+                e.Property(m => m.MovieId).HasColumnName("movie_id");
+                e.Property(m => m.Category).HasColumnName("category");  // add this line
+                e.Property(m => m.MovieName).HasColumnName("movie_name");
+                e.Property(m => m.ReleaseDate).HasColumnName("release_date");
+                e.Property(m => m.CoverUrl).HasColumnName("cover_url");
+                e.Property(m => m.Description).HasColumnName("description");
+                e.Property(m => m.ImdbId).HasColumnName("imdb_id");
+                e.Property(m => m.ImdbRating).HasColumnName("imdb_rating");
+                e.Property(m => m.ShikimoriId).HasColumnName("shikimori_id");
+                e.Property(m => m.ShikimoriRating).HasColumnName("shikimori_rating");
+                e.Property(m => m.KinopoiskId).HasColumnName("kinopoisk_id");
+                e.Property(m => m.RottentomatoId).HasColumnName("rottentomato_id");
+                e.Property(m => m.RtRating).HasColumnName("rt_rating");
+                });
+
+        modelBuilder.Entity<WatchList>(e => {
+                e.Property(w => w.WatchListId).HasColumnName("watch_list_id");
+                e.Property(w => w.Status).HasColumnName("status");  // add this line
+                e.Property(w => w.AddedAt).HasColumnName("added_at");
+                e.Property(w => w.UserId).HasColumnName("user_id");
+                e.Property(w => w.MovieId).HasColumnName("movie_id");
+                });
+
+        modelBuilder.Entity<Actor>(e => {
+                e.Property(a => a.ActorId).HasColumnName("actor_id");
+                e.Property(a => a.ActorName).HasColumnName("actor_name");
+                });
+
+        modelBuilder.Entity<Review>(e => {
+                e.Property(r => r.ReviewId).HasColumnName("review_id");
+                e.Property(r => r.Rating).HasColumnName("rating");
+                e.Property(r => r.Description).HasColumnName("description");
+                e.Property(r => r.CreatedAt).HasColumnName("created_at");
+                e.Property(r => r.UpdatedAt).HasColumnName("updated_at");
+                e.Property(r => r.UserId).HasColumnName("user_id");
+                e.Property(r => r.MovieId).HasColumnName("movie_id");
+                });
+
+        modelBuilder.Entity<WatchList>(e => {
+                e.Property(w => w.WatchListId).HasColumnName("watch_list_id");
+                e.Property(w => w.AddedAt).HasColumnName("added_at");
+                e.Property(w => w.UserId).HasColumnName("user_id");
+                e.Property(w => w.MovieId).HasColumnName("movie_id");
+                });
+
+        modelBuilder.Entity<Collection>(e => {
+                e.Property(c => c.CollectionId).HasColumnName("collection_id");
+                e.Property(c => c.CollectionName).HasColumnName("collection_name");
+                e.Property(c => c.UserId).HasColumnName("user_id");
+                });
     }
 }
