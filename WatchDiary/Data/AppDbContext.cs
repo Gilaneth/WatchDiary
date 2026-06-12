@@ -17,28 +17,10 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Map PostgreSQL native enums
         modelBuilder.HasPostgresEnum<CategoryType>("public", "category_type");
         modelBuilder.HasPostgresEnum<WatchStatus>("public", "watch_status");
 
-        // Many-to-many: Movie <-> Genre
-        modelBuilder.Entity<Movie>()
-            .HasMany(m => m.Genres)
-            .WithMany(g => g.Movies)
-            .UsingEntity(j => j.ToTable("movie_genre"));
-
-        // Many-to-many: Movie <-> Actor
-        modelBuilder.Entity<Movie>()
-            .HasMany(m => m.Actors)
-            .WithMany(a => a.Movies)
-            .UsingEntity(j => j.ToTable("movie_actor"));
-
-        // Many-to-many: Movie <-> Collection
-        modelBuilder.Entity<Movie>()
-            .HasMany(m => m.Collections)
-            .WithMany(c => c.Movies)
-            .UsingEntity(j => j.ToTable("movie_in_collection"));
-
+        // Table names
         modelBuilder.Entity<User>().ToTable("users");
         modelBuilder.Entity<Movie>().ToTable("movie");
         modelBuilder.Entity<Genre>().ToTable("genre");
@@ -47,6 +29,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<WatchList>().ToTable("watch_list");
         modelBuilder.Entity<Collection>().ToTable("collections");
 
+        // Column mappings
         modelBuilder.Entity<User>(e => {
                 e.Property(u => u.UserId).HasColumnName("user_id");
                 e.Property(u => u.Username).HasColumnName("username");
@@ -54,7 +37,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Movie>(e => {
                 e.Property(m => m.MovieId).HasColumnName("movie_id");
-                e.Property(m => m.Category).HasColumnName("category");  // add this line
+                e.Property(m => m.Category).HasColumnName("category");
                 e.Property(m => m.MovieName).HasColumnName("movie_name");
                 e.Property(m => m.ReleaseDate).HasColumnName("release_date");
                 e.Property(m => m.CoverUrl).HasColumnName("cover_url");
@@ -68,12 +51,9 @@ public class AppDbContext : DbContext
                 e.Property(m => m.RtRating).HasColumnName("rt_rating");
                 });
 
-        modelBuilder.Entity<WatchList>(e => {
-                e.Property(w => w.WatchListId).HasColumnName("watch_list_id");
-                e.Property(w => w.Status).HasColumnName("status");  // add this line
-                e.Property(w => w.AddedAt).HasColumnName("added_at");
-                e.Property(w => w.UserId).HasColumnName("user_id");
-                e.Property(w => w.MovieId).HasColumnName("movie_id");
+        modelBuilder.Entity<Genre>(e => {
+                e.Property(g => g.GenreId).HasColumnName("genre_id");
+                e.Property(g => g.GenreName).HasColumnName("genre_name");
                 });
 
         modelBuilder.Entity<Actor>(e => {
@@ -93,6 +73,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<WatchList>(e => {
                 e.Property(w => w.WatchListId).HasColumnName("watch_list_id");
+                e.Property(w => w.Status).HasColumnName("status");
                 e.Property(w => w.AddedAt).HasColumnName("added_at");
                 e.Property(w => w.UserId).HasColumnName("user_id");
                 e.Property(w => w.MovieId).HasColumnName("movie_id");
@@ -103,5 +84,35 @@ public class AppDbContext : DbContext
                 e.Property(c => c.CollectionName).HasColumnName("collection_name");
                 e.Property(c => c.UserId).HasColumnName("user_id");
                 });
+
+        // Many-to-many: Movie <-> Genre
+        modelBuilder.Entity<Movie>()
+            .HasMany(m => m.Genres)
+            .WithMany(g => g.Movies)
+            .UsingEntity(j => {
+                    j.ToTable("movie_genre");
+                    j.Property("MoviesMovieId").HasColumnName("movie_id");
+                    j.Property("GenresGenreId").HasColumnName("genre_id");
+                    });
+
+        // Many-to-many: Movie <-> Actor
+        modelBuilder.Entity<Movie>()
+            .HasMany(m => m.Actors)
+            .WithMany(a => a.Movies)
+            .UsingEntity(j => {
+                    j.ToTable("movie_actor");
+                    j.Property("MoviesMovieId").HasColumnName("movie_id");
+                    j.Property("ActorsActorId").HasColumnName("actor_id");
+                    });
+
+        // Many-to-many: Movie <-> Collection
+        modelBuilder.Entity<Movie>()
+            .HasMany(m => m.Collections)
+            .WithMany(c => c.Movies)
+            .UsingEntity(j => {
+                    j.ToTable("movie_in_collection");
+                    j.Property("MoviesMovieId").HasColumnName("movie_id");
+                    j.Property("CollectionsCollectionId").HasColumnName("collection_id");
+                    });
     }
 }
