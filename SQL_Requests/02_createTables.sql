@@ -18,7 +18,9 @@ create type category_type as enum ('movie', 'tv_series', 'anime', 'cartoon');
 
 create table users (
 	user_id serial primary key,
-	username varchar(20) not null
+	username varchar(20) unique not null,
+	user_password varchar(255) not null,
+	user_email varchar(100) unique not null
 );
 
 create table genre (
