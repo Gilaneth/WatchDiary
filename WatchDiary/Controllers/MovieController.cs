@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
 using WatchDiary.Models;
+using WatchDiary.Models.Dtos.Response;
 
 namespace WatchDiary.Controllers;
 
@@ -23,7 +24,23 @@ public class MovieController : ControllerBase
             .Include(m => m.Genres)
             .Include(m => m.Actors)
             .ToListAsync();
-        return Ok(movies);
+
+        var result = movies.Select(m => new MovieSummaryDto
+                {
+                MovieId = m.MovieId,
+                MovieName = m.MovieName,
+                ReleaseDate = m.ReleaseDate,
+                Category = m.Category.ToString(),
+                CoverUrl = m.CoverUrl,
+                Description = m.Description,
+                ImdbRating = m.ImdbRating,
+                RtRating = m.RtRating,
+                ShikimoriRating = m.ShikimoriRating,
+                Genres = m.Genres.Select(g => g.GenreName).ToList(),
+                Actors = m.Actors.Select(a => a.ActorName).ToList()
+                });
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -33,10 +50,48 @@ public class MovieController : ControllerBase
             .Include(m => m.Genres)
             .Include(m => m.Actors)
             .Include(m => m.Reviews)
+            .Include(m => m.Collections)
             .FirstOrDefaultAsync(m => m.MovieId == id);
 
         if (movie is null) return NotFound();
-        return Ok(movie);
+
+        var result = new MovieDetailDto
+        {
+            MovieId = movie.MovieId,
+            MovieName = movie.MovieName,
+            ReleaseDate = movie.ReleaseDate,
+            Category = movie.Category.ToString(),
+            CoverUrl = movie.CoverUrl,
+            Description = movie.Description,
+            ImdbId = movie.ImdbId,
+            ImdbRating = movie.ImdbRating,
+            RottentomatoId = movie.RottentomatoId,
+            RtRating = movie.RtRating,
+            ShikimoriId = movie.ShikimoriId,
+            ShikimoriRating = movie.ShikimoriRating,
+            KinopoiskId = movie.KinopoiskId,
+            Genres = movie.Genres.Select(g => new GenreSummaryDto
+                    {
+                    GenreId = g.GenreId,
+                    GenreName = g.GenreName
+                    }).ToList(),
+            Actors = movie.Actors.Select(a => new ActorSummaryDto
+                    {
+                    ActorId = a.ActorId,
+                    ActorName = a.ActorName
+                    }).ToList(),
+            Reviews = movie.Reviews.Select(r => new ReviewSummaryDto
+                    {
+                    ReviewId = r.ReviewId,
+                    Rating = r.Rating,
+                    Description = r.Description,
+                    CreatedAt = r.CreatedAt,
+                    UserId = r.UserId
+                    }).ToList(),
+            Collections = movie.Collections.Select(c => c.CollectionName).ToList()
+        };
+
+        return Ok(result);
     }
 
     [HttpPost]
