@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
 using WatchDiary.Models;
+using WatchDiary.Models.Dtos;
 
 namespace WatchDiary.Controllers;
 
@@ -37,8 +38,15 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(User user)
+    public async Task<IActionResult> Create(CreateUserDto dto)
     {
+        var user = new User
+        {
+            Username = dto.Username,
+            UserPassword = dto.UserPassword,
+            UserEmail = dto.UserEmail
+        };
+
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
         return CreatedAtAction(nameof(GetById), new { id = user.UserId }, user);

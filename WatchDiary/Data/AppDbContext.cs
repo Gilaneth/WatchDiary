@@ -33,6 +33,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>(e => {
                 e.Property(u => u.UserId).HasColumnName("user_id");
                 e.Property(u => u.Username).HasColumnName("username");
+                e.Property(u => u.UserPassword).HasColumnName("user_password");
+                e.Property(u => u.UserEmail).HasColumnName("user_email");
                 });
 
         modelBuilder.Entity<Movie>(e => {
