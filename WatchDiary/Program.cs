@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
 using WatchDiary.Models;
+using WatchDiary.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers()
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddOpenApi();
+
+builder.Services.AddHttpClient<TmdbService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(

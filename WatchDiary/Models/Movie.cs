@@ -3,6 +3,7 @@ namespace WatchDiary.Models;
 public class Movie
 {
     public int MovieId { get; set; }
+    public int? TmdbId { get; set; }
     public string? ImdbId { get; set; }
     public int? ShikimoriId { get; set; }
     public int? KinopoiskId { get; set; }

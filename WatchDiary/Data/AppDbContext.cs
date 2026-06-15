@@ -44,6 +44,7 @@ public class AppDbContext : DbContext
                 e.Property(m => m.ReleaseDate).HasColumnName("release_date");
                 e.Property(m => m.CoverUrl).HasColumnName("cover_url");
                 e.Property(m => m.Description).HasColumnName("description");
+                e.Property(m => m.TmdbId).HasColumnName("tmdb_id");
                 e.Property(m => m.ImdbId).HasColumnName("imdb_id");
                 e.Property(m => m.ImdbRating).HasColumnName("imdb_rating");
                 e.Property(m => m.ShikimoriId).HasColumnName("shikimori_id");
