@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <title>Каталог - WATCHDIARY</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css?v=6" />
+  </head>
+  <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+      <div id="header-wrapper">
+        <div class="container">
+          <header id="header">
+            <div class="inner">
+              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
+
+              <nav id="nav">
+                <ul>
+                  <li style="padding-left: 0; padding-right: 25px">
+                    <form
+                      method="get"
+                      action="search.html"
+                      style="
+                        margin: 0;
+                        display: inline-flex;
+                        align-items: center;
+                        height: 100%;
+                        vertical-align: middle;
+                      "
+                    >
+                      <input
+                        type="text"
+                        name="query"
+                        placeholder="Знайти тайтл..."
+                        style="
+                          background: rgba(255, 255, 255, 0.15);
+                          border: 1px solid rgba(255, 255, 255, 0.2);
+                          color: #ffffff;
+                          padding: 0 15px;
+                          border-radius: 5px;
+                          height: 36px;
+                          width: 220px;
+                          font-size: 13px;
+                          outline: none;
+                          box-shadow: none;
+                        "
+                        onfocus="
+                          this.style.background = 'rgba(255, 255, 255, 0.25)'
+                        "
+                        onblur="
+                          this.style.background = 'rgba(255, 255, 255, 0.15)'
+                        "
+                      />
+                    </form>
+                  </li>
+
+                  <li><a href="../index.html">ГОЛОВНА</a></li>
+                  <li class="current_page_item">
+                    <a href="catalog.html">КАТАЛОГ</a>
+                  </li>
+                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
+                  <li><a href="login.html">УВІЙТИ</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+        </div>
+      </div>
+
+      <div id="main-wrapper">
+        <div class="wrapper style1">
+          <div class="inner">
+            <section class="container">
+              <header class="major" style="margin-bottom: 1em">
+                <h2>Каталог тайтлів</h2>
+              </header>
+
+              <div
+                class="box"
+                style="
+                  padding: 15px 30px;
+                  margin-bottom: 2em;
+                  background: #f8f8f8;
+                "
+              >
+                <form method="get" action="#" style="margin: 0">
+                  <div class="row gtr-uniform gtr-50 align-center">
+                    <div
+                      class="col-2 col-12-mobile"
+                      style="line-height: 2.5em; font-weight: bold"
+                    >
+                      ФІЛЬТРИ:
+                    </div>
+                    <div class="col-3 col-12-mobile">
+                      <select name="year" style="border-radius: 5px">
+                        <option value="">Усі роки</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="old">Класика</option>
+                      </select>
+                    </div>
+                    <div class="col-3 col-12-mobile">
+                      <select name="genre" style="border-radius: 5px">
+                        <option value="">Всі жанри</option>
+                        <option value="action">Екшен</option>
+                        <option value="horror">Жахи</option>
+                        <option value="rpg">RPG</option>
+                      </select>
+                    </div>
+                    <div class="col-4 col-12-mobile">
+                      <select name="sort" style="border-radius: 5px">
+                        <option value="reviews">
+                          Сортування: за відгуками
+                        </option>
+                        <option value="new">Сортування: спочатку нові</option>
+                        <option value="title">Сортування: за алфавітом</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="row">
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Dark Souls III</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> RPG
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 9.5/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Resident Evil 4</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Жахи, Екшен
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 10/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Інтерстеллар</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Фантастика
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 9.0/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Bocchi the Rock!</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Аніме, Комедія
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 8.5/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Пуститися берега</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Кримінал
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 9.8/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Dead Space</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Sci-Fi Жахи
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 9.2/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Blasphemous 2</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Метроїдванія
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 8.8/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+
+                <div
+                  class="col-3 col-6-medium col-12-small"
+                  style="margin-bottom: 2em"
+                >
+                  <section
+                    class="box"
+                    style="
+                      padding: 15px;
+                      height: 100%;
+                      display: flex;
+                      flex-direction: column;
+                    "
+                  >
+                    <a
+                      href="details.html"
+                      class="image featured"
+                      style="margin-bottom: 15px; display: block"
+                    >
+                      <div
+                        style="
+                          border-radius: 5px;
+                          width: 100%;
+                          aspect-ratio: 2/3;
+                          background: #cccccc;
+                        "
+                      ></div>
+                    </a>
+                    <h3 style="font-size: 1.1em; margin-bottom: 10px">
+                      <a href="details.html">Dragon Age</a>
+                    </h3>
+                    <div style="margin-top: auto">
+                      <p style="margin: 0; font-size: 0.9em">
+                        <strong>Жанр:</strong> Фентезі RPG
+                      </p>
+                      <p style="margin: 0; font-size: 0.9em; color: #d52349">
+                        <strong>Відгук:</strong> 9.0/10
+                      </p>
+                    </div>
+                  </section>
+                </div>
+              </div>
+
+              <div style="text-align: center; margin-top: 1em">
+                <ul
+                  class="actions"
+                  style="display: inline-flex; list-style: none; padding: 0"
+                >
+                  <li><a href="#" class="button alt small">Попередня</a></li>
+                  <li><a href="#" class="button small">1</a></li>
+                  <li><a href="#" class="button alt small">2</a></li>
+                  <li><a href="#" class="button alt small">3</a></li>
+                  <li><a href="#" class="button alt small">Наступна</a></li>
+                </ul>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="footer-wrapper">
+        <footer id="footer" class="container">
+          <div class="row">
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Про проект</h2>
+                <p>
+                  <strong>WATCHDIARY</strong> — це веб-додаток для управління
+                  особистими медіа-колекціями. Проект створено для демонстрації
+                  роботи з реляційними базами даних та Web API.
+                </p>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Навігація</h2>
+                <ul class="divided">
+                  <li><a href="catalog.html">Перейти до каталогу</a></li>
+                  <li><a href="search.html">Розширений пошук</a></li>
+                  <li><a href="login.html">Авторизація</a></li>
+                </ul>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Команда</h2>
+                <ul class="divided">
+                  <li><strong>Бекенд та БД:</strong> Команда</li>
+                  <li><strong>Фронтенд:</strong> Віталій</li>
+                  <li>
+                    <a
+                      href="https://github.com/Gilaneth/WatchDiary"
+                      class="icon brands fa-github"
+                      style="cursor: pointer !important"
+                    >
+                      <span class="label">GitHub</span> Наш репозиторій
+                    </a>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div id="copyright">
+                <ul class="menu">
+                  <li>&copy; 2026 WATCHDIARY. Усі права захищено.</li>
+                  <li>Шаблон: HTML5 UP</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <script src="../assets/js/jquery.min.js"></script>
+      <script src="../assets/js/jquery.dropotron.min.js"></script>
+      <script src="../assets/js/browser.min.js"></script>
+      <script src="../assets/js/breakpoints.min.js"></script>
+      <script src="../assets/js/util.js"></script>
+      <script src="../assets/js/main.js"></script>
+    </div>
+  </body>
+</html>
