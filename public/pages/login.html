@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <title>Авторизація - WATCHDIARY</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css?v=16" />
+  </head>
+  <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+      <div id="header-wrapper">
+        <div class="container">
+          <header id="header">
+            <div class="inner">
+              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
+
+              <nav id="nav">
+                <ul>
+                  <li style="padding-left: 0; padding-right: 25px">
+                    <form
+                      method="get"
+                      action="search.html"
+                      style="
+                        margin: 0;
+                        display: inline-flex;
+                        align-items: center;
+                        height: 100%;
+                        vertical-align: middle;
+                      "
+                    >
+                      <input
+                        type="text"
+                        name="query"
+                        placeholder="Знайти тайтл..."
+                        style="
+                          background: rgba(255, 255, 255, 0.15);
+                          border: 1px solid rgba(255, 255, 255, 0.2);
+                          color: #ffffff;
+                          padding: 0 15px;
+                          border-radius: 5px;
+                          height: 36px;
+                          width: 220px;
+                          font-size: 13px;
+                          outline: none;
+                          box-shadow: none;
+                        "
+                        onfocus="
+                          this.style.background = 'rgba(255, 255, 255, 0.25)'
+                        "
+                        onblur="
+                          this.style.background = 'rgba(255, 255, 255, 0.15)'
+                        "
+                      />
+                    </form>
+                  </li>
+                  <li><a href="../index.html">ГОЛОВНА</a></li>
+                  <li><a href="catalog.html">КАТАЛОГ</a></li>
+                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
+                  <li class="current_page_item">
+                    <a href="login.html">УВІЙТИ</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+        </div>
+      </div>
+
+      <div id="main-wrapper">
+        <div class="wrapper style1">
+          <div class="inner">
+            <section class="container">
+              <header
+                class="major"
+                style="margin-bottom: 2em; text-align: center"
+              >
+                <h2>Авторизація</h2>
+              </header>
+
+              <div
+                class="box"
+                style="
+                  max-width: 450px;
+                  margin: 0 auto;
+                  padding: 40px;
+                  background: #ffffff;
+                  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                  border-radius: 8px;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    margin-bottom: 30px;
+                    border-bottom: 2px solid #eee;
+                    text-align: center;
+                  "
+                >
+                  <div
+                    id="tab-login"
+                    onclick="switchTab('login')"
+                    style="
+                      flex: 1;
+                      cursor: pointer;
+                      border-bottom: 3px solid #d52349;
+                      color: #000000;
+                      font-weight: bold;
+                      padding: 15px 0;
+                      transition: all 0.3s;
+                      letter-spacing: 1px;
+                      font-family:
+                        &quot;Segoe UI&quot;, Roboto, Helvetica, Arial,
+                        sans-serif !important;
+                    "
+                  >
+                    ВХІД
+                  </div>
+                  <div
+                    id="tab-register"
+                    onclick="switchTab('register')"
+                    style="
+                      flex: 1;
+                      cursor: pointer;
+                      border-bottom: 3px solid transparent;
+                      color: #888888;
+                      font-weight: bold;
+                      padding: 15px 0;
+                      transition: all 0.3s;
+                      letter-spacing: 1px;
+                      font-family:
+                        &quot;Segoe UI&quot;, Roboto, Helvetica, Arial,
+                        sans-serif !important;
+                    "
+                  >
+                    РЕЄСТРАЦІЯ
+                  </div>
+                </div>
+
+                <form method="post" action="profile.html">
+                  <div style="margin-bottom: 20px">
+                    <label
+                      style="
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        display: block;
+                      "
+                      >Ел. пошта</label
+                    >
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="mail@example.com"
+                      required
+                      style="border-radius: 5px; width: 100%"
+                    />
+                  </div>
+
+                  <div style="margin-bottom: 20px">
+                    <label
+                      style="
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        display: block;
+                      "
+                      >Пароль</label
+                    >
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="••••••••"
+                      required
+                      style="border-radius: 5px; width: 100%"
+                    />
+                  </div>
+
+                  <div
+                    id="confirm-password-group"
+                    style="display: none; margin-bottom: 20px"
+                  >
+                    <label
+                      style="
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        display: block;
+                      "
+                      >Повторіть пароль</label
+                    >
+                    <input
+                      type="password"
+                      name="password_confirm"
+                      placeholder="••••••••"
+                      style="border-radius: 5px; width: 100%"
+                    />
+                  </div>
+
+                  <div style="margin-top: 30px; text-align: center">
+                    <button
+                      type="submit"
+                      id="submit-btn"
+                      class="button"
+                      style="
+                        width: 100%;
+                        background-color: #d52349 !important;
+                        box-shadow: inset 0 0 0 1px #d52349 !important;
+                        color: white !important;
+                        font-size: 0.85em !important;
+                        letter-spacing: 1px;
+                      "
+                    >
+                      Увійти у WatchDiary
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="footer-wrapper">
+        <footer id="footer" class="container">
+          <div class="row">
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Про проект</h2>
+                <p>
+                  <strong>WATCHDIARY</strong> — це веб-додаток для управління
+                  особистими медіа-колекціями.
+                </p>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Навігація</h2>
+                <ul class="divided">
+                  <li><a href="catalog.html">Перейти до каталогу</a></li>
+                  <li><a href="search.html">Розширений пошук</a></li>
+                  <li><a href="login.html">Авторизація</a></li>
+                </ul>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Команда</h2>
+                <ul class="divided">
+                  <li><strong>Бекенд та БД:</strong> Команда</li>
+                  <li><strong>Фронтенд:</strong> Віталій</li>
+                  <li>
+                    <a
+                      href="https://github.com/Gilaneth/WatchDiary"
+                      class="icon brands fa-github"
+                      style="cursor: pointer !important"
+                      ><span class="label">GitHub</span> Наш репозиторій</a
+                    >
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div id="copyright">
+                <ul class="menu">
+                  <li>&copy; 2026 WATCHDIARY. Усі права захищено.</li>
+                  <li>Шаблон: HTML5 UP</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <script src="../assets/js/jquery.min.js"></script>
+      <script src="../assets/js/jquery.dropotron.min.js"></script>
+      <script src="../assets/js/browser.min.js"></script>
+      <script src="../assets/js/breakpoints.min.js"></script>
+      <script src="../assets/js/util.js"></script>
+      <script src="../assets/js/main.js"></script>
+
+      <script>
+        function switchTab(tab) {
+          var tabLogin = document.getElementById("tab-login");
+          var tabRegister = document.getElementById("tab-register");
+          var confirmGroup = document.getElementById("confirm-password-group");
+          var submitBtn = document.getElementById("submit-btn");
+
+          if (tab === "login") {
+            tabLogin.style.borderBottomColor = "#d52349";
+            tabLogin.style.color = "#000000";
+            tabRegister.style.borderBottomColor = "transparent";
+            tabRegister.style.color = "#888888";
+
+            confirmGroup.style.display = "none";
+            submitBtn.innerText = "Увійти у WatchDiary";
+          } else {
+            tabRegister.style.borderBottomColor = "#d52349";
+            tabRegister.style.color = "#000000";
+            tabLogin.style.borderBottomColor = "transparent";
+            tabLogin.style.color = "#888888";
+
+            confirmGroup.style.display = "block";
+            submitBtn.innerText = "Створити акаунт";
+          }
+        }
+      </script>
+    </div>
+  </body>
+</html>
