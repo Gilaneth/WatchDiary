@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
+using WatchDiary.Extensions;
 using WatchDiary.Models;
 using WatchDiary.Models.Dtos;
 
 namespace WatchDiary.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class WatchListController : ControllerBase
@@ -20,6 +23,8 @@ public class WatchListController : ControllerBase
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetByUser(int userId)
     {
+        if (userId != User.GetUserId()) return Forbid();
+
         var items = await _db.WatchLists
             .Include(w => w.Movie)
             .Where(w => w.UserId == userId)
@@ -30,6 +35,8 @@ public class WatchListController : ControllerBase
     [HttpGet("user/{userId}/status/{status}")]
     public async Task<IActionResult> GetByStatus(int userId, WatchStatus status)
     {
+        if (userId != User.GetUserId()) return Forbid();
+
         var items = await _db.WatchLists
             .Include(w => w.Movie)
             .Where(w => w.UserId == userId && w.Status == status)
@@ -40,19 +47,17 @@ public class WatchListController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add(CreateWatchListDto dto)
     {
-        var userExists = await _db.Users.AnyAsync(u => u.UserId == dto.UserId);
+        var userId = User.GetUserId();
         var movieExists = await _db.Movies.AnyAsync(m => m.MovieId == dto.MovieId);
-
-        if (!userExists) return BadRequest("User not found.");
         if (!movieExists) return BadRequest("Movie not found.");
 
         var existing = await _db.WatchLists
-            .FirstOrDefaultAsync(w => w.UserId == dto.UserId && w.MovieId == dto.MovieId);
+            .FirstOrDefaultAsync(w => w.UserId == userId && w.MovieId == dto.MovieId);
         if (existing is not null) return Conflict("Movie already in watchlist.");
 
         var item = new WatchList
         {
-            UserId = dto.UserId,
+            UserId = userId,
             MovieId = dto.MovieId,
             Status = dto.Status,
             AddedAt = DateTime.UtcNow
@@ -68,6 +73,7 @@ public class WatchListController : ControllerBase
     {
         var item = await _db.WatchLists.FindAsync(id);
         if (item is null) return NotFound();
+        if (item.UserId != User.GetUserId()) return Forbid();
 
         item.Status = status;
         await _db.SaveChangesAsync();
@@ -79,6 +85,7 @@ public class WatchListController : ControllerBase
     {
         var item = await _db.WatchLists.FindAsync(id);
         if (item is null) return NotFound();
+        if (item.UserId != User.GetUserId()) return Forbid();
 
         _db.WatchLists.Remove(item);
         await _db.SaveChangesAsync();

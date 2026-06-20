@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
+using WatchDiary.Extensions;
 using WatchDiary.Models;
 using WatchDiary.Models.Dtos;
 
@@ -17,6 +19,7 @@ public class ReviewController : ControllerBase
         _db = db;
     }
 
+    [Authorize]
     [HttpGet("movie/{movieId}")]
     public async Task<IActionResult> GetByMovie(int movieId)
     {
@@ -27,6 +30,7 @@ public class ReviewController : ControllerBase
         return Ok(reviews);
     }
 
+    [Authorize]
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetByUser(int userId)
     {
@@ -37,6 +41,7 @@ public class ReviewController : ControllerBase
         return Ok(reviews);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -49,18 +54,17 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreateReviewDto dto)
     {
-        var userExists = await _db.Users.AnyAsync(u => u.UserId == dto.UserId);
+        var userId = User.GetUserId();
         var movieExists = await _db.Movies.AnyAsync(m => m.MovieId == dto.MovieId);
-
-        if (!userExists) return BadRequest("User not found.");
         if (!movieExists) return BadRequest("Movie not found.");
 
         var review = new Review
         {
-            UserId = dto.UserId,
+            UserId = userId,
             MovieId = dto.MovieId,
             Rating = dto.Rating,
             Description = dto.Description,
@@ -73,11 +77,13 @@ public class ReviewController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = review.ReviewId }, review);
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, Review updated)
     {
         var review = await _db.Reviews.FindAsync(id);
         if (review is null) return NotFound();
+        if (review.UserId != User.GetUserId()) return Forbid();
 
         review.Rating = updated.Rating;
         review.Description = updated.Description;
@@ -87,11 +93,13 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var review = await _db.Reviews.FindAsync(id);
         if (review is null) return NotFound();
+        if (review.UserId != User.GetUserId()) return Forbid();
 
         _db.Reviews.Remove(review);
         await _db.SaveChangesAsync();

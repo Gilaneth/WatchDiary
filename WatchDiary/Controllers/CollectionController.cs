@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
+using WatchDiary.Extensions;
 using WatchDiary.Models;
 using WatchDiary.Models.Dtos;
 
 namespace WatchDiary.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class CollectionController : ControllerBase
@@ -20,6 +23,8 @@ public class CollectionController : ControllerBase
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetByUser(int userId)
     {
+        if (userId != User.GetUserId()) return Forbid();
+
         var collections = await _db.Collections
             .Include(c => c.Movies)
             .Where(c => c.UserId == userId)
@@ -35,18 +40,17 @@ public class CollectionController : ControllerBase
             .FirstOrDefaultAsync(c => c.CollectionId == id);
 
         if (collection is null) return NotFound();
+        if (collection.UserId != User.GetUserId()) return Forbid();
+
         return Ok(collection);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateCollectionDto dto)
     {
-        var userExists = await _db.Users.AnyAsync(u => u.UserId == dto.UserId);
-        if (!userExists) return BadRequest("User not found.");
-
         var collection = new Collection
         {
-            UserId = dto.UserId,
+            UserId = User.GetUserId(),
             CollectionName = dto.CollectionName
         };
 
@@ -60,6 +64,7 @@ public class CollectionController : ControllerBase
     {
         var collection = await _db.Collections.Include(c => c.Movies).FirstOrDefaultAsync(c => c.CollectionId == dto.CollectionId);
         if (collection is null) return NotFound("Collection not found.");
+        if (collection.UserId != User.GetUserId()) return Forbid();
 
         var movie = await _db.Movies.FindAsync(dto.MovieId);
         if (movie is null) return NotFound("Movie not found.");
@@ -77,6 +82,7 @@ public class CollectionController : ControllerBase
     {
         var collection = await _db.Collections.Include(c => c.Movies).FirstOrDefaultAsync(c => c.CollectionId == dto.CollectionId);
         if (collection is null) return NotFound("Collection not found.");
+        if (collection.UserId != User.GetUserId()) return Forbid();
 
         var movie = collection.Movies.FirstOrDefault(m => m.MovieId == dto.MovieId);
         if (movie is null) return NotFound("Movie not found in collection.");
@@ -91,6 +97,7 @@ public class CollectionController : ControllerBase
     {
         var collection = await _db.Collections.FindAsync(id);
         if (collection is null) return NotFound();
+        if (collection.UserId != User.GetUserId()) return Forbid();
 
         _db.Collections.Remove(collection);
         await _db.SaveChangesAsync();
