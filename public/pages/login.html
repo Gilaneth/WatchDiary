@@ -7,7 +7,59 @@
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=no"
     />
-    <link rel="stylesheet" href="../assets/css/main.css?v=16" />
+    <link rel="stylesheet" href="../assets/css/main.css?v=41" />
+    <style>
+      /* --- ТЕМНА НАВІГАЦІЙНА ПАНЕЛЬ ТА ПІДВАЛ --- */
+      #header-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+
+      #header {
+        background-color: rgba(20, 21, 23, 0.5) !important;
+        background-image: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      #footer-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        border-top: none !important;
+        padding-top: 5em !important;
+        padding-bottom: 5em !important;
+      }
+
+      #footer {
+        background-color: transparent !important;
+      }
+      #footer-wrapper h2 {
+        color: #ffffff !important;
+        margin-bottom: 1.5em;
+      }
+      #footer-wrapper p,
+      #footer-wrapper li {
+        color: #bbbbbb !important;
+      }
+      #footer-wrapper a {
+        color: #bbbbbb !important;
+        text-decoration: none !important;
+      }
+      #footer-wrapper a:hover {
+        color: #d52349 !important;
+      }
+
+      #copyright {
+        margin-top: 3em !important;
+        padding-top: 2em !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      #copyright li {
+        color: #888888 !important;
+      }
+    </style>
   </head>
   <body class="no-sidebar is-preload">
     <div id="page-wrapper">
@@ -69,7 +121,7 @@
         </div>
       </div>
 
-      <div id="main-wrapper">
+      <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
         <div class="wrapper style1">
           <div class="inner">
             <section class="container">
@@ -227,8 +279,8 @@
               <section>
                 <h2>Про проект</h2>
                 <p>
-                  <strong>WATCHDIARY</strong> — це веб-додаток для управління
-                  особистими медіа-колекціями.
+                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
+                  серіалів та аніме.
                 </p>
               </section>
             </div>
@@ -236,8 +288,8 @@
               <section>
                 <h2>Навігація</h2>
                 <ul class="divided">
-                  <li><a href="catalog.html">Перейти до каталогу</a></li>
-                  <li><a href="search.html">Розширений пошук</a></li>
+                  <li><a href="catalog.html">Каталог</a></li>
+                  <li><a href="search.html">Пошук</a></li>
                   <li><a href="login.html">Авторизація</a></li>
                 </ul>
               </section>
@@ -246,14 +298,12 @@
               <section>
                 <h2>Команда</h2>
                 <ul class="divided">
-                  <li><strong>Бекенд та БД:</strong> Команда</li>
-                  <li><strong>Фронтенд:</strong> Віталій</li>
                   <li>
                     <a
                       href="https://github.com/Gilaneth/WatchDiary"
                       class="icon brands fa-github"
-                      style="cursor: pointer !important"
-                      ><span class="label">GitHub</span> Наш репозиторій</a
+                    >
+                      GitHub</a
                     >
                   </li>
                 </ul>
@@ -264,8 +314,7 @@
             <div class="col-12">
               <div id="copyright">
                 <ul class="menu">
-                  <li>&copy; 2026 WATCHDIARY. Усі права захищено.</li>
-                  <li>Шаблон: HTML5 UP</li>
+                  <li>&copy; 2026 WATCHDIARY.</li>
                 </ul>
               </div>
             </div>

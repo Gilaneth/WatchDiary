@@ -1,13 +1,123 @@
 <!doctype html>
 <html lang="uk">
   <head>
-    <title>Результати пошуку - WatchDiary</title>
+    <title>Результати пошуку - WATCHDIARY</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=no"
     />
-    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="../assets/css/main.css?v=39" />
+    <style>
+      /* --- ТЕМНА НАВІГАЦІЙНА ПАНЕЛЬ ТА ПІДВАЛ --- */
+      #header-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+
+      #header {
+        background-color: rgba(20, 21, 23, 0.5) !important;
+        background-image: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      #footer-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        border-top: none !important;
+        padding-top: 5em !important;
+        padding-bottom: 5em !important;
+      }
+
+      #footer {
+        background-color: transparent !important;
+      }
+      #footer-wrapper h2 {
+        color: #ffffff !important;
+        margin-bottom: 1.5em;
+      }
+      #footer-wrapper p,
+      #footer-wrapper li {
+        color: #bbbbbb !important;
+      }
+      #footer-wrapper a {
+        color: #bbbbbb !important;
+        text-decoration: none !important;
+      }
+      #footer-wrapper a:hover {
+        color: #d52349 !important;
+      }
+
+      #copyright {
+        margin-top: 3em !important;
+        padding-top: 2em !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      #copyright li {
+        color: #888888 !important;
+      }
+
+      /* --- Стилі для карток результатів пошуку --- */
+      .search-card {
+        background: #ffffff !important;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid #eeeeee !important;
+        padding: 20px;
+      }
+      .search-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12) !important;
+      }
+
+      /* Ховаємо розірвані іконки картинок */
+      .search-image {
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        background: #e6e6e6;
+        color: transparent;
+        text-indent: -10000px;
+        display: block;
+      }
+
+      .search-card h3 a {
+        border: none !important;
+        color: #222222 !important;
+        text-decoration: none !important;
+        font-weight: 700;
+      }
+      .search-card h3 a:hover {
+        color: #d52349 !important;
+        background: transparent !important;
+      }
+      .rating-block {
+        text-align: center;
+        border-left: 1px solid #eeeeee;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+      }
+      @media screen and (max-width: 736px) {
+        .rating-block {
+          border-left: none;
+          border-top: 1px solid #eeeeee;
+          padding-top: 15px;
+          margin-top: 15px;
+        }
+      }
+    </style>
   </head>
   <body class="no-sidebar is-preload">
     <div id="page-wrapper">
@@ -15,14 +125,14 @@
         <div class="container">
           <header id="header">
             <div class="inner">
-              <h1><a href="../index.html" id="logo">WatchDiary</a></h1>
+              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
 
               <nav id="nav">
                 <ul>
-                  <li>
+                  <li style="padding-left: 0; padding-right: 25px">
                     <form
                       method="get"
-                      action="pages/search.html"
+                      action="search.html"
                       style="
                         margin: 0;
                         display: inline-flex;
@@ -40,7 +150,7 @@
                           border: 1px solid rgba(255, 255, 255, 0.2);
                           color: #ffffff;
                           padding: 0 15px;
-                          border-radius: 5px; /* Легке заокруглення */
+                          border-radius: 5px;
                           height: 36px;
                           width: 220px;
                           font-size: 13px;
@@ -56,11 +166,10 @@
                       />
                     </form>
                   </li>
-                  <li><a href="catalog.html">Каталог</a></li>
-                  <li class="current_page_item">
-                    <a href="profile.html">Мій профіль</a>
-                  </li>
-                  <li><a href="login.html">Вийти</a></li>
+                  <li><a href="../index.html">ГОЛОВНА</a></li>
+                  <li><a href="catalog.html">КАТАЛОГ</a></li>
+                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
+                  <li><a href="login.html">УВІЙТИ</a></li>
                 </ul>
               </nav>
             </div>
@@ -68,69 +177,169 @@
         </div>
       </div>
 
-      <div id="main-wrapper">
+      <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
         <div class="wrapper style1">
           <div class="inner">
             <section class="container">
-              <header class="major">
-                <h2>Результати за запитом: "Dark Souls"</h2>
+              <header
+                class="major"
+                style="margin-bottom: 3em; text-align: left"
+              >
+                <h2>Результати за запитом: "Темний"</h2>
               </header>
 
               <div class="search-results">
-                <article class="box" style="margin-bottom: 2em; padding: 20px">
+                <article class="search-card">
                   <div class="row gtr-50 gtr-uniform">
-                    <div class="col-3 col-12-mobile">
-                      <a href="details.html" class="image fit"
-                        ><img
-                          src="../assets/images/dark_souls.jpg"
-                          alt="Постер"
-                          style="border-radius: 5px"
-                      /></a>
-                    </div>
-                    <div class="col-6 col-12-mobile">
-                      <h3><a href="details.html">Dark Souls III</a></h3>
-                      <p>
-                        Екшен-RPG від студії FromSoftware. Гравцям належить
-                        досліджувати похмурий світ, битися зі складними босами
-                        та розкривати глибокий лор світу, що згасає.
-                      </p>
+                    <div class="col-2 col-4-medium col-12-mobile">
+                      <a
+                        href="details.html"
+                        class="image fit"
+                        style="margin: 0"
+                      >
+                        <img
+                          src="../images/dark_knight.jpg"
+                          alt="Темний лицар"
+                          class="search-image"
+                        />
+                      </a>
                     </div>
                     <div
-                      class="col-3 col-12-mobile"
-                      style="text-align: center; border-left: 1px solid #e0e0e0"
+                      class="col-7 col-8-medium col-12-mobile"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                      "
                     >
-                      <h3 style="margin-bottom: 10px">Оцінка: 9.5/10</h3>
-                      <p>Ваша оцінка: -</p>
-                      <a href="#" class="button small">Поставити оцінку</a>
+                      <h3 style="margin-bottom: 10px">
+                        <a href="details.html">Темний лицар (2008)</a>
+                      </h3>
+                      <span
+                        style="
+                          display: inline-block;
+                          background: #d52349;
+                          color: white;
+                          padding: 2px 8px;
+                          border-radius: 4px;
+                          font-size: 11px;
+                          font-weight: bold;
+                          margin-bottom: 15px;
+                          width: max-content;
+                        "
+                        >ФІЛЬМ</span
+                      >
+                      <p style="margin: 0; color: #555">
+                        Культовий супергеройський фільм режисера Крістофера
+                        Нолана. Бетмен стикається зі своїм найнебезпечнішим
+                        ворогом — геніальним та безжальним Джокером, який прагне
+                        занурити Ґотем у хаос.
+                      </p>
+                    </div>
+                    <div class="col-3 col-12-mobile">
+                      <div class="rating-block">
+                        <h3
+                          style="
+                            margin-bottom: 5px;
+                            font-size: 1.5em;
+                            color: #f39c12;
+                          "
+                        >
+                          ★ 9.0
+                        </h3>
+                        <p
+                          style="
+                            margin-bottom: 15px;
+                            font-size: 0.9em;
+                            color: #888;
+                          "
+                        >
+                          Ваша оцінка: -
+                        </p>
+                        <a
+                          href="#"
+                          class="button small"
+                          style="
+                            background-color: #d52349 !important;
+                            box-shadow: inset 0 0 0 1px #d52349 !important;
+                            color: white !important;
+                          "
+                          >Оцінити</a
+                        >
+                      </div>
                     </div>
                   </div>
                 </article>
 
-                <article class="box" style="margin-bottom: 2em; padding: 20px">
+                <article class="search-card">
                   <div class="row gtr-50 gtr-uniform">
-                    <div class="col-3 col-12-mobile">
-                      <a href="details.html" class="image fit"
-                        ><img
-                          src="../assets/images/resident_evil.jpg"
-                          alt="Постер"
-                          style="border-radius: 5px"
-                      /></a>
-                    </div>
-                    <div class="col-6 col-12-mobile">
-                      <h3><a href="details.html">Resident Evil 4 Remake</a></h3>
-                      <p>
-                        Оновлена версія культового survival horror. Леон Кеннеді
-                        вирушає в європейське село, щоб врятувати доньку
-                        президента.
-                      </p>
+                    <div class="col-2 col-4-medium col-12-mobile">
+                      <a
+                        href="details.html"
+                        class="image fit"
+                        style="margin: 0"
+                      >
+                        <img
+                          src="../images/dark_series.jpg"
+                          alt="Пітьма"
+                          class="search-image"
+                        />
+                      </a>
                     </div>
                     <div
-                      class="col-3 col-12-mobile"
-                      style="text-align: center; border-left: 1px solid #e0e0e0"
+                      class="col-7 col-8-medium col-12-mobile"
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                      "
                     >
-                      <h3 style="margin-bottom: 10px">Оцінка: 9.0/10</h3>
-                      <p>Ваша оцінка: 10</p>
-                      <a href="#" class="button alt small">Змінити оцінку</a>
+                      <h3 style="margin-bottom: 10px">
+                        <a href="details.html">Пітьма (2017)</a>
+                      </h3>
+                      <span
+                        style="
+                          display: inline-block;
+                          background: #d52349;
+                          color: white;
+                          padding: 2px 8px;
+                          border-radius: 4px;
+                          font-size: 11px;
+                          font-weight: bold;
+                          margin-bottom: 15px;
+                          width: max-content;
+                        "
+                        >СЕРІАЛ</span
+                      >
+                      <p style="margin: 0; color: #555">
+                        Німецький науково-фантастичний трилер. Зникнення двох
+                        дітей у маленькому містечку розкриває складну мережу
+                        таємниць, подвійних життів та подорожей у часі, що
+                        охоплюють кілька поколінь.
+                      </p>
+                    </div>
+                    <div class="col-3 col-12-mobile">
+                      <div class="rating-block">
+                        <h3
+                          style="
+                            margin-bottom: 5px;
+                            font-size: 1.5em;
+                            color: #f39c12;
+                          "
+                        >
+                          ★ 8.7
+                        </h3>
+                        <p
+                          style="
+                            margin-bottom: 15px;
+                            font-size: 0.9em;
+                            color: #888;
+                          "
+                        >
+                          Ваша оцінка: 9
+                        </p>
+                        <a href="#" class="button alt small">Змінити оцінку</a>
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -139,12 +348,32 @@
               <div style="text-align: center; margin-top: 3em">
                 <ul
                   class="actions"
-                  style="display: inline-flex; list-style: none; padding: 0"
+                  style="
+                    display: inline-flex;
+                    list-style: none;
+                    padding: 0;
+                    gap: 10px;
+                  "
                 >
-                  <li><a href="#" class="button alt small">Попередня</a></li>
-                  <li><a href="#" class="button small">1</a></li>
-                  <li><a href="#" class="button alt small">2</a></li>
-                  <li><a href="#" class="button alt small">3</a></li>
+                  <li>
+                    <a
+                      href="#"
+                      class="button alt small disabled"
+                      style="pointer-events: none; opacity: 0.5"
+                      >Попередня</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="button small"
+                      style="
+                        background-color: #d52349 !important;
+                        color: white !important;
+                      "
+                      >1</a
+                    >
+                  </li>
                   <li><a href="#" class="button alt small">Наступна</a></li>
                 </ul>
               </div>
@@ -160,18 +389,18 @@
               <section>
                 <h2>Про проект</h2>
                 <p>
-                  <strong>MediaHub</strong> — це веб-додаток для управління
-                  особистими медіа-колекціями. Демонстрація роботи з базами
-                  даних та Web API.
+                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
+                  серіалів та аніме.
                 </p>
               </section>
             </div>
             <div class="col-4 col-12-mobile">
               <section>
-                <h2>Корисне</h2>
+                <h2>Навігація</h2>
                 <ul class="divided">
                   <li><a href="catalog.html">Каталог</a></li>
-                  <li><a href="profile.html">Профіль</a></li>
+                  <li><a href="search.html">Пошук</a></li>
+                  <li><a href="login.html">Авторизація</a></li>
                 </ul>
               </section>
             </div>
@@ -179,8 +408,14 @@
               <section>
                 <h2>Команда</h2>
                 <ul class="divided">
-                  <li><strong>Бекенд:</strong> Команда</li>
-                  <li><strong>Фронтенд:</strong> Віталій</li>
+                  <li>
+                    <a
+                      href="https://github.com/Gilaneth/WatchDiary"
+                      class="icon brands fa-github"
+                    >
+                      GitHub</a
+                    >
+                  </li>
                 </ul>
               </section>
             </div>
@@ -189,8 +424,7 @@
             <div class="col-12">
               <div id="copyright">
                 <ul class="menu">
-                  <li>&copy; 2026 MediaHub.</li>
-                  <li>Шаблон: HTML5 UP</li>
+                  <li>&copy; 2026 WATCHDIARY.</li>
                 </ul>
               </div>
             </div>
