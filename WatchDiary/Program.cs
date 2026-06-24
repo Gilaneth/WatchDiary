@@ -53,6 +53,16 @@ builder.Services.AddAuthorization();
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddSingleton<TokenService>();
 
+builder.Services.AddCors(options =>
+        {
+        options.AddDefaultPolicy(policy =>
+                {
+                policy.WithOrigins("http://localhost:8080")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+                });
+        });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -61,6 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WatchDiary — API test</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      background: #f5f5f4;
+      color: #1c1c1a;
+      padding: 2rem;
+    }
+
+    h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; }
+    h2 { font-size: 14px; font-weight: 500; text-transform: uppercase;
+         letter-spacing: 0.06em; color: #888; margin-bottom: 1rem; }
+
+    .config {
+      background: #fff;
+      border: 0.5px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .config label { font-size: 13px; color: #666; white-space: nowrap; }
+    .config input { flex: 1; border: 0.5px solid #ccc; border-radius: 6px;
+                    padding: 6px 10px; font-size: 13px; font-family: monospace; }
+
+    .token-bar {
+      background: #fff;
+      border: 0.5px solid #ddd;
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .token-bar .label { color: #888; white-space: nowrap; }
+    .token-bar .value {
+      flex: 1;
+      font-family: monospace;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #2563eb;
+    }
+    .token-bar .value.empty { color: #aaa; font-style: italic; font-family: system-ui; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 0.5px solid #ddd;
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+
+    .card form { display: flex; flex-direction: column; gap: 8px; }
+
+    .card input, .card select {
+      border: 0.5px solid #ccc;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fafafa;
+    }
+    .card input:focus, .card select:focus {
+      outline: none;
+      border-color: #888;
+      background: #fff;
+    }
+
+    button {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 0.5px solid #ccc;
+      background: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    button:hover { background: #f0f0ee; }
+    button:active { transform: scale(0.98); }
+    button.primary {
+      background: #1c1c1a;
+      color: #fff;
+      border-color: #1c1c1a;
+    }
+    button.primary:hover { background: #333; }
+
+    .response {
+      margin-top: 12px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      background: #f8f8f7;
+      border: 0.5px solid #e0e0de;
+      border-radius: 6px;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #333;
+      min-height: 40px;
+    }
+    .response.ok   { border-left: 3px solid #16a34a; }
+    .response.err  { border-left: 3px solid #dc2626; color: #991b1b; }
+    .response.warn { border-left: 3px solid #d97706; }
+
+    .status-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-bottom: 8px;
+    }
+    .status-ok   { background: #dcfce7; color: #15803d; }
+    .status-err  { background: #fee2e2; color: #b91c1c; }
+    .status-warn { background: #fef3c7; color: #92400e; }
+
+    .spacer { height: 1rem; }
+  </style>
+</head>
+<body>
+
+<h1>WatchDiary — API test</h1>
+<p style="color:#888; font-size:13px; margin-bottom:1.5rem;">
+  Mirrors the curl test sequence. Run <code>dotnet run</code> in Terminal 1, open this page in Terminal 2 via <code>python3 -m http.server 8080</code>.
+</p>
+
+<div class="config">
+  <label>API base</label>
+  <input id="apiBase" value="http://localhost:5220" />
+</div>
+
+<div class="token-bar">
+  <span class="label">Token</span>
+  <span class="value empty" id="tokenDisplay">not logged in</span>
+  <button onclick="clearToken()">Clear</button>
+</div>
+
+<div class="grid">
+
+  <!-- Register -->
+  <div class="card">
+    <h2>Register</h2>
+    <form onsubmit="register(event)">
+      <input id="reg-username" placeholder="Username" required />
+      <input id="reg-email" placeholder="Email" type="email" required />
+      <input id="reg-password" placeholder="Password" type="password" required />
+      <button class="primary" type="submit">POST /User</button>
+    </form>
+    <div class="response" id="reg-response">—</div>
+  </div>
+
+  <!-- Login -->
+  <div class="card">
+    <h2>Login</h2>
+    <form onsubmit="login(event)">
+      <input id="login-username" placeholder="Username" required />
+      <input id="login-password" placeholder="Password" type="password" required />
+      <button class="primary" type="submit">POST /User/login</button>
+    </form>
+    <div class="response" id="login-response">—</div>
+  </div>
+
+  <!-- My watchlist -->
+  <div class="card">
+    <h2>My watchlist</h2>
+    <form onsubmit="getWatchlist(event)">
+      <input id="wl-userid" placeholder="User ID" type="number" required />
+      <button class="primary" type="submit">GET /WatchList/user/{id}</button>
+    </form>
+    <div class="response" id="wl-get-response">—</div>
+  </div>
+
+  <!-- Add to watchlist -->
+  <div class="card">
+    <h2>Add to watchlist</h2>
+    <form onsubmit="addToWatchlist(event)">
+      <input id="wl-movieid" placeholder="Movie ID" type="number" required />
+      <select id="wl-status">
+        <option value="Watched">Watched</option>
+        <option value="Watching" selected>Watching</option>
+        <option value="Planning">Planning</option>
+        <option value="OnHold">OnHold</option>
+        <option value="Dropped">Dropped</option>
+      </select>
+      <button class="primary" type="submit">POST /WatchList (auth required)</button>
+    </form>
+    <div class="response" id="wl-add-response">—</div>
+  </div>
+
+  <!-- 403 check -->
+  <div class="card">
+    <h2>403 ownership check</h2>
+    <p style="font-size:13px; color:#666; margin-bottom:8px;">
+      Log in as user B, then enter user A's ID here. Should return 403.
+    </p>
+    <form onsubmit="checkForbidden(event)">
+      <input id="forbidden-userid" placeholder="Someone else's User ID" type="number" required />
+      <button class="primary" type="submit">GET /WatchList/user/{id}</button>
+    </form>
+    <div class="response" id="forbidden-response">—</div>
+  </div>
+
+  <!-- Create collection -->
+  <div class="card">
+    <h2>Create collection</h2>
+    <form onsubmit="createCollection(event)">
+      <input id="col-name" placeholder="Collection name" required />
+      <button class="primary" type="submit">POST /Collection (auth required)</button>
+    </form>
+    <div class="response" id="col-response">—</div>
+  </div>
+
+</div>
+
+<script>
+  let token = null;
+  const base = () => document.getElementById('apiBase').value.replace(/\/$/, '');
+
+  function setResponse(id, status, body) {
+    const el = document.getElementById(id);
+    el.className = 'response ' + (status >= 200 && status < 300 ? 'ok' : status === 403 ? 'warn' : 'err');
+    const pill = `<span class="status-pill ${status >= 200 && status < 300 ? 'status-ok' : status === 403 ? 'status-warn' : 'status-err'}">${status}</span>\n`;
+    let text;
+    try { text = JSON.stringify(JSON.parse(body), null, 2); } catch { text = body; }
+    el.innerHTML = pill + escapeHtml(text);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function updateTokenBar() {
+    const el = document.getElementById('tokenDisplay');
+    if (token) {
+      el.textContent = token;
+      el.className = 'value';
+    } else {
+      el.textContent = 'not logged in';
+      el.className = 'value empty';
+    }
+  }
+
+  function clearToken() { token = null; updateTokenBar(); }
+
+  async function apiFetch(method, path, body, useToken) {
+    const headers = { 'Content-Type': 'application/json' };
+    if (useToken && token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetch(base() + path, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined
+    });
+    const text = await res.text();
+    return { status: res.status, body: text };
+  }
+
+  async function register(e) {
+    e.preventDefault();
+    try {
+      const r = await apiFetch('POST', '/User', {
+        username: document.getElementById('reg-username').value,
+        userEmail: document.getElementById('reg-email').value,
+        userPassword: document.getElementById('reg-password').value
+      });
+      setResponse('reg-response', r.status, r.body);
+    } catch(err) {
+      setResponse('reg-response', 0, 'Network error: ' + err.message + '\n\nIs dotnet run active? Is CORS configured?');
+    }
+  }
+
+  async function login(e) {
+    e.preventDefault();
+    try {
+      const r = await apiFetch('POST', '/User/login', {
+        username: document.getElementById('login-username').value,
+        password: document.getElementById('login-password').value
+      });
+      setResponse('login-response', r.status, r.body);
+      if (r.status === 200) {
+        token = JSON.parse(r.body).token;
+        updateTokenBar();
+      }
+    } catch(err) {
+      setResponse('login-response', 0, 'Network error: ' + err.message);
+    }
+  }
+
+  async function getWatchlist(e) {
+    e.preventDefault();
+    const id = document.getElementById('wl-userid').value;
+    try {
+      const r = await apiFetch('GET', '/WatchList/user/' + id, null, true);
+      setResponse('wl-get-response', r.status, r.body);
+    } catch(err) {
+      setResponse('wl-get-response', 0, 'Network error: ' + err.message);
+    }
+  }
+
+  async function addToWatchlist(e) {
+    e.preventDefault();
+    try {
+      const r = await apiFetch('POST', '/WatchList', {
+        movieId: parseInt(document.getElementById('wl-movieid').value),
+        status: document.getElementById('wl-status').value
+      }, true);
+      setResponse('wl-add-response', r.status, r.body);
+    } catch(err) {
+      setResponse('wl-add-response', 0, 'Network error: ' + err.message);
+    }
+  }
+
+  async function checkForbidden(e) {
+    e.preventDefault();
+    const id = document.getElementById('forbidden-userid').value;
+    try {
+      const r = await apiFetch('GET', '/WatchList/user/' + id, null, true);
+      setResponse('forbidden-response', r.status,
+        r.body || (r.status === 403 ? '(empty body — 403 Forbidden as expected)' : '(empty body)'));
+    } catch(err) {
+      setResponse('forbidden-response', 0, 'Network error: ' + err.message);
+    }
+  }
+
+  async function createCollection(e) {
+    e.preventDefault();
+    try {
+      const r = await apiFetch('POST', '/Collection', {
+        collectionName: document.getElementById('col-name').value
+      }, true);
+      setResponse('col-response', r.status, r.body);
+    } catch(err) {
+      setResponse('col-response', 0, 'Network error: ' + err.message);
+    }
+  }
+</script>
+</body>
+</html>
