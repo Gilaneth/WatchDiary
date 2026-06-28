@@ -2147,20 +2147,7 @@ ol.default li {
   color: #ddd;
 }
 
-#footer .col-4 {
-  position: relative !important;
-  z-index: 9999 !important;
-  pointer-events: auto !important;
-}
-
-#footer a {
-  position: relative !important;
-  z-index: 10000 !important;
-}
-
 #copyright {
-  position: relative !important;
-  z-index: 1 !important;
   border-top: solid 1px;
   border-color: #444;
   border-color: rgba(255, 255, 255, 0.075);
