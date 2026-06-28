@@ -2119,8 +2119,20 @@ ol.default li {
   color: #fff;
 }
 
+/* Фікс клікабельності */
 #footer a {
-  color: #acb2bf;
+  color: #acb2bf !important;
+  position: relative !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+  display: inline-block !important;
+  text-decoration: none;
+}
+
+#footer .col-4 {
+  position: relative !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
 }
 
 #footer .button.alt {
@@ -2133,6 +2145,7 @@ ol.default li {
 #footer ul.menu li {
   border-color: #444;
   border-color: rgba(255, 255, 255, 0.075);
+  padding: 5px 0 !important; /* Компактний відступ */
 }
 
 #footer ul.divided li a {
@@ -2147,7 +2160,10 @@ ol.default li {
   color: #ddd;
 }
 
+/* Фікс копірайту, щоб не перекривав кнопки */
 #copyright {
+  position: relative !important;
+  z-index: 1 !important;
   border-top: solid 1px;
   border-color: #444;
   border-color: rgba(255, 255, 255, 0.075);
