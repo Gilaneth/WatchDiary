@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <title>Деталі - WATCHDIARY</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css?v=42" />
+    <style>
+      /* --- ТЕМНА НАВІГАЦІЙНА ПАНЕЛЬ ТА ПІДВАЛ --- */
+      #header-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+
+      #header {
+        background-color: rgba(20, 21, 23, 0.5) !important;
+        background-image: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+      }
+
+      #footer-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        border-top: none !important;
+        padding-top: 5em !important;
+        padding-bottom: 5em !important;
+      }
+
+      #footer {
+        background-color: transparent !important;
+      }
+      #footer-wrapper h2 {
+        color: #ffffff !important;
+        margin-bottom: 1.5em;
+      }
+      #footer-wrapper p,
+      #footer-wrapper li {
+        color: #bbbbbb !important;
+      }
+      #footer-wrapper a {
+        color: #bbbbbb !important;
+        text-decoration: none !important;
+      }
+      #footer-wrapper a:hover {
+        color: #d52349 !important;
+      }
+
+      #copyright {
+        margin-top: 3em !important;
+        padding-top: 2em !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      #copyright li {
+        color: #888888 !important;
+      }
+
+      /* --- СТИЛІ ДЛЯ СТОРІНКИ ДЕТАЛЕЙ --- */
+      .poster-container {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background: #e6e6e6; /* Фон-плейсхолдер */
+        aspect-ratio: 2 / 3;
+        margin-bottom: 20px;
+      }
+      .poster-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        color: transparent;
+        text-indent: -10000px; /* Ховаємо розірвану іконку */
+      }
+      .tag {
+        display: inline-block;
+        background: #e0e0e0;
+        color: #333;
+        padding: 4px 12px;
+        border-radius: 15px;
+        margin-right: 5px;
+        font-size: 0.9em;
+        font-weight: bold;
+      }
+      .rating-badge {
+        display: inline-block;
+        background: #f1c40f;
+        color: #000;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+      .status-badge {
+        display: inline-block;
+        background: #d52349;
+        color: #fff;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9em;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+      <div id="header-wrapper">
+        <div class="container">
+          <header id="header">
+            <div class="inner">
+              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
+
+              <nav id="nav">
+                <ul>
+                  <li style="padding-left: 0; padding-right: 25px">
+                    <form
+                      method="get"
+                      action="search.html"
+                      style="
+                        margin: 0;
+                        display: inline-flex;
+                        align-items: center;
+                        height: 100%;
+                        vertical-align: middle;
+                      "
+                    >
+                      <input
+                        type="text"
+                        name="query"
+                        placeholder="Знайти тайтл..."
+                        style="
+                          background: rgba(255, 255, 255, 0.15);
+                          border: 1px solid rgba(255, 255, 255, 0.2);
+                          color: #ffffff;
+                          padding: 0 15px;
+                          border-radius: 5px;
+                          height: 36px;
+                          width: 220px;
+                          font-size: 13px;
+                          outline: none;
+                          box-shadow: none;
+                        "
+                        onfocus="
+                          this.style.background = 'rgba(255, 255, 255, 0.25)'
+                        "
+                        onblur="
+                          this.style.background = 'rgba(255, 255, 255, 0.15)'
+                        "
+                      />
+                    </form>
+                  </li>
+                  <li><a href="../index.html">ГОЛОВНА</a></li>
+                  <li><a href="catalog.html">КАТАЛОГ</a></li>
+                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
+                  <li><a href="login.html">УВІЙТИ</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+        </div>
+      </div>
+
+      <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
+        <div class="wrapper style1">
+          <div class="inner">
+            <section class="container">
+              <div style="margin-bottom: 2em">
+                <a
+                  href="catalog.html"
+                  class="button alt small icon solid fa-arrow-left"
+                  >Назад до каталогу</a
+                >
+              </div>
+
+              <div class="row">
+                <div class="col-4 col-12-mobile">
+                  <div class="poster-container">
+                    <img src="../images/lotr.jpg" alt="Володар Перснів" />
+                  </div>
+                </div>
+
+                <div class="col-8 col-12-mobile">
+                  <header
+                    class="major"
+                    style="margin-bottom: 1em; text-align: left"
+                  >
+                    <h2 style="font-size: 2.2em; line-height: 1.2">
+                      Володар Перснів: Братерство Персня
+                    </h2>
+                    <p style="color: #888; margin-top: 5px; font-size: 1.1em">
+                      The Lord of the Rings: The Fellowship of the Ring (2001)
+                    </p>
+                  </header>
+
+                  <div
+                    style="
+                      margin-bottom: 2em;
+                      display: flex;
+                      gap: 15px;
+                      align-items: center;
+                      flex-wrap: wrap;
+                    "
+                  >
+                    <span class="status-badge">Фільм</span>
+                    <span class="rating-badge">★ 8.8</span>
+                    <div>
+                      <span class="tag">Фентезі</span>
+                      <span class="tag">Пригоди</span>
+                    </div>
+                  </div>
+
+                  <h3 style="margin-bottom: 15px; font-size: 1.2em">Опис</h3>
+                  <div
+                    style="
+                      background: #f8f8f8;
+                      padding: 20px;
+                      border-radius: 5px;
+                      margin-bottom: 2.5em;
+                      border-left: 4px solid #d52349;
+                    "
+                  >
+                    <p style="margin: 0; line-height: 1.6; color: #444">
+                      Епічна подорож Фродо Беггінса та його друзів, які
+                      вирушають до Мордору, щоб знищити Єдиний Перстень і
+                      врятувати Середзем'я від темного володаря Саурона. На
+                      їхньому шляху трапляються небезпечні вороги, але міцна
+                      дружба та відвага допомагають долати всі перешкоди.
+                    </p>
+                  </div>
+
+                  <ul
+                    class="actions"
+                    style="display: flex; gap: 15px; flex-wrap: wrap"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="button icon solid fa-heart"
+                        style="
+                          background-color: #d52349 !important;
+                          box-shadow: inset 0 0 0 1px #d52349 !important;
+                          color: white !important;
+                        "
+                      >
+                        + Додати в обране
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" class="button alt icon solid fa-folder-plus">
+                        Додати в колекцію
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="footer-wrapper">
+        <footer id="footer" class="container">
+          <div class="row">
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Про проект</h2>
+                <p>
+                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
+                  серіалів та аніме.
+                </p>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Навігація</h2>
+                <ul class="divided">
+                  <li><a href="catalog.html">Каталог</a></li>
+                  <li><a href="search.html">Пошук</a></li>
+                  <li><a href="login.html">Авторизація</a></li>
+                </ul>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Команда</h2>
+                <ul class="divided">
+                  <li>
+                    <a
+                      href="https://github.com/Gilaneth/WatchDiary"
+                      class="icon brands fa-github"
+                    >
+                      GitHub</a
+                    >
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div id="copyright">
+                <ul class="menu">
+                  <li>&copy; 2026 WATCHDIARY. .</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <script src="../assets/js/jquery.min.js"></script>
+      <script src="../assets/js/jquery.dropotron.min.js"></script>
+      <script src="../assets/js/browser.min.js"></script>
+      <script src="../assets/js/breakpoints.min.js"></script>
+      <script src="../assets/js/util.js"></script>
+      <script src="../assets/js/main.js"></script>
+    </div>
+  </body>
+</html>

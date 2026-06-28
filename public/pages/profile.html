@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <title>Мій профіль - WATCHDIARY</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="../assets/css/main.css?v=48" />
+    <style>
+      /* --- ТЕМНА НАВІГАЦІЙНА ПАНЕЛЬ ТА ПІДВАЛ --- */
+      #header-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      }
+      #header {
+        background-color: rgba(20, 21, 23, 0.5) !important;
+        background-image: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+      }
+      #footer-wrapper {
+        background-color: rgba(31, 32, 35, 0.9) !important;
+        background-image: none !important;
+        border-top: none !important;
+        padding-top: 5em !important;
+        padding-bottom: 5em !important;
+      }
+      #footer {
+        background-color: transparent !important;
+      }
+      #footer-wrapper h2 {
+        color: #ffffff !important;
+        margin-bottom: 1.5em;
+      }
+      #footer-wrapper p,
+      #footer-wrapper li {
+        color: #bbbbbb !important;
+      }
+      #footer-wrapper a {
+        color: #bbbbbb !important;
+        text-decoration: none !important;
+      }
+      #footer-wrapper a:hover {
+        color: #d52349 !important;
+      }
+      #copyright {
+        margin-top: 3em !important;
+        padding-top: 2em !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      #copyright li {
+        color: #888888 !important;
+      }
+
+      /* --- ВІДНОВЛЕННЯ НОРМАЛЬНИХ ШРИФТІВ --- */
+      body,
+      p,
+      a,
+      span,
+      div {
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+      }
+      #logo,
+      .badge-status {
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+      }
+      .button {
+        text-transform: none !important;
+        letter-spacing: 0.5px !important;
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        font-weight: 600 !important;
+      }
+
+      /* Кнопки меню */
+      .sidebar-btn {
+        display: block;
+        text-align: center;
+        width: 100%;
+        background-color: #f4f4f6 !important;
+        color: #333 !important;
+        box-shadow: none !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 6px !important;
+        margin-bottom: 10px;
+        transition: all 0.2s ease-in-out;
+      }
+      .sidebar-btn:hover {
+        background-color: #e9e9eb !important;
+        border-color: #ccc !important;
+        color: #d52349 !important;
+      }
+
+      /* Заголовки секцій */
+      .profile-section-title {
+        margin-bottom: 1.5em;
+        text-align: left;
+        background: #f8f8f8;
+        padding: 15px 20px;
+        border-radius: 8px;
+        border-left: 5px solid #d52349;
+        font-weight: 700 !important;
+        font-size: 1.2em !important;
+        color: #222 !important;
+      }
+
+      /* --- Стилі для карток --- */
+      .media-card {
+        position: relative;
+        background: #ffffff !important;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid #eeeeee !important;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .media-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+      }
+      .media-image-container {
+        position: relative;
+        aspect-ratio: 2 / 3;
+        overflow: hidden;
+        background: #e6e6e6;
+      }
+      .media-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        color: transparent;
+        text-indent: -10000px;
+      }
+      .badge-rating {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(241, 196, 15, 0.95) !important;
+        color: #000 !important;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 2;
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+      }
+      .badge-status {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(213, 35, 73, 0.95) !important;
+        color: #fff !important;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 11px;
+        z-index: 2;
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+      }
+      .media-info {
+        padding: 15px;
+        text-align: center;
+        background: #f4f4f6 !important;
+        border-top: 1px solid #eaeaea !important;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .media-info h3 {
+        margin: 0 0 8px 0;
+        font-size: 1.05em !important;
+        line-height: 1.3;
+      }
+      .media-info h3 a {
+        border: none !important;
+        color: #222222 !important;
+        text-decoration: none !important;
+        font-weight: 700;
+        display: block;
+      }
+      .media-info h3 a:hover {
+        color: #d52349 !important;
+        background: transparent !important;
+      }
+      .user-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: 600 !important;
+        margin-top: auto;
+        font-family:
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        letter-spacing: 0.5px !important;
+        text-transform: none !important;
+      }
+      .status-watching {
+        background: #28a745;
+        color: white;
+      }
+      .status-planned {
+        background: #ffc107;
+        color: #333;
+      }
+      .status-completed {
+        background: #d52349;
+        color: white;
+      }
+    </style>
+  </head>
+  <body class="no-sidebar is-preload">
+    <div id="page-wrapper">
+      <div id="header-wrapper">
+        <div class="container">
+          <header id="header">
+            <div class="inner">
+              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
+              <nav id="nav">
+                <ul>
+                  <li style="padding-left: 0; padding-right: 25px">
+                    <form
+                      method="get"
+                      action="search.html"
+                      style="
+                        margin: 0;
+                        display: inline-flex;
+                        align-items: center;
+                        height: 100%;
+                        vertical-align: middle;
+                      "
+                    >
+                      <input
+                        type="text"
+                        name="query"
+                        placeholder="Знайти тайтл..."
+                        style="
+                          background: rgba(255, 255, 255, 0.15);
+                          border: 1px solid rgba(255, 255, 255, 0.2);
+                          color: #ffffff;
+                          padding: 0 15px;
+                          border-radius: 5px;
+                          height: 36px;
+                          width: 220px;
+                          font-size: 13px;
+                          outline: none;
+                          box-shadow: none;
+                        "
+                        onfocus="
+                          this.style.background = 'rgba(255, 255, 255, 0.25)'
+                        "
+                        onblur="
+                          this.style.background = 'rgba(255, 255, 255, 0.15)'
+                        "
+                      />
+                    </form>
+                  </li>
+                  <li><a href="../index.html">ГОЛОВНА</a></li>
+                  <li><a href="catalog.html">КАТАЛОГ</a></li>
+                  <li class="current_page_item">
+                    <a href="profile.html">ПРОФІЛЬ</a>
+                  </li>
+                  <li><a href="login.html">УВІЙТИ</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+        </div>
+      </div>
+
+      <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
+        <div class="wrapper style1">
+          <div class="inner">
+            <section class="container">
+              <div class="row">
+                <div class="col-4 col-12-mobile" style="padding-right: 40px">
+                  <header
+                    class="major"
+                    style="margin-bottom: 2em; text-align: left"
+                  >
+                    <h2
+                      style="
+                        font-size: 2em !important;
+                        font-weight: bold !important;
+                        color: #222 !important;
+                      "
+                    >
+                      Вітаємо, Віталію!
+                    </h2>
+                  </header>
+
+                  <h3
+                    style="
+                      margin-bottom: 1em;
+                      font-weight: bold !important;
+                      color: #444 !important;
+                    "
+                  >
+                    Мої колекції
+                  </h3>
+                  <a
+                    href="#"
+                    class="button small icon solid fa-plus"
+                    style="
+                      display: block;
+                      text-align: center;
+                      margin-bottom: 1.5em;
+                      background-color: #d52349 !important;
+                      box-shadow: inset 0 0 0 1px #d52349 !important;
+                      color: white !important;
+                      border: none;
+                    "
+                    >Створити нову</a
+                  >
+
+                  <ul style="list-style: none; padding: 0; margin-bottom: 2em">
+                    <li>
+                      <a href="#" class="button sidebar-btn">Глянути увечері</a>
+                    </li>
+                    <li><a href="#" class="button sidebar-btn">Для вас</a></li>
+                    <li><a href="#" class="button sidebar-btn">З сім'єю</a></li>
+                  </ul>
+
+                  <hr
+                    style="border-top: 1px solid #e0e0e0; margin-bottom: 1.5em"
+                  />
+                  <a
+                    href="add-film.html"
+                    class="button icon solid fa-film"
+                    style="
+                      display: block;
+                      text-align: center;
+                      width: 100%;
+                      background-color: #f1c40f !important;
+                      color: #000000 !important;
+                      box-shadow: none !important;
+                      border: none !important;
+                      font-weight: bold;
+                    "
+                    >Додати тайтл</a
+                  >
+                </div>
+
+                <div class="col-8 col-12-mobile">
+                  <h3 class="profile-section-title">Останні дії</h3>
+                  <div class="row">
+                    <div class="col-4 col-12-mobile">
+                      <div class="media-card">
+                        <div class="media-image-container">
+                          <div class="badge-status">Аніме</div>
+                          <div class="badge-rating">★ 9.1</div>
+                          <a href="details.html"
+                            ><img src="../images/aot.jpg" alt="Атака титанів"
+                          /></a>
+                        </div>
+                        <div class="media-info">
+                          <h3><a href="details.html">Атака титанів</a></h3>
+                          <span class="user-status status-watching"
+                            >Дивлюся</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4 col-12-mobile">
+                      <div class="media-card">
+                        <div class="media-image-container">
+                          <div class="badge-status">Серіал</div>
+                          <div class="badge-rating">★ 8.7</div>
+                          <a href="details.html"
+                            ><img
+                              src="../images/black_mirror.jpg"
+                              alt="Чорне дзеркало"
+                          /></a>
+                        </div>
+                        <div class="media-info">
+                          <h3><a href="details.html">Чорне дзеркало</a></h3>
+                          <span class="user-status status-planned"
+                            >В планах</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4 col-12-mobile">
+                      <div class="media-card">
+                        <div class="media-image-container">
+                          <div class="badge-status">Фільм</div>
+                          <div class="badge-rating">★ 8.7</div>
+                          <a href="details.html"
+                            ><img
+                              src="../images/interstellar.jpg"
+                              alt="Інтерстеллар"
+                          /></a>
+                        </div>
+                        <div class="media-info">
+                          <h3><a href="details.html">Інтерстеллар</a></h3>
+                          <span class="user-status status-completed"
+                            >Переглянуто</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div id="footer-wrapper">
+        <footer id="footer" class="container">
+          <div class="row">
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Про проект</h2>
+                <p>
+                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
+                  серіалів та аніме.
+                </p>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Навігація</h2>
+                <ul class="divided">
+                  <li><a href="catalog.html">Каталог</a></li>
+                  <li><a href="search.html">Пошук</a></li>
+                  <li><a href="login.html">Авторизація</a></li>
+                </ul>
+              </section>
+            </div>
+            <div class="col-4 col-12-mobile">
+              <section>
+                <h2>Команда</h2>
+                <ul class="divided">
+                  <li>
+                    <a
+                      href="https://github.com/Gilaneth/WatchDiary"
+                      class="icon brands fa-github"
+                    >
+                      GitHub</a
+                    >
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div id="copyright">
+                <ul class="menu">
+                  <li>&copy; 2026 WATCHDIARY.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      <script src="../assets/js/jquery.min.js"></script>
+      <script src="../assets/js/jquery.dropotron.min.js"></script>
+      <script src="../assets/js/browser.min.js"></script>
+      <script src="../assets/js/breakpoints.min.js"></script>
+      <script src="../assets/js/util.js"></script>
+      <script src="../assets/js/main.js"></script>
+    </div>
+  </body>
+</html>
