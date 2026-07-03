@@ -1,6 +1,13 @@
-﻿namespace WatchDiary.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WatchDiary.Models
 {
-    public class Category
+    public enum Category
     {
+        movie,
+        tv_series,
+        anime,
+        cartoon
     }
 }

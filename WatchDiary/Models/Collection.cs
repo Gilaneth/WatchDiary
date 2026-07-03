@@ -3,16 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WatchDiary.Models
 {
-    [Table("genre")]
-    public class Genre
+    [Table("collections")]
+    public class Collection
     {
         [Key]
+        [Column("collection_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("genre_id")]
         public int Id { get; set; }
-        [Column("genre_name")]
-        [Required]
-        public string Name { get; set; } = null!;
+        [Column("collection_name")]
+        public string? Name { get; set; }
+        [Column("user_id")]
+        public int UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User? User { get; set; }
         public ICollection<Movie> Movies { get; set; } = new List<Movie>();
     }
 }
