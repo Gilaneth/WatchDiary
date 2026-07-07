@@ -2669,11 +2669,6 @@ ol.default li {
   min-height: 5px !important;
 }
 
-/* =======================================================
-   ФІНАЛЬНИЙ БРЕДМАУЕР: АБСОЛЮТНО ЧОРНІ ШАПКА ТА ФУТЕР
-   ======================================================= */
-
-/* --- ІДЕАЛЬНО ЧОРНА ШАПКА --- */
 body #page-wrapper #header-placeholder,
 body #page-wrapper #header-placeholder #header-wrapper,
 body #page-wrapper #header-wrapper {
@@ -2701,7 +2696,6 @@ body #header-wrapper #header {
   margin: 0 auto !important;
 }
 
-/* --- ІДЕАЛЬНО ЧОРНИЙ ФУТЕР (ПРОБИВАЄМО INDEX.HTML) --- */
 body.no-sidebar #page-wrapper div#footer-wrapper,
 body #page-wrapper #footer-placeholder,
 body #page-wrapper #footer-wrapper {
