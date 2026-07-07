@@ -9,7 +9,6 @@
     />
     <link rel="stylesheet" href="../assets/css/main.css?v=48" />
     <style>
-      /* --- ТЕМНА НАВІГАЦІЙНА ПАНЕЛЬ ТА ПІДВАЛ --- */
       #header-wrapper {
         background-color: rgba(31, 32, 35, 0.9) !important;
         background-image: none !important;
@@ -89,7 +88,6 @@
         font-weight: 600 !important;
       }
 
-      /* Кнопки меню */
       .sidebar-btn {
         display: block;
         text-align: center;
@@ -121,7 +119,6 @@
         color: #222 !important;
       }
 
-      /* --- Стилі для карток --- */
       .media-card {
         position: relative;
         background: #ffffff !important;
@@ -239,62 +236,7 @@
   </head>
   <body class="no-sidebar is-preload">
     <div id="page-wrapper">
-      <div id="header-wrapper">
-        <div class="container">
-          <header id="header">
-            <div class="inner">
-              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
-              <nav id="nav">
-                <ul>
-                  <li style="padding-left: 0; padding-right: 25px">
-                    <form
-                      method="get"
-                      action="search.html"
-                      style="
-                        margin: 0;
-                        display: inline-flex;
-                        align-items: center;
-                        height: 100%;
-                        vertical-align: middle;
-                      "
-                    >
-                      <input
-                        type="text"
-                        name="query"
-                        placeholder="Знайти тайтл..."
-                        style="
-                          background: rgba(255, 255, 255, 0.15);
-                          border: 1px solid rgba(255, 255, 255, 0.2);
-                          color: #ffffff;
-                          padding: 0 15px;
-                          border-radius: 5px;
-                          height: 36px;
-                          width: 220px;
-                          font-size: 13px;
-                          outline: none;
-                          box-shadow: none;
-                        "
-                        onfocus="
-                          this.style.background = 'rgba(255, 255, 255, 0.25)'
-                        "
-                        onblur="
-                          this.style.background = 'rgba(255, 255, 255, 0.15)'
-                        "
-                      />
-                    </form>
-                  </li>
-                  <li><a href="../index.html">ГОЛОВНА</a></li>
-                  <li><a href="catalog.html">КАТАЛОГ</a></li>
-                  <li class="current_page_item">
-                    <a href="profile.html">ПРОФІЛЬ</a>
-                  </li>
-                  <li><a href="login.html">УВІЙТИ</a></li>
-                </ul>
-              </nav>
-            </div>
-          </header>
-        </div>
-      </div>
+      <div id="header-placeholder"></div>
 
       <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
         <div class="wrapper style1">
@@ -349,11 +291,11 @@
                     <li><a href="#" class="button sidebar-btn">З сім'єю</a></li>
                   </ul>
 
-                  <hr
+                  <!-- <hr
                     style="border-top: 1px solid #e0e0e0; margin-bottom: 1.5em"
                   />
                   <a
-                    href="add-film.html"
+                    href="/pages/add-film.html"
                     class="button icon solid fa-film"
                     style="
                       display: block;
@@ -366,7 +308,7 @@
                       font-weight: bold;
                     "
                     >Додати тайтл</a
-                  >
+                  > -->
                 </div>
 
                 <div class="col-8 col-12-mobile">
@@ -377,12 +319,14 @@
                         <div class="media-image-container">
                           <div class="badge-status">Аніме</div>
                           <div class="badge-rating">★ 9.1</div>
-                          <a href="details.html"
+                          <a href="../pages/details.html"
                             ><img src="../images/aot.jpg" alt="Атака титанів"
                           /></a>
                         </div>
                         <div class="media-info">
-                          <h3><a href="details.html">Атака титанів</a></h3>
+                          <h3>
+                            <a href="../pages/details.html">Атака титанів</a>
+                          </h3>
                           <span class="user-status status-watching"
                             >Дивлюся</span
                           >
@@ -394,14 +338,16 @@
                         <div class="media-image-container">
                           <div class="badge-status">Серіал</div>
                           <div class="badge-rating">★ 8.7</div>
-                          <a href="details.html"
+                          <a href="../pages/details.html"
                             ><img
                               src="../images/black_mirror.jpg"
                               alt="Чорне дзеркало"
                           /></a>
                         </div>
                         <div class="media-info">
-                          <h3><a href="details.html">Чорне дзеркало</a></h3>
+                          <h3>
+                            <a href="../pages/details.html">Чорне дзеркало</a>
+                          </h3>
                           <span class="user-status status-planned"
                             >В планах</span
                           >
@@ -413,14 +359,16 @@
                         <div class="media-image-container">
                           <div class="badge-status">Фільм</div>
                           <div class="badge-rating">★ 8.7</div>
-                          <a href="details.html"
+                          <a href="../pages/details.html"
                             ><img
                               src="../images/interstellar.jpg"
                               alt="Інтерстеллар"
                           /></a>
                         </div>
                         <div class="media-info">
-                          <h3><a href="details.html">Інтерстеллар</a></h3>
+                          <h3>
+                            <a href="../pages/details.html">Інтерстеллар</a>
+                          </h3>
                           <span class="user-status status-completed"
                             >Переглянуто</span
                           >
@@ -435,56 +383,21 @@
         </div>
       </div>
 
-      <div id="footer-wrapper">
-        <footer id="footer" class="container">
-          <div class="row">
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Про проект</h2>
-                <p>
-                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
-                  серіалів та аніме.
-                </p>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Навігація</h2>
-                <ul class="divided">
-                  <li><a href="catalog.html">Каталог</a></li>
-                  <li><a href="search.html">Пошук</a></li>
-                  <li><a href="login.html">Авторизація</a></li>
-                </ul>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Команда</h2>
-                <ul class="divided">
-                  <li>
-                    <a
-                      href="https://github.com/Gilaneth/WatchDiary"
-                      class="icon brands fa-github"
-                    >
-                      GitHub</a
-                    >
-                  </li>
-                </ul>
-              </section>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div id="copyright">
-                <ul class="menu">
-                  <li>&copy; 2026 WATCHDIARY.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
+      <div id="footer-placeholder"></div>
 
+      <script>
+        fetch("/components/header.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("header-placeholder").innerHTML = data;
+          });
+
+        fetch("/components/footer.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("footer-placeholder").innerHTML = data;
+          });
+      </script>
       <script src="../assets/js/jquery.min.js"></script>
       <script src="../assets/js/jquery.dropotron.min.js"></script>
       <script src="../assets/js/browser.min.js"></script>

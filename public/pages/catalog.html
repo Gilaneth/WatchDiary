@@ -164,63 +164,7 @@
   </head>
   <body class="no-sidebar is-preload">
     <div id="page-wrapper">
-      <div id="header-wrapper">
-        <div class="container">
-          <header id="header">
-            <div class="inner">
-              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
-
-              <nav id="nav">
-                <ul>
-                  <li style="padding-left: 0; padding-right: 25px">
-                    <form
-                      method="get"
-                      action="search.html"
-                      style="
-                        margin: 0;
-                        display: inline-flex;
-                        align-items: center;
-                        height: 100%;
-                        vertical-align: middle;
-                      "
-                    >
-                      <input
-                        type="text"
-                        name="query"
-                        placeholder="Знайти тайтл..."
-                        style="
-                          background: rgba(255, 255, 255, 0.15);
-                          border: 1px solid rgba(255, 255, 255, 0.2);
-                          color: #ffffff;
-                          padding: 0 15px;
-                          border-radius: 5px;
-                          height: 36px;
-                          width: 220px;
-                          font-size: 13px;
-                          outline: none;
-                          box-shadow: none;
-                        "
-                        onfocus="
-                          this.style.background = 'rgba(255, 255, 255, 0.25)'
-                        "
-                        onblur="
-                          this.style.background = 'rgba(255, 255, 255, 0.15)'
-                        "
-                      />
-                    </form>
-                  </li>
-                  <li><a href="../index.html">ГОЛОВНА</a></li>
-                  <li class="current_page_item">
-                    <a href="catalog.html">КАТАЛОГ</a>
-                  </li>
-                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
-                  <li><a href="login.html">УВІЙТИ</a></li>
-                </ul>
-              </nav>
-            </div>
-          </header>
-        </div>
-      </div>
+      <div id="header-placeholder"></div>
 
       <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
         <div class="container">
@@ -480,56 +424,21 @@
         </div>
       </div>
 
-      <div id="footer-wrapper">
-        <footer id="footer" class="container">
-          <div class="row">
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Про проект</h2>
-                <p>
-                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
-                  серіалів та аніме.
-                </p>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Навігація</h2>
-                <ul class="divided">
-                  <li><a href="catalog.html">Каталог</a></li>
-                  <li><a href="search.html">Пошук</a></li>
-                  <li><a href="login.html">Авторизація</a></li>
-                </ul>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Команда</h2>
-                <ul class="divided">
-                  <li>
-                    <a
-                      href="https://github.com/Gilaneth/WatchDiary"
-                      class="icon brands fa-github"
-                    >
-                      GitHub</a
-                    >
-                  </li>
-                </ul>
-              </section>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div id="copyright">
-                <ul class="menu">
-                  <li>&copy; 2026 WATCHDIARY. .</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
+      <div id="footer-placeholder"></div>
 
+      <script>
+        fetch("/components/header.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("header-placeholder").innerHTML = data;
+          });
+
+        fetch("/components/footer.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("footer-placeholder").innerHTML = data;
+          });
+      </script>
       <script src="../assets/js/jquery.min.js"></script>
       <script src="../assets/js/jquery.dropotron.min.js"></script>
       <script src="../assets/js/browser.min.js"></script>

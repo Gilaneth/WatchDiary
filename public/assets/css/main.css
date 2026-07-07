@@ -2644,3 +2644,74 @@ ol.default li {
     padding: 3em 0 1em 0;
   }
 }
+
+#header-placeholder {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 99999 !important;
+  background-color: #252525 !important;
+}
+
+#header-placeholder #header-wrapper {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7) !important;
+  background-color: #252525 !important;
+}
+
+#header-wrapper {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+#header,
+#header .inner {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  min-height: 5px !important;
+}
+
+/* =======================================================
+   ФІНАЛЬНИЙ БРЕДМАУЕР: АБСОЛЮТНО ЧОРНІ ШАПКА ТА ФУТЕР
+   ======================================================= */
+
+/* --- ІДЕАЛЬНО ЧОРНА ШАПКА --- */
+body #page-wrapper #header-placeholder,
+body #page-wrapper #header-placeholder #header-wrapper,
+body #page-wrapper #header-wrapper {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#header-wrapper .container,
+#header-wrapper #header,
+#header-wrapper .inner,
+body #header-wrapper #header {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+#header-wrapper .container {
+  margin: 0 auto !important;
+}
+
+/* --- ІДЕАЛЬНО ЧОРНИЙ ФУТЕР (ПРОБИВАЄМО INDEX.HTML) --- */
+body.no-sidebar #page-wrapper div#footer-wrapper,
+body #page-wrapper #footer-placeholder,
+body #page-wrapper #footer-wrapper {
+  background: #000000 !important;
+  background-color: #000000 !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.no-sidebar #page-wrapper div#footer-wrapper #footer {
+  background: transparent !important;
+}
