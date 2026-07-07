@@ -1,6 +1,6 @@
 drop table if exists users cascade;
 drop table if exists review cascade;
-drop table if exists watch_list cascade;
+drop table if exists watch_list_item cascade;
 drop table if exists movie cascade;
 drop table if exists movie_genre cascade;
 drop table if exists genre cascade;
@@ -10,10 +10,10 @@ drop table if exists actor cascade;
 drop table if exists collections cascade;
 drop table if exists movie_in_collection cascade;
 
-drop type if exists watch_status;
-drop type if exists category_type;
+drop type if exists watch_status cascade;
+drop type if exists category_type cascade;
 
-create type watch_status as enum ('watched', 'watching', 'planning', 'on_hold', 'dropped');
+create type watch_status as enum ('watched', 'watching', 'planning', 'paused', 'dropped');
 create type category_type as enum ('movie', 'tv_series', 'anime', 'cartoon');
 
 create table users (
@@ -47,7 +47,7 @@ create table movie (
 	release_date date not null,
 	category category_type not null,
 	cover_url varchar(500) null,
-	Description text
+	description text
 );
 
 create table movie_genre (
@@ -55,7 +55,6 @@ create table movie_genre (
 	genre_id int references genre(genre_id) on delete cascade,
 	primary key(movie_id, genre_id)
 );
-
 
 create table movie_actor (
 	movie_id int references movie(movie_id) on delete cascade,
@@ -73,18 +72,20 @@ create table review (
 	movie_id int references movie(movie_id) on delete cascade
 );
 
-create table watch_list (
+create table watch_list_item (
 	watch_list_id serial primary key,
 	status watch_status not null,
 	added_at timestamp default current_timestamp not null,
 	user_id int references users(user_id) on delete cascade,
-	movie_id int references movie(movie_id) on delete cascade
+	movie_id int references movie(movie_id) on delete cascade,
+	constraint uq_user_movie_watchlist unique (user_id, movie_id)
 );
 
 create table collections (
 	collection_id serial primary key,
 	collection_name varchar(100) not null,
-	user_id int references users(user_id) on delete cascade
+	user_id int references users(user_id) on delete cascade,
+	constraint uq_user_collection_name unique (user_id, collection_name)
 );
 
 create table movie_in_collection (
