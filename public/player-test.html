@@ -30,11 +30,11 @@
             const btn    = document.getElementById('btn');
             const output = document.getElementById('output');
 
-            canvas.width  = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
+            canvas.width  = Math.round(video.videoWidth  / 2);
+            canvas.height = Math.round(video.videoHeight / 2);
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            const base64  = canvas.toDataURL('image/png').split(',')[1];
+            const base64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
             const context = document.getElementById('context').value.trim();
 
             btn.disabled = true;
