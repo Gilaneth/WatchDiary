@@ -110,210 +110,375 @@
   </head>
   <body class="no-sidebar is-preload">
     <div id="page-wrapper">
-      <div id="header-wrapper">
-        <div class="container">
-          <header id="header">
-            <div class="inner">
-              <h1><a href="../index.html" id="logo">WATCHDIARY</a></h1>
-
-              <nav id="nav">
-                <ul>
-                  <li style="padding-left: 0; padding-right: 25px">
-                    <form
-                      method="get"
-                      action="search.html"
-                      style="
-                        margin: 0;
-                        display: inline-flex;
-                        align-items: center;
-                        height: 100%;
-                        vertical-align: middle;
-                      "
-                    >
-                      <input
-                        type="text"
-                        name="query"
-                        placeholder="Знайти тайтл..."
-                        style="
-                          background: rgba(255, 255, 255, 0.15);
-                          border: 1px solid rgba(255, 255, 255, 0.2);
-                          color: #ffffff;
-                          padding: 0 15px;
-                          border-radius: 5px;
-                          height: 36px;
-                          width: 220px;
-                          font-size: 13px;
-                          outline: none;
-                          box-shadow: none;
-                        "
-                        onfocus="
-                          this.style.background = 'rgba(255, 255, 255, 0.25)'
-                        "
-                        onblur="
-                          this.style.background = 'rgba(255, 255, 255, 0.15)'
-                        "
-                      />
-                    </form>
-                  </li>
-                  <li><a href="../index.html">ГОЛОВНА</a></li>
-                  <li><a href="catalog.html">КАТАЛОГ</a></li>
-                  <li><a href="profile.html">ПРОФІЛЬ</a></li>
-                  <li><a href="login.html">УВІЙТИ</a></li>
-                </ul>
-              </nav>
-            </div>
-          </header>
-        </div>
-      </div>
+      <div id="header-placeholder"></div>
 
       <div id="main-wrapper" style="padding-top: 4em; padding-bottom: 4em">
         <div class="wrapper style1">
           <div class="inner">
             <section class="container">
-              <div style="margin-bottom: 2em">
-                <a
-                  href="catalog.html"
-                  class="button alt small icon solid fa-arrow-left"
-                  >Назад до каталогу</a
-                >
-              </div>
+              <div style="margin-bottom: 2em"></div>
 
               <div class="row">
                 <div class="col-4 col-12-mobile">
-                  <div class="poster-container">
-                    <img src="../images/lotr.jpg" alt="Володар Перснів" />
-                  </div>
-                </div>
-
-                <div class="col-8 col-12-mobile">
-                  <header
-                    class="major"
-                    style="margin-bottom: 1em; text-align: left"
-                  >
-                    <h2 style="font-size: 2.2em; line-height: 1.2">
-                      Володар Перснів: Братерство Персня
-                    </h2>
-                    <p style="color: #888; margin-top: 5px; font-size: 1.1em">
-                      The Lord of the Rings: The Fellowship of the Ring (2001)
-                    </p>
-                  </header>
-
                   <div
                     style="
-                      margin-bottom: 2em;
+                      width: 100%;
+                      aspect-ratio: 2/3;
+                      background-color: #e0e0e0;
+                      border-radius: 10px;
                       display: flex;
-                      gap: 15px;
                       align-items: center;
-                      flex-wrap: wrap;
+                      justify-content: center;
+                      margin-bottom: 1.5em;
+                      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
                     "
                   >
-                    <span class="status-badge">Фільм</span>
-                    <span class="rating-badge">★ 8.8</span>
-                    <div>
-                      <span class="tag">Фентезі</span>
-                      <span class="tag">Пригоди</span>
-                    </div>
+                    <span
+                      style="
+                        color: #888;
+                        font-weight: bold;
+                        font-size: 1.1em;
+                        text-align: center;
+                        padding: 10px;
+                      "
+                    >
+                      МІСЦЕ ДЛЯ ПОСТЕРА
+                    </span>
                   </div>
 
-                  <h3 style="margin-bottom: 15px; font-size: 1.2em">Опис</h3>
                   <div
                     style="
+                      margin-bottom: 1.5em;
+                      padding: 15px;
                       background: #f8f8f8;
-                      padding: 20px;
                       border-radius: 5px;
-                      margin-bottom: 2.5em;
-                      border-left: 4px solid #d52349;
+                      border-left: 4px solid #cc0000;
+                      font-size: 0.95em;
                     "
                   >
-                    <p style="margin: 0; line-height: 1.6; color: #444">
-                      Епічна подорож Фродо Беггінса та його друзів, які
-                      вирушають до Мордору, щоб знищити Єдиний Перстень і
-                      врятувати Середзем'я від темного володаря Саурона. На
-                      їхньому шляху трапляються небезпечні вороги, але міцна
-                      дружба та відвага допомагають долати всі перешкоди.
+                    <p style="margin-bottom: 10px; line-height: 1.5">
+                      <strong style="color: #000">Жанр:</strong>
+                      <span style="color: #555">---</span>
+                    </p>
+                    <p style="margin: 0; line-height: 1.5">
+                      <strong style="color: #000">Актори:</strong>
+                      <span style="color: #444">---</span>
                     </p>
                   </div>
 
                   <ul
                     class="actions"
-                    style="display: flex; gap: 15px; flex-wrap: wrap"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      gap: 10px;
+                      margin: 0;
+                      padding: 0;
+                      list-style: none;
+                    "
                   >
-                    <li>
+                    <li style="width: 100%; padding-left: 0">
                       <a
                         href="#"
                         class="button icon solid fa-heart"
                         style="
-                          background-color: #d52349 !important;
-                          box-shadow: inset 0 0 0 1px #d52349 !important;
+                          width: 100%;
+                          text-align: center;
+                          background-color: #cc0000 !important;
+                          box-shadow: inset 0 0 0 1px #cc0000 !important;
                           color: white !important;
+                          text-shadow: none !important;
                         "
                       >
                         + Додати в обране
                       </a>
                     </li>
-                    <li>
-                      <a href="#" class="button alt icon solid fa-folder-plus">
-                        Додати в колекцію
+                    <li style="width: 100%; padding-left: 0">
+                      <a
+                        href="#"
+                        class="button alt icon solid fa-folder-plus"
+                        style="
+                          width: 100%;
+                          text-align: center;
+                          background-color: #000000 !important;
+                          box-shadow: inset 0 0 0 1px #000000 !important;
+                          color: white !important;
+                          text-shadow: none !important;
+                        "
+                      >
+                        В колекцію
                       </a>
                     </li>
                   </ul>
                 </div>
+
+                <div class="col-8 col-12-mobile">
+                  <header style="margin-bottom: 1.5em; text-align: left">
+                    <h2
+                      style="
+                        font-size: 2.2em;
+                        line-height: 1.2;
+                        margin-bottom: 0;
+                      "
+                    >
+                      ІНТЕРСТЕЛЛАР
+                    </h2>
+                    <p
+                      style="
+                        color: #888;
+                        margin-top: 5px;
+                        font-size: 1.1em;
+                        margin-bottom: 0;
+                      "
+                    >
+                      INTERSTELLAR (2014)
+                    </p>
+                  </header>
+
+                  <div
+                    style="
+                      margin-bottom: 2.5em;
+                      background-color: #111;
+                      border-radius: 10px;
+                      overflow: hidden;
+                      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                    "
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        background-color: #222;
+                        border-bottom: 2px solid #cc0000;
+                      "
+                    >
+                      <div
+                        id="tab-movie"
+                        onclick="switchPlayer('movie')"
+                        style="
+                          padding: 15px 25px;
+                          font-weight: bold;
+                          color: white;
+                          background-color: #cc0000;
+                          cursor: pointer;
+                          text-transform: uppercase;
+                          font-size: 0.85em;
+                          transition: background 0.3s;
+                          text-shadow: none !important;
+                        "
+                      >
+                        Дивитися онлайн
+                      </div>
+                      <div
+                        id="tab-trailer"
+                        onclick="switchPlayer('trailer')"
+                        style="
+                          padding: 15px 25px;
+                          font-weight: bold;
+                          color: #aaa;
+                          background-color: transparent;
+                          cursor: pointer;
+                          text-transform: uppercase;
+                          font-size: 0.85em;
+                          transition: background 0.3s;
+                          text-shadow: none !important;
+                        "
+                      >
+                        Трейлер
+                      </div>
+                    </div>
+
+                    <div id="player-movie" style="display: block">
+                      <div
+                        style="
+                          width: 100%;
+                          height: 450px;
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          justify-content: center;
+                          background-color: #000;
+                          text-align: center;
+                          padding: 20px;
+                        "
+                      >
+                        <p
+                          style="
+                            color: #aaa;
+                            margin-bottom: 25px;
+                            font-size: 1.1em;
+                            max-width: 80%;
+                            text-shadow: none !important;
+                          "
+                        >
+                          Фільм доступний для перегляду на сторонньому ресурсі.
+                          Натисніть кнопку нижче, щоб перейти на сайт.
+                        </p>
+                        <a
+                          href="https://uakino.best/filmy/genre_adventure/4-nterstellar.html"
+                          target="_blank"
+                          class="button"
+                          style="
+                            background: #cc0000 !important;
+                            background-image: none !important;
+                            border: none !important;
+                            box-shadow: none !important;
+                            color: white !important;
+                            text-shadow: none !important;
+                            -webkit-text-stroke: 0 !important;
+                            font-size: 1.1em;
+                            font-weight: 600 !important;
+                            letter-spacing: 1px;
+                            padding: 0 30px;
+                            border-radius: 0 !important;
+                            text-transform: uppercase;
+                          "
+                        >
+                          Перейти до перегляду
+                        </a>
+                      </div>
+                    </div>
+
+                    <div id="player-trailer" style="display: none">
+                      <div
+                        id="custom-thumbnail"
+                        onclick="startTrailer()"
+                        style="
+                          position: relative;
+                          width: 100%;
+                          height: 450px;
+                          cursor: pointer;
+                          background-color: #000;
+                          overflow: hidden;
+                        "
+                      >
+                        <img
+                          src="https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+                          style="
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            opacity: 0.7;
+                            transition: opacity 0.3s;
+                          "
+                          onmouseover="this.style.opacity = 1"
+                          onmouseout="this.style.opacity = 0.7"
+                        />
+                        <div
+                          style="
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background-color: #cc0000;
+                            width: 70px;
+                            height: 50px;
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+                          "
+                        >
+                          <div
+                            style="
+                              width: 0;
+                              height: 0;
+                              border-top: 12px solid transparent;
+                              border-bottom: 12px solid transparent;
+                              border-left: 20px solid white;
+                              margin-left: 6px;
+                            "
+                          ></div>
+                        </div>
+                      </div>
+                      <iframe
+                        id="trailer-iframe"
+                        src=""
+                        width="100%"
+                        height="450"
+                        frameborder="0"
+                        allow="autoplay; encrypted-media"
+                        allowfullscreen
+                        style="display: none"
+                      ></iframe>
+                    </div>
+                  </div>
+
+                  <h3 style="margin-bottom: 15px; font-size: 1.2em">
+                    Про що фільм:
+                  </h3>
+                  <div
+                    style="
+                      background: #f8f8f8;
+                      padding: 20px;
+                      border-radius: 5px;
+                      border-left: 4px solid #cc0000;
+                    "
+                  >
+                    <p style="margin: 0; line-height: 1.6; color: #444">
+                      Коли посуха, пилові бурі та вимирання рослин призводять
+                      людство до продовольчої кризи, колектив дослідників та
+                      вчених вирушає крізь нещодавно виявлену червоточину, щоб
+                      знайти планету з відповідними умовами для життя людства.
+                    </p>
+                  </div>
+                </div>
               </div>
+
+              <script>
+                function switchPlayer(tab) {
+                  const moviePlayer = document.getElementById("player-movie");
+                  const trailerPlayer =
+                    document.getElementById("player-trailer");
+                  const movieTab = document.getElementById("tab-movie");
+                  const trailerTab = document.getElementById("tab-trailer");
+
+                  if (tab === "movie") {
+                    moviePlayer.style.display = "block";
+                    trailerPlayer.style.display = "none";
+                    movieTab.style.backgroundColor = "#cc0000";
+                    movieTab.style.color = "white";
+                    trailerTab.style.backgroundColor = "transparent";
+                    trailerTab.style.color = "#aaa";
+                  } else {
+                    moviePlayer.style.display = "none";
+                    trailerPlayer.style.display = "block";
+                    trailerTab.style.backgroundColor = "#cc0000";
+                    trailerTab.style.color = "white";
+                    movieTab.style.backgroundColor = "transparent";
+                    movieTab.style.color = "#aaa";
+                  }
+                }
+
+                function startTrailer() {
+                  document.getElementById("custom-thumbnail").style.display =
+                    "none";
+                  const iframe = document.getElementById("trailer-iframe");
+                  iframe.style.display = "block";
+                  iframe.src =
+                    "https://www.youtube.com/embed/I9fucTH5xWw?autoplay=1";
+                }
+              </script>
             </section>
           </div>
         </div>
       </div>
 
-      <div id="footer-wrapper">
-        <footer id="footer" class="container">
-          <div class="row">
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Про проект</h2>
-                <p>
-                  <strong>WATCHDIARY</strong> — медіа-бібліотека для фільмів,
-                  серіалів та аніме.
-                </p>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Навігація</h2>
-                <ul class="divided">
-                  <li><a href="catalog.html">Каталог</a></li>
-                  <li><a href="search.html">Пошук</a></li>
-                  <li><a href="login.html">Авторизація</a></li>
-                </ul>
-              </section>
-            </div>
-            <div class="col-4 col-12-mobile">
-              <section>
-                <h2>Команда</h2>
-                <ul class="divided">
-                  <li>
-                    <a
-                      href="https://github.com/Gilaneth/WatchDiary"
-                      class="icon brands fa-github"
-                    >
-                      GitHub</a
-                    >
-                  </li>
-                </ul>
-              </section>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <div id="copyright">
-                <ul class="menu">
-                  <li>&copy; 2026 WATCHDIARY. .</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
+      <div id="footer-placeholder"></div>
 
+      <script>
+        fetch("/components/header.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("header-placeholder").innerHTML = data;
+          });
+
+        fetch("/components/footer.html", { cache: "no-store" })
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById("footer-placeholder").innerHTML = data;
+          });
+      </script>
       <script src="../assets/js/jquery.min.js"></script>
       <script src="../assets/js/jquery.dropotron.min.js"></script>
       <script src="../assets/js/browser.min.js"></script>

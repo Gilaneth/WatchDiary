@@ -1,0 +1,52 @@
+<div id="header-wrapper">
+  <div class="container">
+    <header id="header">
+      <div class="inner">
+        <h1><a href="/index.html" id="logo">WATCHDIARY</a></h1>
+        <nav id="nav">
+          <ul>
+            <li style="padding-left: 0; padding-right: 25px">
+              <form
+                method="get"
+                action="/pages/search.html"
+                style="
+                  margin: 0;
+                  display: inline-flex;
+                  align-items: center;
+                  height: 100%;
+                  vertical-align: middle;
+                "
+              >
+                <input
+                  type="text"
+                  name="query"
+                  placeholder="Знайти тайтл..."
+                  style="
+                    background: rgba(255, 255, 255, 0.15);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    color: #ffffff;
+                    padding: 0 15px;
+                    border-radius: 5px;
+                    height: 36px;
+                    width: 220px;
+                    font-size: 13px;
+                    outline: none;
+                    box-shadow: none;
+                  "
+                  onfocus="this.style.background = 'rgba(255, 255, 255, 0.25)'"
+                  onblur="this.style.background = 'rgba(255, 255, 255, 0.15)'"
+                />
+              </form>
+            </li>
+            <li class="current_page_item">
+              <a href="/index.html">ГОЛОВНА</a>
+            </li>
+            <li><a href="/pages/catalog.html">КАТАЛОГ</a></li>
+            <li><a href="/pages/profile.html">ПРОФІЛЬ</a></li>
+            <li><a href="/pages/login.html">УВІЙТИ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  </div>
+</div>
