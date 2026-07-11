@@ -2709,3 +2709,41 @@ body #page-wrapper #footer-wrapper {
 body.no-sidebar #page-wrapper div#footer-wrapper #footer {
   background: transparent !important;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: #000000 !important;
+}
+
+#header h1,
+#header h1 a,
+#logo {
+  color: #ffffff !important;
+}
+
+#page-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
+
+#main-wrapper {
+  flex-grow: 1 !important;
+  background-color: #ffffff !important;
+}
+
+html,
+body {
+  background-color: #000000 !important;
+  background-image: none !important;
+}
