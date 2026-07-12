@@ -173,7 +173,7 @@
         position: absolute;
         top: 10px;
         left: 10px;
-        background: rgba(213, 35, 73, 0.95) !important;
+        background: #cc0000 !important;
         color: #fff !important;
         padding: 4px 8px;
         border-radius: 4px;
@@ -221,16 +221,53 @@
         text-transform: none !important;
       }
       .status-watching {
-        background: #28a745;
-        color: white;
+        background: #222 !important;
+        background-image: none !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
       }
+
       .status-planned {
-        background: #ffc107;
-        color: #333;
+        background: #222 !important;
+        background-image: none !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
       }
+
       .status-completed {
-        background: #d52349;
-        color: white;
+        background: #222 !important;
+        background-image: none !important;
+        color: white !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
+      }
+      .sidebar-btn {
+        background: #222 !important;
+        background-image: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: white !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
+        width: 100% !important;
+        border-radius: 5px !important;
+        text-align: center !important;
+        display: block !important;
+      }
+
+      .badge-status {
+        background-color: #cc0000 !important;
+        color: white !important;
+        text-shadow: none !important;
+        -webkit-text-stroke: 0 !important;
       }
     </style>
   </head>
@@ -270,45 +307,35 @@
                   </h3>
                   <a
                     href="#"
-                    class="button small icon solid fa-plus"
+                    class="button"
                     style="
-                      display: block;
-                      text-align: center;
-                      margin-bottom: 1.5em;
-                      background-color: #d52349 !important;
-                      box-shadow: inset 0 0 0 1px #d52349 !important;
-                      color: white !important;
-                      border: none;
-                    "
-                    >Створити нову</a
-                  >
-
-                  <ul style="list-style: none; padding: 0; margin-bottom: 2em">
-                    <li>
-                      <a href="#" class="button sidebar-btn">Глянути увечері</a>
-                    </li>
-                    <li><a href="#" class="button sidebar-btn">Для вас</a></li>
-                    <li><a href="#" class="button sidebar-btn">З сім'єю</a></li>
-                  </ul>
-
-                  <!-- <hr
-                    style="border-top: 1px solid #e0e0e0; margin-bottom: 1.5em"
-                  />
-                  <a
-                    href="/pages/add-film.html"
-                    class="button icon solid fa-film"
-                    style="
-                      display: block;
-                      text-align: center;
-                      width: 100%;
-                      background-color: #f1c40f !important;
-                      color: #000000 !important;
-                      box-shadow: none !important;
+                      background: #cc0000 !important;
+                      background-image: none !important;
                       border: none !important;
-                      font-weight: bold;
+                      box-shadow: none !important;
+                      color: white !important;
+                      text-shadow: none !important;
+                      -webkit-text-stroke: 0 !important;
+                      width: 100%;
+                      border-radius: 5px !important;
                     "
-                    >Додати тайтл</a
-                  > -->
+                  >
+                    + Створити нову
+                  </a>
+
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      gap: 15px;
+                      margin-top: 15px;
+                      margin-bottom: 2em;
+                    "
+                  >
+                    <a href="#" class="button sidebar-btn">Глянути увечері</a>
+                    <a href="#" class="button sidebar-btn">Для вас</a>
+                    <a href="#" class="button sidebar-btn">З сім'єю</a>
+                  </div>
                 </div>
 
                 <div class="col-8 col-12-mobile">
