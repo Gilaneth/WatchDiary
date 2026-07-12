@@ -36,6 +36,7 @@ create table actor (
 
 create table movie (
 	movie_id serial primary key,
+    tmdb_id int null,
 	imdb_id varchar(20) null,
 	shikimori_id int null,
 	kinopoisk_id int null,

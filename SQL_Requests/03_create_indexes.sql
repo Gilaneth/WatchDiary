@@ -10,7 +10,7 @@ create index movie_genre_idx on movie_genre(genre_id);
 
 create index movie_collection_idx on movie_in_collection(collection_id);
 
-create index watchlist_status_idx on watchlist (user_id, status, added_at desc);
+create index watchlist_status_idx on watch_list (user_id, status, added_at desc);
 
 create index review_idx on review (movie_id, updated_at desc);
 
