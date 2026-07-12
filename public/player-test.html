@@ -10,53 +10,57 @@
         </style>
     </head>
     <body>
-
+        <h1 id="movie-title" data-movie-id="5">Big Buck Bunny</h1>
         <video id="video" width="1280" height="720" controls>
             <source src="movies/big_buck_bunny_720p_h264.mov" type="video/mp4">
         </video>
         <canvas id="canvas"></canvas>
-        <input id="context" type="text" placeholder="Context (optional)"
-            style="display:block; width: 1280px;" />
         <button id="btn" onclick="describeFrame()">Describe current frame</button>
         <div id="output"></div>
-
         <script>
         const MODEL = 'hf.co/mradermacher/Qwen3-VL-8B-Abliterated-Caption-it-GGUF';
         const OLLAMA = 'http://localhost:11434';
+        const API    = 'http://localhost:5220';
+
+        let context = '';
+
+        async function loadContext() {
+            const movieId = document.getElementById('movie-title').dataset.movieId;
+            try {
+                const res = await fetch(API + '/Movie/' + movieId);
+                if (!res.ok) return;
+                const movie = await res.json();
+                if (movie.description) context = movie.description;
+            } catch (err) {
+                console.error('Could not load movie context:', err);
+            }
+        }
 
         async function describeFrame() {
             const video  = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             const btn    = document.getElementById('btn');
             const output = document.getElementById('output');
-
-            canvas.width  = Math.round(video.videoWidth  / 2);
-            canvas.height = Math.round(video.videoHeight / 2);
+            canvas.width  = Math.round(video.videoWidth  / 3);
+            canvas.height = Math.round(video.videoHeight / 3);
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
             const base64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-            const context = document.getElementById('context').value.trim();
-
             btn.disabled = true;
             output.textContent = 'Thinking...';
-
-            const messages = [];
             const prompt = context
                 ? 'Context: ' + context + '\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot.'
-                : 'Describe what is happening in this video frame.';
-            messages.push({
+                : 'Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.';
+            const messages = [{
                 role: 'user',
                 content: prompt,
                 images: [base64]
-            });
-
+            }];
             try {
                 const res = await fetch(OLLAMA + '/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ model: MODEL, stream: false, messages })
                 });
-
                 const data = await res.json();
                 output.textContent = data.message?.content ?? JSON.stringify(data);
             } catch (err) {
@@ -65,7 +69,8 @@
                 btn.disabled = false;
             }
         }
-        </script>
 
+        window.addEventListener('DOMContentLoaded', loadContext);
+        </script>
     </body>
 </html>
