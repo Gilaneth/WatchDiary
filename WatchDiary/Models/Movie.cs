@@ -9,7 +9,7 @@ namespace WatchDiary.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("movie_id")]
-        public int Id { get; set; }
+        public int MovieId { get; set; }
         [Column("imdb_id")]
         public string ImdbId { get; set; } = null!;
         [Column("shikimori_id")]

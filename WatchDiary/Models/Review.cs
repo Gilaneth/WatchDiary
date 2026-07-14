@@ -10,7 +10,7 @@ namespace WatchDiary.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("review_id")]
-        public int Id { get; set; }
+        public int ReviewId { get; set; }
         [Column("rating")]
         [Required]
         public int Rating { get; set; }

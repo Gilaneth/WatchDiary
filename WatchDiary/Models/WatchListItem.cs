@@ -9,7 +9,7 @@ namespace WatchDiary.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("watch_list_id")]
-        public int Id { get; set; }
+        public int WatchListItemId { get; set; }
         [Column("status")]
         public WatchStatus WatchStatus { get; set; }
         [Column("added_at")]

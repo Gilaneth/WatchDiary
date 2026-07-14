@@ -9,7 +9,7 @@ namespace WatchDiary.Models
         [Key]
         [Column("user_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Column("username")]
         [Required]
