@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<Actor> Actors => Set<Actor>();
+    public DbSet<MovieActor> MovieActors => Set<MovieActor>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<WatchList> WatchLists => Set<WatchList>();
     public DbSet<Collection> Collections => Set<Collection>();
@@ -26,7 +27,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Genre>().ToTable("genre");
         modelBuilder.Entity<Actor>().ToTable("actor");
         modelBuilder.Entity<Review>().ToTable("review");
-        modelBuilder.Entity<WatchList>().ToTable("watch_list");
+        modelBuilder.Entity<WatchList>().ToTable("watch_list_item");
         modelBuilder.Entity<Collection>().ToTable("collections");
 
         // Column mappings
@@ -64,6 +65,22 @@ public class AppDbContext : DbContext
                 e.Property(a => a.ActorName).HasColumnName("actor_name");
                 });
 
+        modelBuilder.Entity<MovieActor>(e => {
+                e.ToTable("movie_actor");
+                e.HasKey(ma => new { ma.MovieId, ma.ActorId });
+                e.Property(ma => ma.MovieId).HasColumnName("movie_id");
+                e.Property(ma => ma.ActorId).HasColumnName("actor_id");
+                e.Property(ma => ma.CharacterName).HasColumnName("character_name");
+
+                e.HasOne(ma => ma.Movie)
+                .WithMany(m => m.MovieActors)
+                .HasForeignKey(ma => ma.MovieId);
+
+                e.HasOne(ma => ma.Actor)
+                .WithMany(a => a.MovieActors)
+                .HasForeignKey(ma => ma.ActorId);
+                });
+
         modelBuilder.Entity<Review>(e => {
                 e.Property(r => r.ReviewId).HasColumnName("review_id");
                 e.Property(r => r.Rating).HasColumnName("rating");
@@ -96,16 +113,6 @@ public class AppDbContext : DbContext
                     j.ToTable("movie_genre");
                     j.Property("MoviesMovieId").HasColumnName("movie_id");
                     j.Property("GenresGenreId").HasColumnName("genre_id");
-                    });
-
-        // Many-to-many: Movie <-> Actor
-        modelBuilder.Entity<Movie>()
-            .HasMany(m => m.Actors)
-            .WithMany(a => a.Movies)
-            .UsingEntity(j => {
-                    j.ToTable("movie_actor");
-                    j.Property("MoviesMovieId").HasColumnName("movie_id");
-                    j.Property("ActorsActorId").HasColumnName("actor_id");
                     });
 
         // Many-to-many: Movie <-> Collection

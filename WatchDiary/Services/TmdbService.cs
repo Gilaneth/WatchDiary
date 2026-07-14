@@ -40,4 +40,15 @@ public class TmdbService
 
     public string GetImageUrl(string? posterPath) =>
         posterPath is null ? "" : $"{ImageBaseUrl}{posterPath}";
+
+    public async Task<TmdbCredits> GetCreditsAsync(int tmdbId, string mediaType = "movie")
+    {
+        var url = $"{BaseUrl}/{mediaType}/{tmdbId}/credits?api_key={_apiKey}&language=en-US";
+        var response = await _http.GetAsync(url);
+        if (!response.IsSuccessStatusCode) return new TmdbCredits();
+
+        var json = await response.Content.ReadAsStringAsync();
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        return JsonSerializer.Deserialize<TmdbCredits>(json, options) ?? new TmdbCredits();
+    }
 }
