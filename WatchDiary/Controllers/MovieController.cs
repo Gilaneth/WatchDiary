@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WatchDiary.Data;
 using WatchDiary.Models;
 using WatchDiary.Models.Dtos.Response;
+using WatchDiary.Services;
 
 namespace WatchDiary.Controllers;
 
@@ -11,10 +12,12 @@ namespace WatchDiary.Controllers;
 public class MovieController : ControllerBase
 {
     private readonly AppDbContext _db;
+    private readonly WikiService _wikiService;
 
-    public MovieController(AppDbContext db)
+    public MovieController(AppDbContext db, WikiService wikiService)
     {
         _db = db;
+        _wikiService = wikiService;
     }
 
     [HttpGet]
@@ -55,10 +58,17 @@ public class MovieController : ControllerBase
 
         if (movie is null) return NotFound();
 
+        if (string.IsNullOrEmpty(movie.FullPlot))
+        {
+            // Вызываем сервис (который ты напишешь)
+            movie.FullPlot = await _wikiService.GetPlotAsync(movie.MovieName);
+            await _db.SaveChangesAsync(); // Сохраняем в БД, чтобы в следующий раз не ходить в Wiki
+        }
         var result = new MovieDetailDto
         {
             MovieId = movie.MovieId,
             MovieName = movie.MovieName,
+            FullPlot = movie.FullPlot,
             ReleaseDate = movie.ReleaseDate,
             Category = movie.Category.ToString(),
             CoverUrl = movie.CoverUrl,

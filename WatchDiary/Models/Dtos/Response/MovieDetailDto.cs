@@ -19,4 +19,5 @@ public class MovieDetailDto
     public List<ActorSummaryDto> Actors { get; set; } = [];
     public List<ReviewSummaryDto> Reviews { get; set; } = [];
     public List<string> Collections { get; set; } = [];
+    public string? FullPlot { get; set; }
 }

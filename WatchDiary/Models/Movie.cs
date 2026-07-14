@@ -16,6 +16,7 @@ public class Movie
     public CategoryType Category { get; set; }
     public string? CoverUrl { get; set; }
     public string? Description { get; set; }
+    public string? FullPlot { get; set; }
 
     public ICollection<Genre> Genres { get; set; } = [];
     public ICollection<Actor> Actors { get; set; } = [];

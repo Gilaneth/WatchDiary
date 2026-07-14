@@ -21,6 +21,7 @@ builder.Services.AddControllers()
 builder.Services.AddOpenApi();
 
 builder.Services.AddHttpClient<TmdbService>();
+builder.Services.AddHttpClient<WikiService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(

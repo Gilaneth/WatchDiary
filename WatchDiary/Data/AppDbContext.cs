@@ -52,7 +52,8 @@ public class AppDbContext : DbContext
                 e.Property(m => m.KinopoiskId).HasColumnName("kinopoisk_id");
                 e.Property(m => m.RottentomatoId).HasColumnName("rottentomato_id");
                 e.Property(m => m.RtRating).HasColumnName("rt_rating");
-                });
+                e.Property(m => m.FullPlot).HasColumnName("full_plot");
+            });
 
         modelBuilder.Entity<Genre>(e => {
                 e.Property(g => g.GenreId).HasColumnName("genre_id");
