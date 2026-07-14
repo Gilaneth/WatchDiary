@@ -29,19 +29,19 @@ public class MovieController : ControllerBase
             .ToListAsync();
 
         var result = movies.Select(m => new MovieSummaryDto
-                {
-                MovieId = m.MovieId,
-                MovieName = m.MovieName,
-                ReleaseDate = m.ReleaseDate,
-                Category = m.Category.ToString(),
-                CoverUrl = m.CoverUrl,
-                Description = m.Description,
-                ImdbRating = m.ImdbRating,
-                RtRating = m.RtRating,
-                ShikimoriRating = m.ShikimoriRating,
-                Genres = m.Genres.Select(g => g.GenreName).ToList(),
-                Actors = m.Actors.Select(a => a.ActorName).ToList()
-                });
+        {
+            MovieId = m.MovieId,
+            MovieName = m.MovieName,
+            ReleaseDate = m.ReleaseDate,
+            Category = m.Category.ToString(),
+            CoverUrl = m.CoverUrl,
+            Description = m.Description,
+            ImdbRating = m.ImdbRating,
+            RtRating = m.RtRating,
+            ShikimoriRating = m.ShikimoriRating,
+            Genres = m.Genres.Select(g => g.GenreName).ToList(),
+            Actors = m.Actors.Select(a => a.ActorName).ToList()
+        });
 
         return Ok(result);
     }
@@ -60,10 +60,28 @@ public class MovieController : ControllerBase
 
         if (string.IsNullOrEmpty(movie.FullPlot))
         {
-            // Вызываем сервис (который ты напишешь)
-            movie.FullPlot = await _wikiService.GetPlotAsync(movie.MovieName);
-            await _db.SaveChangesAsync(); // Сохраняем в БД, чтобы в следующий раз не ходить в Wiki
+            string wikiQuery = movie.MovieName;
+
+            if (movie.Category == CategoryType.Movie)
+            {
+                wikiQuery += " (film)";
+            }
+            else
+            {
+                wikiQuery += " (TV series)";
+            }
+
+            var plot = await _wikiService.GetPlotAsync(wikiQuery);
+
+            if (string.IsNullOrEmpty(plot) || plot.Contains("may refer to") || plot.Contains("refer to:"))
+            {
+                plot = await _wikiService.GetPlotAsync(movie.MovieName);
+            }
+
+            movie.FullPlot = plot;
+            await _db.SaveChangesAsync();
         }
+
         var result = new MovieDetailDto
         {
             MovieId = movie.MovieId,
@@ -81,23 +99,23 @@ public class MovieController : ControllerBase
             ShikimoriRating = movie.ShikimoriRating,
             KinopoiskId = movie.KinopoiskId,
             Genres = movie.Genres.Select(g => new GenreSummaryDto
-                    {
-                    GenreId = g.GenreId,
-                    GenreName = g.GenreName
-                    }).ToList(),
+            {
+                GenreId = g.GenreId,
+                GenreName = g.GenreName
+            }).ToList(),
             Actors = movie.Actors.Select(a => new ActorSummaryDto
-                    {
-                    ActorId = a.ActorId,
-                    ActorName = a.ActorName
-                    }).ToList(),
+            {
+                ActorId = a.ActorId,
+                ActorName = a.ActorName
+            }).ToList(),
             Reviews = movie.Reviews.Select(r => new ReviewSummaryDto
-                    {
-                    ReviewId = r.ReviewId,
-                    Rating = r.Rating,
-                    Description = r.Description,
-                    CreatedAt = r.CreatedAt,
-                    UserId = r.UserId
-                    }).ToList(),
+            {
+                ReviewId = r.ReviewId,
+                Rating = r.Rating,
+                Description = r.Description,
+                CreatedAt = r.CreatedAt,
+                UserId = r.UserId
+            }).ToList(),
             Collections = movie.Collections.Select(c => c.CollectionName).ToList()
         };
 

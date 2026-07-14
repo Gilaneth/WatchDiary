@@ -1,5 +1,6 @@
 using System.Text.Json;
 using WatchDiary.Models.Tmdb;
+using WatchDiary.Models.Dtos.Response;
 
 namespace WatchDiary.Services;
 
@@ -36,6 +37,18 @@ public class TmdbService
         var json = await response.Content.ReadAsStringAsync();
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         return JsonSerializer.Deserialize<TmdbMovie>(json, options);
+    }
+    public async Task<TmdbMovieDto?> GetMovieDetailsAsync(int tmdbId)
+    {
+        var url = $"{BaseUrl}/movie/{tmdbId}?api_key={_apiKey}&append_to_response=credits,external_ids&language=en-US";
+
+        var response = await _http.GetFromJsonAsync<TmdbMovieDto>(url);
+        return response;
+    }
+    public async Task<TmdbMovieDto?> GetTvShowDetailsAsync(int tmdbId)
+    {
+        var url = $"{BaseUrl}/tv/{tmdbId}?api_key={_apiKey}&append_to_response=credits,aggregate_credits,external_ids&language=en-US";
+        return await _http.GetFromJsonAsync<TmdbMovieDto>(url);
     }
 
     public string GetImageUrl(string? posterPath) =>
