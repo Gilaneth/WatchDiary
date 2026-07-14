@@ -36,7 +36,6 @@ create table actor (
 
 create table movie (
 	movie_id serial primary key,
-    tmdb_id int null,
 	imdb_id varchar(20) null,
 	shikimori_id int null,
 	kinopoisk_id int null,
@@ -48,7 +47,8 @@ create table movie (
 	release_date date not null,
 	category category_type not null,
 	cover_url varchar(500) null,
-	description text
+	description text,
+	full_plot text
 );
 
 create table movie_genre (
