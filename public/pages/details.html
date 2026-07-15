@@ -283,7 +283,7 @@
                           text-shadow: none !important;
                         "
                       >
-                        Трейлер
+                        ШІ АНАЛІЗ
                       </div>
                     </div>
 
@@ -338,69 +338,70 @@
                       </div>
                     </div>
 
-                    <div id="player-trailer" style="display: none">
-                      <div
-                        id="custom-thumbnail"
-                        onclick="startTrailer()"
+                    <div
+                      id="player-trailer"
+                      style="display: none; padding: 20px"
+                    >
+                      <video
+                        id="video"
+                        width="100%"
+                        controls
+                        crossorigin="anonymous"
                         style="
-                          position: relative;
-                          width: 100%;
-                          height: 450px;
-                          cursor: pointer;
-                          background-color: #000;
-                          overflow: hidden;
+                          border-radius: 5px;
+                          background: #000;
+                          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
                         "
                       >
-                        <img
-                          src="https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
-                          style="
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            opacity: 0.7;
-                            transition: opacity 0.3s;
-                          "
-                          onmouseover="this.style.opacity = 1"
-                          onmouseout="this.style.opacity = 0.7"
+                        <source
+                          src="../assets/videos/interstellar.mp4"
+                          type="video/mp4"
                         />
-                        <div
-                          style="
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            background-color: #cc0000;
-                            width: 70px;
-                            height: 50px;
-                            border-radius: 12px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
-                          "
-                        >
-                          <div
-                            style="
-                              width: 0;
-                              height: 0;
-                              border-top: 12px solid transparent;
-                              border-bottom: 12px solid transparent;
-                              border-left: 20px solid white;
-                              margin-left: 6px;
-                            "
-                          ></div>
-                        </div>
+                        Ваш браузер не підтримує відео.
+                      </video>
+
+                      <button
+                        id="ai-btn"
+                        class="button"
+                        style="
+                          background: #cc0000 !important;
+                          color: white !important;
+                          text-shadow: none !important;
+                          -webkit-text-stroke: 0 !important;
+                          border: none !important;
+                          box-shadow: none !important;
+                          width: 100%;
+                          border-radius: 5px !important;
+                          text-align: center !important;
+                          display: block !important;
+                          margin-top: 15px;
+                          padding: 12px;
+                          cursor: pointer;
+                          font-weight: bold;
+                        "
+                      >
+                        ✨ Описати кадр за допомогою ШІ
+                      </button>
+
+                      <div
+                        id="ai-output"
+                        style="
+                          margin-top: 15px;
+                          padding: 15px;
+                          background: #111;
+                          color: #eee;
+                          border-radius: 5px;
+                          min-height: 80px;
+                          font-family: &quot;Open Sans&quot;, sans-serif;
+                          border: 1px solid #333;
+                          text-shadow: none !important;
+                          -webkit-text-stroke: 0 !important;
+                          font-weight: normal;
+                          letter-spacing: normal;
+                        "
+                      >
+                        Очікування запиту...
                       </div>
-                      <iframe
-                        id="trailer-iframe"
-                        src=""
-                        width="100%"
-                        height="450"
-                        frameborder="0"
-                        allow="autoplay; encrypted-media"
-                        allowfullscreen
-                        style="display: none"
-                      ></iframe>
                     </div>
                   </div>
 
@@ -486,5 +487,89 @@
       <script src="../assets/js/util.js"></script>
       <script src="../assets/js/main.js"></script>
     </div>
+    <script>
+      const MODEL =
+        "hf.co/mradermacher/Qwen3-VL-8B-Abliterated-Caption-it-GGUF";
+      const OLLAMA = "http://localhost:11434";
+      const API = "http://localhost:5220";
+
+      let context = "";
+
+      async function loadContext() {
+        const titleElement = document.getElementById("movie-title");
+        if (!titleElement || !titleElement.dataset.movieId) return;
+
+        const movieId = titleElement.dataset.movieId;
+        try {
+          const res = await fetch(API + "/Movie/" + movieId);
+          if (!res.ok) return;
+          const movie = await res.json();
+          if (movie.description) context = movie.description;
+        } catch (err) {
+          console.error("Could not load movie context:", err);
+        }
+      }
+
+      async function describeFrame() {
+        const video = document.getElementById("video");
+        const btn = document.getElementById("ai-btn"); // Наша нова кнопка
+        const output = document.getElementById("ai-output"); // Наш новий блок виводу
+
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(video.videoWidth / 3);
+        canvas.height = Math.round(video.videoHeight / 3);
+        canvas
+          .getContext("2d")
+          .drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const base64 = canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
+
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "wait";
+        output.textContent = "Thinking... (це може зайняти трохи часу)";
+
+        const prompt = context
+          ? "Context: " +
+            context +
+            "\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot."
+          : "Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.";
+
+        const messages = [
+          {
+            role: "user",
+            content: prompt,
+            images: [base64],
+          },
+        ];
+
+        try {
+          const res = await fetch(OLLAMA + "/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ model: MODEL, stream: false, messages }),
+          });
+          const data = await res.json();
+          output.textContent = data.message?.content ?? JSON.stringify(data);
+        } catch (err) {
+          output.textContent =
+            "Error: Не вдалося з'єднатися з Ollama. Перевір, чи запущена нейромережа. " +
+            err.message;
+        } finally {
+          btn.disabled = false;
+          btn.style.opacity = "1";
+          btn.style.cursor = "pointer";
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        loadContext();
+
+        const aiBtn = document.getElementById("ai-btn");
+        if (aiBtn) {
+          aiBtn.addEventListener("click", describeFrame);
+        }
+      });
+    </script>
   </body>
 </html>
