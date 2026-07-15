@@ -24,17 +24,27 @@
         const API    = 'http://localhost:5220';
 
         let context = '';
+        let castText = '';
 
         async function loadContext() {
-            const movieId = document.getElementById('movie-title').dataset.movieId;
+            const titleElement = document.getElementById("movie-title");
+            if (!titleElement || !titleElement.dataset.movieId) return;
+
+            const movieId = titleElement.dataset.movieId;
             try {
-                const res = await fetch(API + '/Movie/' + movieId);
+                const res = await fetch(API + "/Movie/" + movieId);
                 if (!res.ok) return;
                 const movie = await res.json();
                 if (movie.description) context = movie.description;
                 renderCast(movie.actors);
+
+                if (movie.actors && movie.actors.length > 0) {
+                    castText = movie.actors
+                        .map(a => a.characterName ? `${a.actorName} as ${a.characterName}` : a.actorName)
+                        .join(", ");
+                }
             } catch (err) {
-                console.error('Could not load movie context:', err);
+                console.error("Could not load movie context:", err);
             }
         }
 
@@ -65,9 +75,16 @@
             const base64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
             btn.disabled = true;
             output.textContent = 'Thinking...';
-            const prompt = context
-                ? 'Context: ' + context + '\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot.'
+
+            let fullContext = context;
+            if (castText) {
+                fullContext += (fullContext ? '\n' : '') + 'Cast/characters: ' + castText;
+            }
+
+            const prompt = fullContext
+                ? 'Context: ' + fullContext + '\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot.'
                 : 'Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.';
+
             const messages = [{
                 role: 'user',
                 content: prompt,

@@ -215,6 +215,8 @@
                 <div class="col-8 col-12-mobile">
                   <header style="margin-bottom: 1.5em; text-align: left">
                     <h2
+                      id="movie-title"
+                      data-movie-id="7"
                       style="
                         font-size: 2.2em;
                         line-height: 1.2;
@@ -416,12 +418,10 @@
                       border-left: 4px solid #cc0000;
                     "
                   >
-                    <p style="margin: 0; line-height: 1.6; color: #444">
-                      Коли посуха, пилові бурі та вимирання рослин призводять
-                      людство до продовольчої кризи, колектив дослідників та
-                      вчених вирушає крізь нещодавно виявлену червоточину, щоб
-                      знайти планету з відповідними умовами для життя людства.
+                    <p id="movie-description" style="margin: 0; line-height: 1.6; color: #444">
+                        PLACEHOLDER
                     </p>
+                  <ul id="cast-list" style="font-size:14px; color:#555;"></ul>
                   </div>
                 </div>
               </div>
@@ -494,72 +494,101 @@
       const API = "http://localhost:5220";
 
       let context = "";
+      let castText = "";
 
       async function loadContext() {
-        const titleElement = document.getElementById("movie-title");
-        if (!titleElement || !titleElement.dataset.movieId) return;
+          const titleElement = document.getElementById("movie-title");
+          if (!titleElement || !titleElement.dataset.movieId) return;
 
-        const movieId = titleElement.dataset.movieId;
-        try {
-          const res = await fetch(API + "/Movie/" + movieId);
-          if (!res.ok) return;
-          const movie = await res.json();
-          if (movie.description) context = movie.description;
-        } catch (err) {
-          console.error("Could not load movie context:", err);
-        }
+          const movieId = titleElement.dataset.movieId;
+          try {
+              const res = await fetch(API + "/Movie/" + movieId);
+              if (!res.ok) return;
+              const movie = await res.json();
+              if (movie.description) {
+                  context = movie.description;
+                  const descEl = document.getElementById("movie-description");
+                  if (descEl) descEl.textContent = movie.description;
+              }
+              renderCast(movie.actors);
+
+              if (movie.actors && movie.actors.length > 0) {
+                  castText = movie.actors
+                      .map(a => a.characterName ? `${a.actorName} as ${a.characterName}` : a.actorName)
+                      .join(", ");
+              }
+          } catch (err) {
+              console.error("Could not load movie context:", err);
+          }
+      }
+
+      function renderCast(actors) {
+          const list = document.getElementById('cast-list');
+          list.innerHTML = '';
+          if (!actors || actors.length === 0) {
+              list.innerHTML = '<li>No cast data</li>';
+              return;
+          }
+          actors.forEach(a => {
+              const li = document.createElement('li');
+              li.textContent = a.characterName
+                  ? a.actorName + ' as ' + a.characterName
+                  : a.actorName;
+              list.appendChild(li);
+          });
       }
 
       async function describeFrame() {
-        const video = document.getElementById("video");
-        const btn = document.getElementById("ai-btn"); // Наша нова кнопка
-        const output = document.getElementById("ai-output"); // Наш новий блок виводу
+          const video = document.getElementById("video");
+          const btn = document.getElementById("ai-btn"); // Наша нова кнопка
+          const output = document.getElementById("ai-output"); // Наш новий блок виводу
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.round(video.videoWidth / 3);
+          canvas.height = Math.round(video.videoHeight / 3);
+          canvas
+              .getContext("2d")
+              .drawImage(video, 0, 0, canvas.width, canvas.height);
+          const base64 = canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
+          btn.disabled = true;
+          btn.style.opacity = "0.5";
+          btn.style.cursor = "wait";
+          output.textContent = "Thinking... (це може зайняти трохи часу)";
 
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.round(video.videoWidth / 3);
-        canvas.height = Math.round(video.videoHeight / 3);
-        canvas
-          .getContext("2d")
-          .drawImage(video, 0, 0, canvas.width, canvas.height);
+          let fullContext = context;
+          if (castText) {
+              fullContext += (fullContext ? "\n" : "") + "Cast/characters: " + castText;
+          }
 
-        const base64 = canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
+          const prompt = fullContext
+              ? "Context: " +
+                  fullContext +
+                  "\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot."
+              : "Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.";
 
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-        btn.style.cursor = "wait";
-        output.textContent = "Thinking... (це може зайняти трохи часу)";
-
-        const prompt = context
-          ? "Context: " +
-            context +
-            "\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot."
-          : "Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.";
-
-        const messages = [
-          {
-            role: "user",
-            content: prompt,
-            images: [base64],
-          },
-        ];
-
-        try {
-          const res = await fetch(OLLAMA + "/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ model: MODEL, stream: false, messages }),
-          });
-          const data = await res.json();
-          output.textContent = data.message?.content ?? JSON.stringify(data);
-        } catch (err) {
-          output.textContent =
-            "Error: Не вдалося з'єднатися з Ollama. Перевір, чи запущена нейромережа. " +
-            err.message;
-        } finally {
-          btn.disabled = false;
-          btn.style.opacity = "1";
-          btn.style.cursor = "pointer";
-        }
+          const messages = [
+              {
+                  role: "user",
+                  content: prompt,
+                  images: [base64],
+              },
+          ];
+          try {
+              const res = await fetch(OLLAMA + "/api/chat", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ model: MODEL, stream: false, messages }),
+              });
+              const data = await res.json();
+              output.textContent = data.message?.content ?? JSON.stringify(data);
+          } catch (err) {
+              output.textContent =
+                  "Error: Не вдалося з'єднатися з Ollama. Перевір, чи запущена нейромережа. " +
+                      err.message;
+          } finally {
+              btn.disabled = false;
+              btn.style.opacity = "1";
+              btn.style.cursor = "pointer";
+          }
       }
 
       window.addEventListener("DOMContentLoaded", () => {
