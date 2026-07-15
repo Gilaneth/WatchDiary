@@ -18,7 +18,7 @@ public class Movie
     public string? Description { get; set; }
 
     public ICollection<Genre> Genres { get; set; } = [];
-    public ICollection<Actor> Actors { get; set; } = [];
+    public ICollection<MovieActor> MovieActors { get; set; } = [];
     public ICollection<Review> Reviews { get; set; } = [];
     public ICollection<WatchList> WatchList { get; set; } = [];
     public ICollection<Collection> Collections { get; set; } = [];

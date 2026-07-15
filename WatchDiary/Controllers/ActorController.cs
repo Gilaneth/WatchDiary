@@ -36,16 +36,21 @@ public class ActorController : ControllerBase
     [HttpPost("movie")]
     public async Task<IActionResult> AddToMovie([FromBody] MovieActorDto dto)
     {
-        var movie = await _db.Movies.Include(m => m.Actors).FirstOrDefaultAsync(m => m.MovieId == dto.MovieId);
+        var movie = await _db.Movies.Include(m => m.MovieActors).FirstOrDefaultAsync(m => m.MovieId == dto.MovieId);
         if (movie is null) return NotFound("Movie not found.");
 
         var actor = await _db.Actors.FindAsync(dto.ActorId);
         if (actor is null) return NotFound("Actor not found.");
 
-        if (movie.Actors.Any(a => a.ActorId == dto.ActorId))
+        if (movie.MovieActors.Any(ma => ma.ActorId == dto.ActorId))
             return Conflict("Actor already added to this movie.");
 
-        movie.Actors.Add(actor);
+        movie.MovieActors.Add(new MovieActor
+                {
+                Movie = movie,
+                Actor = actor
+                });
+
         await _db.SaveChangesAsync();
         return Ok(movie);
     }
@@ -53,13 +58,13 @@ public class ActorController : ControllerBase
     [HttpDelete("movie")]
     public async Task<IActionResult> RemoveFromMovie([FromBody] MovieActorDto dto)
     {
-        var movie = await _db.Movies.Include(m => m.Actors).FirstOrDefaultAsync(m => m.MovieId == dto.MovieId);
+        var movie = await _db.Movies.Include(m => m.MovieActors).FirstOrDefaultAsync(m => m.MovieId == dto.MovieId);
         if (movie is null) return NotFound("Movie not found.");
 
-        var actor = movie.Actors.FirstOrDefault(a => a.ActorId == dto.ActorId);
-        if (actor is null) return NotFound("Actor not found on this movie.");
+        var link = movie.MovieActors.FirstOrDefault(ma => ma.ActorId == dto.ActorId);
+        if (link is null) return NotFound("Actor not found on this movie.");
 
-        movie.Actors.Remove(actor);
+        movie.MovieActors.Remove(link);
         await _db.SaveChangesAsync();
         return NoContent();
     }

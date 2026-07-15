@@ -5,6 +5,6 @@ public enum WatchStatus
     Watched,
     Watching,
     Planning,
-    OnHold,
+    Paused,
     Dropped
 }

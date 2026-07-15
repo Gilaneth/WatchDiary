@@ -42,13 +42,15 @@ create table movie (
 	kinopoisk_id int null,
 	rottentomato_id varchar(255) null,
 	imdb_rating decimal null,
+	tmdb_id int null,
 	shikimori_rating decimal null,
 	rt_rating decimal null,
 	movie_name varchar(300) not null,
 	release_date date not null,
 	category category_type not null,
 	cover_url varchar(500) null,
-	description text
+	description text,
+	full_plot text
 );
 
 create table movie_genre (

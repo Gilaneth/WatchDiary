@@ -70,6 +70,25 @@ public class SearchController : ControllerBase
             ImdbRating = (decimal?)tmdbMovie.Vote_Average,
         };
 
+        var credits = await _tmdb.GetCreditsAsync(tmdbId, mediaType);
+        var topCast = credits.Cast.OrderBy(c => c.Order).Take(10);
+
+        foreach (var castMember in topCast)
+        {
+            var actor = await _db.Actors.FirstOrDefaultAsync(a => a.ActorName == castMember.Name);
+            if (actor is null)
+            {
+                actor = new Actor { ActorName = castMember.Name };
+                _db.Actors.Add(actor);
+            }
+            movie.MovieActors.Add(new MovieActor
+                    {
+                    Movie = movie,
+                    Actor = actor,
+                    CharacterName = castMember.Character
+                    });
+        }
+
         _db.Movies.Add(movie);
         await _db.SaveChangesAsync();
         return Ok(movie);

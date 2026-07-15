@@ -18,3 +18,16 @@ public class TmdbMovie
     public string? Media_Type { get; set; }
     public List<int> Genre_Ids { get; set; } = [];
 }
+
+public class TmdbCredits
+{
+    public List<TmdbCastMember> Cast { get; set; } = [];
+}
+
+public class TmdbCastMember
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string? Character { get; set; }
+    public int Order { get; set; }
+}

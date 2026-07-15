@@ -4,4 +4,5 @@ public class ActorSummaryDto
 {
     public int ActorId { get; set; }
     public string ActorName { get; set; } = null!;
+    public string? CharacterName { get; set; }
 }

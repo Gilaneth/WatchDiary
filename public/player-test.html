@@ -10,15 +10,16 @@
         </style>
     </head>
     <body>
-        <h1 id="movie-title" data-movie-id="5">Big Buck Bunny</h1>
+        <h1 id="movie-title" data-movie-id="7">K-ON!</h1>
+        <ul id="cast-list" style="font-size:14px; color:#555;"></ul>
         <video id="video" width="1280" height="720" controls>
-            <source src="movies/big_buck_bunny_720p_h264.mov" type="video/mp4">
+            <source src="./movies/K-ON! 01.mov" type="video/mp4">
         </video>
         <canvas id="canvas"></canvas>
         <button id="btn" onclick="describeFrame()">Describe current frame</button>
         <div id="output"></div>
         <script>
-        const MODEL = 'hf.co/mradermacher/Qwen3-VL-8B-Abliterated-Caption-it-GGUF';
+        const MODEL = 'gemma4:e2b';
         const OLLAMA = 'http://localhost:11434';
         const API    = 'http://localhost:5220';
 
@@ -31,9 +32,26 @@
                 if (!res.ok) return;
                 const movie = await res.json();
                 if (movie.description) context = movie.description;
+                renderCast(movie.actors);
             } catch (err) {
                 console.error('Could not load movie context:', err);
             }
+        }
+
+        function renderCast(actors) {
+            const list = document.getElementById('cast-list');
+            list.innerHTML = '';
+            if (!actors || actors.length === 0) {
+                list.innerHTML = '<li>No cast data</li>';
+                return;
+            }
+            actors.forEach(a => {
+                const li = document.createElement('li');
+                li.textContent = a.characterName
+                    ? a.actorName + ' as ' + a.characterName
+                    : a.actorName;
+                list.appendChild(li);
+            });
         }
 
         async function describeFrame() {

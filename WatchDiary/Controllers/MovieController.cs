@@ -22,7 +22,7 @@ public class MovieController : ControllerBase
     {
         var movies = await _db.Movies
             .Include(m => m.Genres)
-            .Include(m => m.Actors)
+            .Include(m => m.MovieActors).ThenInclude(ma => ma.Actor)
             .ToListAsync();
 
         var result = movies.Select(m => new MovieSummaryDto
@@ -37,7 +37,7 @@ public class MovieController : ControllerBase
                 RtRating = m.RtRating,
                 ShikimoriRating = m.ShikimoriRating,
                 Genres = m.Genres.Select(g => g.GenreName).ToList(),
-                Actors = m.Actors.Select(a => a.ActorName).ToList()
+                Actors = m.MovieActors.Select(ma => ma.Actor.ActorName).ToList()
                 });
 
         return Ok(result);
@@ -48,7 +48,7 @@ public class MovieController : ControllerBase
     {
         var movie = await _db.Movies
             .Include(m => m.Genres)
-            .Include(m => m.Actors)
+            .Include(m => m.MovieActors).ThenInclude(ma => ma.Actor)
             .Include(m => m.Reviews)
             .Include(m => m.Collections)
             .FirstOrDefaultAsync(m => m.MovieId == id);
@@ -75,10 +75,11 @@ public class MovieController : ControllerBase
                     GenreId = g.GenreId,
                     GenreName = g.GenreName
                     }).ToList(),
-            Actors = movie.Actors.Select(a => new ActorSummaryDto
+            Actors = movie.MovieActors.Select(ma => new ActorSummaryDto
                     {
-                    ActorId = a.ActorId,
-                    ActorName = a.ActorName
+                    ActorId = ma.Actor.ActorId,
+                    ActorName = ma.Actor.ActorName,
+                    CharacterName = ma.CharacterName
                     }).ToList(),
             Reviews = movie.Reviews.Select(r => new ReviewSummaryDto
                     {
