@@ -548,11 +548,28 @@
             (fullContext ? "\n" : "") + "Cast/characters: " + castText;
         }
 
-        const prompt = fullContext
-          ? "Context: " +
-            fullContext +
-            "\n\nDescribe what is happening in this video frame. Context is provided to help you describing the frame, fact check you response with it before answering the user. If there are any characters that you recognize, mention them by name or how they are called. Align the response with when given frame is happening in the plot."
-          : "Describe what is happening in this video frame. Keep the style in a way of that user already aware of the film existance, as they are literally watching it right now. The user pressed the button to describe current frame because they are a bit unsure of what is happening on the screen.";
+          const prompt = fullContext
+              ? `You are helping someone who is already watching a movie or anime.
+
+Movie context:
+${fullContext}
+
+Describe only what is happening in the CURRENT video frame.
+
+Rules:
+- Use the movie context only to improve accuracy.
+- Never force the context to match the image.
+- If the image contradicts or doesn't clearly support the context, trust what you actually see.
+- Analyse the characters from the context you were given. 
+- Only identify a character by name if you are visually confident. Otherwise refer to them generically (for example: "a girl", "the teacher", "another student"). You still should guess characters, but mention that it's only the guess.
+- Do not invent actions, emotions, or plot events that are not visible.
+- Do not mention the provided context or explain your reasoning.
+- Do not use headings, bullet points, or lists.
+- Keep the response concise (2-4 sentences, under 80 words).
+- Write naturally, as if explaining the frame to someone sitting next to you.`
+              : `Describe what is happening in the current video frame.
+
+Keep the description concise (2-4 sentences, under 80 words). Describe only what is visible, without inventing events or identities that cannot be determined from the image.`;
 
         const messages = [
           {
@@ -644,11 +661,32 @@
 
       // ---- Favorites (WatchList) ----
 
-      function markFavoriteAdded() {
+      var isFavorited = false;
+
+      function setFavoriteButtonState(favorited) {
+        isFavorited = favorited;
         var btn = document.getElementById("fav-btn");
-        btn.textContent = "✓ У ВАШОМУ СПИСКУ";
-        btn.style.setProperty("background", "#555", "important");
-        btn.style.pointerEvents = "none";
+        if (favorited) {
+          btn.textContent = "✓ У ВАШОМУ СПИСКУ";
+          btn.style.setProperty("background", "#555", "important");
+        } else {
+          btn.textContent = "ДОДАТИ В ОБРАНЕ";
+          btn.style.setProperty("background", "#cc0000", "important");
+        }
+      }
+
+      // Swap to a "remove" look on hover, once it's already favorited.
+      function wireFavoriteHover() {
+        var btn = document.getElementById("fav-btn");
+        btn.addEventListener("mouseenter", function () {
+          if (!isFavorited) return;
+          btn.textContent = "ВИДАЛИТИ З ОБРАНОГО";
+          btn.style.setProperty("background", "#b91c1c", "important");
+        });
+        btn.addEventListener("mouseleave", function () {
+          if (!isFavorited) return;
+          setFavoriteButtonState(true);
+        });
       }
 
       async function initFavoriteButton(user) {
@@ -666,13 +704,13 @@
             items.some(function (i) {
               return i.movieId === movieId;
             });
-          if (already) markFavoriteAdded();
+          if (already) setFavoriteButtonState(true);
         } catch (err) {
           // Not critical — button just stays in its default state.
         }
       }
 
-      async function addToFavorites(e) {
+      async function toggleFavorite(e) {
         e.preventDefault();
         var user = requireLogin();
         if (!user) return;
@@ -684,28 +722,53 @@
         btn.style.opacity = "0.6";
 
         try {
-          var res = await fetch(API + "/WatchList", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + user.token,
-            },
-            body: JSON.stringify({ movieId: movieId, status: "Planning" }),
-          });
+          if (isFavorited) {
+            // NOTE: guessed endpoint — there's no documented DELETE route for
+            // WatchList. Adjust this path if your API expects something
+            // different (e.g. a body with { movieId } instead of a URL param).
+            var res = await fetch(API + "/WatchList/movie/" + movieId, {
+              method: "DELETE",
+              headers: { Authorization: "Bearer " + user.token },
+            });
 
-          if (res.status === 200 || res.status === 201) {
-            markFavoriteAdded();
-            showActionMessage("Додано до вашого списку перегляду", "success");
-          } else if (res.status === 401) {
-            window.location.href = "login.html";
-          } else if (res.status === 409) {
-            markFavoriteAdded();
-            showActionMessage("Фільм вже у вашому списку", "error");
+            if (res.status === 200 || res.status === 204) {
+              setFavoriteButtonState(false);
+              showActionMessage("Видалено з вашого списку перегляду", "success");
+            } else if (res.status === 401) {
+              window.location.href = "login.html";
+            } else if (res.status === 404) {
+              // Already not on the list server-side — just resync the UI.
+              setFavoriteButtonState(false);
+            } else {
+              showActionMessage(
+                "Не вдалося видалити фільм (код " + res.status + ")",
+                "error",
+              );
+            }
           } else {
-            showActionMessage(
-              "Не вдалося додати фільм (код " + res.status + ")",
-              "error",
-            );
+            var addRes = await fetch(API + "/WatchList", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + user.token,
+              },
+              body: JSON.stringify({ movieId: movieId, status: "Planning" }),
+            });
+
+            if (addRes.status === 200 || addRes.status === 201) {
+              setFavoriteButtonState(true);
+              showActionMessage("Додано до вашого списку перегляду", "success");
+            } else if (addRes.status === 401) {
+              window.location.href = "login.html";
+            } else if (addRes.status === 409) {
+              setFavoriteButtonState(true);
+              showActionMessage("Фільм вже у вашому списку", "error");
+            } else {
+              showActionMessage(
+                "Не вдалося додати фільм (код " + addRes.status + ")",
+                "error",
+              );
+            }
           }
         } catch (err) {
           showActionMessage("Помилка з'єднання із сервером", "error");
@@ -769,26 +832,37 @@
               });
 
             var item = document.createElement("div");
-            item.textContent = c.collectionName + (alreadyIn ? " ✓" : "");
             item.style.padding = "8px 10px";
             item.style.borderRadius = "4px";
             item.style.fontSize = "0.85em";
             item.style.marginBottom = "4px";
-            item.style.cursor = alreadyIn ? "default" : "pointer";
-            item.style.color = alreadyIn ? "#15803d" : "#333";
-            item.style.background = alreadyIn ? "#eafaf0" : "#f5f5f5";
+            item.style.cursor = "pointer";
 
-            if (!alreadyIn) {
-              item.addEventListener("click", function () {
-                addMovieToCollection(user, c.collectionId, item);
-              });
-              item.addEventListener("mouseenter", function () {
+            setCollectionItemState(item, c.collectionName, alreadyIn);
+
+            item.addEventListener("click", function () {
+              if (item.dataset.inCollection === "true") {
+                removeMovieFromCollection(user, c.collectionId, item, c.collectionName);
+              } else {
+                addMovieToCollection(user, c.collectionId, item, c.collectionName);
+              }
+            });
+            item.addEventListener("mouseenter", function () {
+              if (item.dataset.inCollection === "true") {
+                item.textContent = "✕ Видалити з «" + c.collectionName + "»";
+                item.style.background = "#fdecea";
+                item.style.color = "#b91c1c";
+              } else {
                 item.style.background = "#eee";
-              });
-              item.addEventListener("mouseleave", function () {
-                item.style.background = "#f5f5f5";
-              });
-            }
+              }
+            });
+            item.addEventListener("mouseleave", function () {
+              setCollectionItemState(
+                item,
+                c.collectionName,
+                item.dataset.inCollection === "true",
+              );
+            });
 
             list.appendChild(item);
           });
@@ -798,11 +872,17 @@
         }
       }
 
-      async function addMovieToCollection(user, collectionId, itemEl) {
+      function setCollectionItemState(itemEl, collectionName, inCollection) {
+        itemEl.dataset.inCollection = inCollection ? "true" : "false";
+        itemEl.textContent = collectionName + (inCollection ? " ✓" : "");
+        itemEl.style.color = inCollection ? "#15803d" : "#333";
+        itemEl.style.background = inCollection ? "#eafaf0" : "#f5f5f5";
+      }
+
+      async function addMovieToCollection(user, collectionId, itemEl, collectionName) {
         var movieId = getMovieId();
         if (!movieId) return;
 
-        var originalText = itemEl.textContent;
         itemEl.textContent = "Додавання...";
 
         try {
@@ -819,26 +899,65 @@
           });
 
           if (res.status === 200 || res.status === 201) {
-            itemEl.textContent = originalText + " ✓";
-            itemEl.style.background = "#eafaf0";
-            itemEl.style.color = "#15803d";
-            itemEl.style.cursor = "default";
+            setCollectionItemState(itemEl, collectionName, true);
             showActionMessage("Фільм додано до колекції", "success");
             document.getElementById("collection-panel").style.display = "none";
           } else if (res.status === 409) {
-            itemEl.textContent = originalText + " (вже додано)";
-            itemEl.style.cursor = "default";
+            setCollectionItemState(itemEl, collectionName, true);
           } else if (res.status === 401) {
             window.location.href = "login.html";
           } else {
-            itemEl.textContent = originalText;
+            setCollectionItemState(itemEl, collectionName, false);
             showActionMessage(
               "Не вдалося додати до колекції (код " + res.status + ")",
               "error",
             );
           }
         } catch (err) {
-          itemEl.textContent = originalText;
+          setCollectionItemState(itemEl, collectionName, false);
+          showActionMessage("Помилка з'єднання із сервером", "error");
+        }
+      }
+
+      async function removeMovieFromCollection(user, collectionId, itemEl, collectionName) {
+        var movieId = getMovieId();
+        if (!movieId) return;
+
+        itemEl.textContent = "Видалення...";
+
+        try {
+          // NOTE: guessed endpoint — mirrors the add route (DELETE with the
+          // same body shape as the POST). Adjust if your API expects a
+          // path-based route instead, e.g.
+          // /Collection/{collectionId}/movie/{movieId}.
+          var res = await fetch(API + "/Collection/movie", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + user.token,
+            },
+            body: JSON.stringify({
+              collectionId: collectionId,
+              movieId: movieId,
+            }),
+          });
+
+          if (res.status === 200 || res.status === 204) {
+            setCollectionItemState(itemEl, collectionName, false);
+            showActionMessage("Фільм видалено з колекції", "success");
+          } else if (res.status === 401) {
+            window.location.href = "login.html";
+          } else if (res.status === 404) {
+            setCollectionItemState(itemEl, collectionName, false);
+          } else {
+            setCollectionItemState(itemEl, collectionName, true);
+            showActionMessage(
+              "Не вдалося видалити з колекції (код " + res.status + ")",
+              "error",
+            );
+          }
+        } catch (err) {
+          setCollectionItemState(itemEl, collectionName, true);
           showActionMessage("Помилка з'єднання із сервером", "error");
         }
       }
@@ -918,7 +1037,8 @@
 
         const favBtn = document.getElementById("fav-btn");
         if (favBtn) {
-          favBtn.addEventListener("click", addToFavorites);
+          favBtn.addEventListener("click", toggleFavorite);
+          wireFavoriteHover();
         }
 
         const collectionBtn = document.getElementById("collection-btn");
