@@ -245,7 +245,7 @@
                   <header style="margin-bottom: 1.5em; text-align: left">
                   <h2
                       id="movie-title"
-                      data-movie-id="7"
+                      data-movie-id=""
                       style="
                       font-size: 2.2em;
                       line-height: 1.2;
@@ -419,6 +419,22 @@
       <script src="../assets/js/util.js"></script>
       <script src="../assets/js/main.js"></script>
     </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const movieId = getMovieId();
+
+        const videoEl = document.getElementById("video");
+        const sourceEl = videoEl.querySelector("source");
+
+        if (!movieId) return;
+
+        sourceEl.src = `./../movies/${movieId}.mov`;
+        sourceEl.type = "video/quicktime";
+        videoEl.load();
+    });
+    </script>
+
     <script>
       const MODEL =
         "gemma4:e4b";
@@ -429,13 +445,22 @@
       let castText = "";
 
       async function loadContext() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const idFromUrl = urlParams.get("id");
           const titleElement = document.getElementById("movie-title");
-          if (!titleElement || !titleElement.dataset.movieId) return;
+          const movieId = idFromUrl ? parseInt(idFromUrl, 10) : (titleElement ? parseInt(titleElement.dataset.movieId, 10) : null);
 
-          const movieId = titleElement.dataset.movieId;
+          if (!movieId) {
+              console.error("No movie ID found in URL or data attribute");
+              return;
+          }
+
           try {
               const res = await fetch(API + "/Movie/" + movieId);
-              if (!res.ok) return;
+              if (!res.ok) {
+                  console.error("Failed to fetch movie:", res.status);
+                  return;
+              }
               const movie = await res.json();
 
               // Load cover image
@@ -465,30 +490,24 @@
               if (movie.category) {
                   const categoryEl = document.getElementById("movie-category");
                   if (categoryEl) {
-                      categoryEl.innerHTML =
-                          '<strong>Категорія:</strong> ' + movie.category.toUpperCase();
+                      categoryEl.innerHTML = '<strong>Категорія:</strong> ' + movie.category.toUpperCase();
                   }
               }
 
               if (movie.description) {
-                  context = movie.description;
                   const descEl = document.getElementById("movie-description");
                   if (descEl) descEl.textContent = movie.description;
               }
               renderCast(movie.actors);
 
-          if (movie.actors && movie.actors.length > 0) {
-            castText = movie.actors
-              .map((a) =>
-                a.characterName
-                  ? `${a.actorName} as ${a.characterName}`
-                  : a.actorName,
-              )
-              .join(", ");
+              if (movie.actors && movie.actors.length > 0) {
+                  castText = movie.actors
+                      .map(a => a.characterName ? `${a.actorName} as ${a.characterName}` : a.actorName)
+                      .join(", ");
+              }
+          } catch (err) {
+              console.error("Could not load movie context:", err);
           }
-        } catch (err) {
-          console.error("Could not load movie context:", err);
-        }
       }
 
       function renderCast(actors) {
@@ -598,9 +617,14 @@
       }
 
       function getMovieId() {
+        var params = new URLSearchParams(window.location.search);
+        var idFromUrl = params.get("id");
+        if (idFromUrl) return parseInt(idFromUrl, 10);
+
+        // Fallback for opening the file directly without a query string.
         var titleEl = document.getElementById("movie-title");
-        var id = titleEl ? titleEl.dataset.movieId : null;
-        return id ? parseInt(id, 10) : null;
+        var fallback = titleEl ? titleEl.dataset.movieId : null;
+        return fallback ? parseInt(fallback, 10) : null;
       }
 
       function showActionMessage(text, type) {
