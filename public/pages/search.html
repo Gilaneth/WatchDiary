@@ -63,6 +63,36 @@
             margin-top: 15px;
         }
     }
+
+    /* --- added for dynamic search state --- */
+    .search-state {
+        text-align: center;
+        color: #888;
+        padding: 3em 0;
+        font-size: 1.05em;
+    }
+    .search-card .import-btn {
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+        font: inherit;
+        background-color: #d52349 !important;
+        box-shadow: inset 0 0 0 1px #d52349 !important;
+        color: white !important;
+    }
+    .search-card .import-btn.done {
+        background-color: #2e7d32 !important;
+        box-shadow: inset 0 0 0 1px #2e7d32 !important;
+        cursor: default;
+    }
+    .search-card .import-btn.conflict {
+        background-color: #888 !important;
+        box-shadow: inset 0 0 0 1px #888 !important;
+    }
+    .search-card .import-btn[disabled] {
+        opacity: 0.6;
+        cursor: default;
+    }
     </style>
   </head>
   <body class="no-sidebar is-preload">
@@ -77,197 +107,11 @@
                 class="major"
                 style="margin-bottom: 3em; text-align: left"
               >
-                <h2>Результати за запитом: "Темний"</h2>
+                <h2 id="results-heading">Результати пошуку</h2>
               </header>
 
-              <div class="search-results">
-                <article class="search-card">
-                  <div class="row gtr-50 gtr-uniform">
-                    <div class="col-2 col-4-medium col-12-mobile">
-                      <a
-                        href="details.html"
-                        class="image fit"
-                        style="margin: 0"
-                      >
-                        <img
-                          src="../images/dark_knight.jpg"
-                          alt="Темний лицар"
-                          class="search-image"
-                        />
-                      </a>
-                    </div>
-                    <div
-                      class="col-7 col-8-medium col-12-mobile"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <h3 style="margin-bottom: 10px">
-                        <a href="details.html">Темний лицар (2008)</a>
-                      </h3>
-                      <span
-                        style="
-                          display: inline-block;
-                          background: #d52349;
-                          color: white;
-                          padding: 2px 8px;
-                          border-radius: 4px;
-                          font-size: 11px;
-                          font-weight: bold;
-                          margin-bottom: 15px;
-                          width: max-content;
-                        "
-                        >ФІЛЬМ</span
-                      >
-                      <p style="margin: 0; color: #555">
-                        Культовий супергеройський фільм режисера Крістофера
-                        Нолана. Бетмен стикається зі своїм найнебезпечнішим
-                        ворогом — геніальним та безжальним Джокером, який прагне
-                        занурити Ґотем у хаос.
-                      </p>
-                    </div>
-                    <div class="col-3 col-12-mobile">
-                      <div class="rating-block">
-                        <h3
-                          style="
-                            margin-bottom: 5px;
-                            font-size: 1.5em;
-                            color: #f39c12;
-                          "
-                        >
-                          ★ 9.0
-                        </h3>
-                        <p
-                          style="
-                            margin-bottom: 15px;
-                            font-size: 0.9em;
-                            color: #888;
-                          "
-                        >
-                          Ваша оцінка: -
-                        </p>
-                        <a
-                          href="#"
-                          class="button small"
-                          style="
-                            background-color: #d52349 !important;
-                            box-shadow: inset 0 0 0 1px #d52349 !important;
-                            color: white !important;
-                          "
-                          >Оцінити</a
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="search-card">
-                  <div class="row gtr-50 gtr-uniform">
-                    <div class="col-2 col-4-medium col-12-mobile">
-                      <a
-                        href="details.html"
-                        class="image fit"
-                        style="margin: 0"
-                      >
-                        <img
-                          src="../images/dark_series.jpg"
-                          alt="Пітьма"
-                          class="search-image"
-                        />
-                      </a>
-                    </div>
-                    <div
-                      class="col-7 col-8-medium col-12-mobile"
-                      style="
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                      "
-                    >
-                      <h3 style="margin-bottom: 10px">
-                        <a href="details.html">Пітьма (2017)</a>
-                      </h3>
-                      <span
-                        style="
-                          display: inline-block;
-                          background: #d52349;
-                          color: white;
-                          padding: 2px 8px;
-                          border-radius: 4px;
-                          font-size: 11px;
-                          font-weight: bold;
-                          margin-bottom: 15px;
-                          width: max-content;
-                        "
-                        >СЕРІАЛ</span
-                      >
-                      <p style="margin: 0; color: #555">
-                        Німецький науково-фантастичний трилер. Зникнення двох
-                        дітей у маленькому містечку розкриває складну мережу
-                        таємниць, подвійних життів та подорожей у часі, що
-                        охоплюють кілька поколінь.
-                      </p>
-                    </div>
-                    <div class="col-3 col-12-mobile">
-                      <div class="rating-block">
-                        <h3
-                          style="
-                            margin-bottom: 5px;
-                            font-size: 1.5em;
-                            color: #f39c12;
-                          "
-                        >
-                          ★ 8.7
-                        </h3>
-                        <p
-                          style="
-                            margin-bottom: 15px;
-                            font-size: 0.9em;
-                            color: #888;
-                          "
-                        >
-                          Ваша оцінка: 9
-                        </p>
-                        <a href="#" class="button alt small">Змінити оцінку</a>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              <div style="text-align: center; margin-top: 3em">
-                <ul
-                  class="actions"
-                  style="
-                    display: inline-flex;
-                    list-style: none;
-                    padding: 0;
-                    gap: 10px;
-                  "
-                >
-                  <li>
-                    <a
-                      href="#"
-                      class="button alt small disabled"
-                      style="pointer-events: none; opacity: 0.5"
-                      >Попередня</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="button small"
-                      style="
-                        background-color: #d52349 !important;
-                        color: white !important;
-                      "
-                      >1</a
-                    >
-                  </li>
-                  <li><a href="#" class="button alt small">Наступна</a></li>
-                </ul>
+              <div class="search-results" id="search-results">
+                <div class="search-state">Пошук...</div>
               </div>
             </section>
           </div>
@@ -277,10 +121,11 @@
       <div id="footer-placeholder"></div>
 
       <script>
-        fetch("../components/header.html")
+        fetch("/components/header.html", { cache: "no-store" })
           .then((response) => response.text())
           .then((data) => {
             document.getElementById("header-placeholder").innerHTML = data;
+            if (typeof updateAuthSlot === "function") updateAuthSlot();
           });
 
         fetch("../components/footer.html")
@@ -295,6 +140,165 @@
       <script src="../assets/js/breakpoints.min.js"></script>
       <script src="../assets/js/util.js"></script>
       <script src="../assets/js/main.js"></script>
+
+      <script>
+        // ---- CONFIG ----
+        // Points at the local dotnet API (matches api-test.html's default).
+        // Change this to your real API host when deploying
+        // (e.g. "https://api.watchdiary.com"), or "" if the API is served
+        // from the same origin as the front-end.
+        const API_BASE = "http://localhost:5220";
+
+        // TODO: adjust this to however the rest of the site stores the auth
+        // token (login() in api-test.html keeps it in a JS variable only,
+        // which won't survive navigation — the real site presumably persists
+        // it somewhere like localStorage). Wire this up to match main.js.
+        function getAuthToken() {
+          return localStorage.getItem("watchdiary_token") || localStorage.getItem("token");
+        }
+
+        function getQueryParam(name) {
+          return new URLSearchParams(window.location.search).get(name);
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function typeLabel(mediaType) {
+          return mediaType === "tv" ? "СЕРІАЛ" : "ФІЛЬМ";
+        }
+
+        function renderState(message) {
+          document.getElementById("search-results").innerHTML =
+            '<div class="search-state">' + escapeHtml(message) + "</div>";
+        }
+
+        function buildCard(item) {
+          const mediaType = item.mediaType || "movie";
+          const year = item.releaseDate ? String(item.releaseDate).slice(0, 4) : "—";
+          const rating = item.rating ? Number(item.rating).toFixed(1) : "—";
+          const title = item.title || "Без назви";
+          const description = item.overview || "Опис відсутній.";
+          const posterHtml = item.posterUrl
+            ? '<img src="' + escapeHtml(item.posterUrl) + '" alt="' + escapeHtml(title) + '" class="search-image" />'
+            : '<div class="search-image"></div>';
+
+          const article = document.createElement("article");
+          article.className = "search-card";
+          article.innerHTML = `
+            <div class="row gtr-50 gtr-uniform">
+              <div class="col-2 col-4-medium col-12-mobile">
+                <span class="image fit" style="margin: 0">
+                  ${posterHtml}
+                </span>
+              </div>
+              <div
+                class="col-7 col-8-medium col-12-mobile"
+                style="display: flex; flex-direction: column; justify-content: center;"
+              >
+                <h3 style="margin-bottom: 10px">${escapeHtml(title)} (${escapeHtml(year)})</h3>
+                <span
+                  style="display: inline-block; background: #d52349; color: white; padding: 2px 8px;
+                         border-radius: 4px; font-size: 11px; font-weight: bold; margin-bottom: 15px;
+                         width: max-content;"
+                >${typeLabel(mediaType)}</span>
+                <p style="margin: 0; color: #555">${escapeHtml(description)}</p>
+              </div>
+              <div class="col-3 col-12-mobile">
+                <div class="rating-block">
+                  <h3 style="margin-bottom: 5px; font-size: 1.5em; color: #f39c12;">★ ${escapeHtml(rating)}</h3>
+                  <p style="margin-bottom: 15px; font-size: 0.9em; color: #888;">Ваша оцінка: -</p>
+                  <button type="button" class="button small import-btn">Додати</button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const btn = article.querySelector(".import-btn");
+          btn.addEventListener("click", function () {
+            importItem(item.tmdbId, mediaType, btn);
+          });
+
+          return article;
+        }
+
+        async function importItem(tmdbId, mediaType, btn) {
+          const token = getAuthToken();
+          if (!token) {
+            btn.textContent = "Увійдіть, щоб додати";
+            btn.classList.add("conflict");
+            return;
+          }
+          btn.disabled = true;
+          btn.textContent = "Додаємо...";
+          try {
+            const res = await fetch(
+              API_BASE + "/Search/import/" + tmdbId + "?mediaType=" + mediaType,
+              {
+                method: "POST",
+                headers: { Authorization: "Bearer " + token },
+              }
+            );
+            if (res.status === 200 || res.status === 201) {
+              btn.textContent = "Додано";
+              btn.classList.add("done");
+            } else if (res.status === 409) {
+              btn.textContent = "Вже в каталозі";
+              btn.classList.add("conflict");
+            } else {
+              btn.textContent = "Помилка (" + res.status + ")";
+              btn.classList.add("conflict");
+              btn.disabled = false;
+            }
+          } catch (err) {
+            btn.textContent = "Мережева помилка";
+            btn.classList.add("conflict");
+            btn.disabled = false;
+          }
+        }
+
+        async function runSearch() {
+          const q = getQueryParam("query");
+          const type = getQueryParam("type") || "multi";
+          const heading = document.getElementById("results-heading");
+
+          if (!q) {
+            heading.textContent = "Результати пошуку";
+            renderState("Введіть запит у полі пошуку зверху сторінки.");
+            return;
+          }
+
+          heading.textContent = 'Результати за запитом: "' + q + '"';
+          renderState("Пошук...");
+
+          try {
+            const res = await fetch(
+              API_BASE + "/Search?q=" + encodeURIComponent(q) + "&type=" + encodeURIComponent(type)
+            );
+            if (res.status !== 200) {
+              renderState("Помилка пошуку (" + res.status + "). Спробуйте ще раз пізніше.");
+              return;
+            }
+            const results = await res.json();
+            if (!Array.isArray(results) || results.length === 0) {
+              renderState("Нічого не знайдено за запитом \u00ab" + q + "\u00bb.");
+              return;
+            }
+            const container = document.getElementById("search-results");
+            container.innerHTML = "";
+            results.forEach((item) => container.appendChild(buildCard(item)));
+          } catch (err) {
+            renderState("Мережева помилка: не вдалося з'єднатися з сервером.");
+          }
+        }
+
+        runSearch();
+      </script>
     </div>
   </body>
 </html>

@@ -36,18 +36,17 @@
         display: block;
         text-align: center;
         width: 100%;
-        background-color: #f4f4f6 !important;
-        color: #333 !important;
+        background-color: #222 !important;
+        color: white !important;
         box-shadow: none !important;
-        border: 1px solid #e0e0e0 !important;
+        border: none !important;
         border-radius: 6px !important;
         margin-bottom: 10px;
         transition: all 0.2s ease-in-out;
     }
     .sidebar-btn:hover {
-        background-color: #e9e9eb !important;
-        border-color: #ccc !important;
-        color: #d52349 !important;
+        background-color: #cc0000 !important;
+        color: white !important;
     }
 
     /* Заголовки секцій */
@@ -159,36 +158,9 @@
         letter-spacing: 0.5px !important;
         text-transform: none !important;
     }
-    .status-watching,
-    .status-planned,
-    .status-completed {
+    .status-watching, .status-planned, .status-completed {
         background: #222 !important;
-        background-image: none !important;
         color: white !important;
-        border: none !important;
-        box-shadow: none !important;
-        text-shadow: none !important;
-        -webkit-text-stroke: 0 !important;
-    }
-
-    .sidebar-btn {
-        background: #222 !important;
-        background-image: none !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: white !important;
-        text-shadow: none !important;
-        -webkit-text-stroke: 0 !important;
-        width: 100% !important;
-        border-radius: 5px !important;
-        text-align: center !important;
-        display: block !important;
-    }
-    .badge-status {
-        background-color: #cc0000 !important;
-        color: white !important;
-        text-shadow: none !important;
-        -webkit-text-stroke: 0 !important;
     }
     </style>
   </head>
@@ -202,131 +174,22 @@
             <section class="container">
               <div class="row">
                 <div class="col-4 col-12-mobile" style="padding-right: 40px">
-                  <header
-                    class="major"
-                    style="margin-bottom: 2em; text-align: left"
-                  >
-                    <h2
-                      style="
-                        font-size: 2em !important;
-                        font-weight: bold !important;
-                        color: #222 !important;
-                      "
-                    >
-                      Вітаємо, Віталію!
+                  <header class="major" style="margin-bottom: 2em; text-align: left">
+                    <h2 id="welcome" style="font-size: 2em !important; font-weight: bold !important; color: #222 !important;">
+                      Вітаємо!
                     </h2>
                   </header>
 
-                  <h3
-                    style="
-                      margin-bottom: 1em;
-                      font-weight: bold !important;
-                      color: #444 !important;
-                    "
-                  >
-                    Мої колекції
+                  <h3 style="margin-bottom: 1em; font-weight: bold !important; color: #444 !important;">
+                    Моя бібліотека
                   </h3>
 
-                  <a
-                    href="#"
-                    class="button"
-                    style="
-                      background: #cc0000 !important;
-                      background-image: none !important;
-                      border: none !important;
-                      box-shadow: none !important;
-                      color: white !important;
-                      text-shadow: none !important;
-                      -webkit-text-stroke: 0 !important;
-                      width: 100%;
-                      border-radius: 5px !important;
-                      text-align: center !important;
-                      display: block !important;
-                    "
-                  >
-                    Створити нову
-                  </a>
-
-                  <div
-                    style="
-                      display: flex;
-                      flex-direction: column;
-                      gap: 10px;
-                      margin-top: 10px;
-                      margin-bottom: 2em;
-                    "
-                  >
-                    <a href="#" class="button sidebar-btn">Глянути увечері</a>
-                    <a href="#" class="button sidebar-btn">Для вас</a>
-                    <a href="#" class="button sidebar-btn">З сім'єю</a>
-                  </div>
+                  <div id="library-list" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; margin-bottom: 2em;"></div>
                 </div>
 
                 <div class="col-8 col-12-mobile">
-                  <h3 class="profile-section-title">Останні дії</h3>
-                  <div class="row">
-                    <div class="col-4 col-12-mobile">
-                      <div class="media-card">
-                        <div class="media-image-container">
-                          <div class="badge-status">Аніме</div>
-                          <div class="badge-rating">★ 9.1</div>
-                          <a href="../pages/details.html"
-                            ><img src="../images/aot.jpg" alt="Атака титанів"
-                          /></a>
-                        </div>
-                        <div class="media-info">
-                          <h3>
-                            <a href="../pages/details.html">Атака титанів</a>
-                          </h3>
-                          <span class="user-status status-watching"
-                            >Дивлюся</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4 col-12-mobile">
-                      <div class="media-card">
-                        <div class="media-image-container">
-                          <div class="badge-status">Серіал</div>
-                          <div class="badge-rating">★ 8.7</div>
-                          <a href="../pages/details.html"
-                            ><img
-                              src="../images/black_mirror.jpg"
-                              alt="Чорне дзеркало"
-                          /></a>
-                        </div>
-                        <div class="media-info">
-                          <h3>
-                            <a href="../pages/details.html">Чорне дзеркало</a>
-                          </h3>
-                          <span class="user-status status-planned"
-                            >В планах</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-4 col-12-mobile">
-                      <div class="media-card">
-                        <div class="media-image-container">
-                          <div class="badge-status">Фільм</div>
-                          <div class="badge-rating">★ 8.7</div>
-                          <a href="../pages/details.html"
-                            ><img
-                              src="../images/interstellar.jpg"
-                              alt="Інтерстеллар"
-                          /></a>
-                        </div>
-                        <div class="media-info">
-                          <h3>
-                            <a href="../pages/details.html">Інтерстеллар</a>
-                          </h3>
-                          <span class="user-status status-completed"
-                            >Переглянуто</span
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <h3 id="section-title" class="profile-section-title">Завантаження...</h3>
+                  <div id="movies-grid" class="row"></div>
                 </div>
               </div>
             </section>
@@ -341,7 +204,7 @@
           .then((response) => response.text())
           .then((data) => {
             document.getElementById("header-placeholder").innerHTML = data;
-            if (typeof updateAuthSlot === "function") updateAuthSlot();
+            if(typeof updateAuthSlot==="function") updateAuthSlot();
           });
 
         fetch("/components/footer.html", { cache: "no-store" })
@@ -356,6 +219,119 @@
       <script src="../assets/js/breakpoints.min.js"></script>
       <script src="../assets/js/util.js"></script>
       <script src="../assets/js/main.js"></script>
+      <script>
+        const API = "http://localhost:5220";
+
+        function decodeJwtPayload(token) {
+            const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+            return JSON.parse(atob(base64));
+        }
+
+        function getCurrentUser() {
+            const token = localStorage.getItem("watchdiary_token");
+            if(!token) {
+                window.location.href = "login.html";
+                return null;
+            }
+            try {
+                const payload = decodeJwtPayload(token);
+                return {
+                    token: token,
+                    userId: Number(payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? payload.nameid ?? payload.sub),
+                    username: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? 
+                        payload.unique_name ?? 
+                        payload.name ?? 
+                        payload.username ?? 
+                        payload.preferred_username ?? 
+                        'Користувач'
+                };
+            } catch(e) {
+                localStorage.removeItem("watchdiary_token");
+                window.location.href = "login.html";
+            }
+        }
+
+        function getStatusText(status) {
+            const map = { 'Watching': 'Дивлюся', 'Planned': 'В планах', 'Completed': 'Переглянуто' };
+            return map[status] || '';
+        }
+
+        function getStatusClass(status) {
+            const map = { 'Watching': 'status-watching', 'Planned': 'status-planned', 'Completed': 'status-completed' };
+            return map[status] || '';
+        }
+
+        function movieCard(movie) {
+            const statusText = getStatusText(movie.status);
+            const statusClass = getStatusClass(movie.status);
+            return `
+            <div class="col-4 col-12-mobile">
+              <div class="media-card">
+                <div class="media-image-container">
+                  ${movie.type ? `<div class="badge-status">${movie.type}</div>` : ''}
+                  ${movie.rating ? `<div class="badge-rating">★ ${movie.rating}</div>` : ''}
+                  <a href="details-template.html?id=${movie.movieId}">
+                    <img src="${movie.coverUrl ?? '../images/no-image.png'}" alt="${movie.movieName}">
+                  </a>
+                </div>
+                <div class="media-info">
+                  <h3><a href="details-template.html?id=${movie.movieId}">${movie.movieName}</a></h3>
+                  ${statusText ? `<span class="user-status ${statusClass}">${statusText}</span>` : ''}
+                </div>
+              </div>
+            </div>`;
+        }
+
+        function renderMovies(title, movies) {
+            document.getElementById("section-title").textContent = title;
+            const grid = document.getElementById("movies-grid");
+            grid.innerHTML = "";
+            if(!movies || movies.length === 0) {
+                grid.innerHTML = '<div style="padding:20px;color:#777">Тут поки що нічого немає</div>';
+                return;
+            }
+            movies.forEach(movie => { grid.innerHTML += movieCard(movie); });
+        }
+
+        function renderLibrary(watchList, collections) {
+            const box = document.getElementById("library-list");
+            box.innerHTML = "";
+            const fav = document.createElement("a");
+            fav.href = "#"; fav.className = "button sidebar-btn";
+            fav.textContent = `Обране (${watchList.length})`;
+            fav.onclick = e => { e.preventDefault(); renderMovies("Обране", watchList.map(x => x.movie ?? x)); };
+            box.appendChild(fav);
+            collections.forEach(c => {
+                const btn = document.createElement("a");
+                btn.href = "#"; btn.className = "button sidebar-btn";
+                btn.textContent = `${c.collectionName} (${c.movies.length})`;
+                btn.onclick = e => { e.preventDefault(); renderMovies(c.collectionName, c.movies); };
+                box.appendChild(btn);
+            });
+        }
+
+        async function loadProfile() {
+            const user = getCurrentUser();
+            if(!user) return;
+            document.getElementById("welcome").textContent = `Вітаємо, ${user.username}!`;
+            const headers = { Authorization: `Bearer ${user.token}` };
+            try {
+                const [watchRes, collectionRes] = await Promise.all([
+                    fetch(`${API}/WatchList/user/${user.userId}`, {headers}),
+                    fetch(`${API}/Collection/user/${user.userId}`, {headers})
+                ]);
+                const watchList = await watchRes.json();
+                const collections = await collectionRes.json();
+                renderLibrary(watchList, collections);
+                renderMovies("Обране", watchList.map(x => x.movie ?? x));
+            } catch(error) {
+                console.error("Error loading profile:", error);
+                document.getElementById("section-title").textContent = "Помилка завантаження";
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", loadProfile);
+      </script>
     </div>
   </body>
 </html>
