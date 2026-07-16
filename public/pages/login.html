@@ -86,8 +86,41 @@
                   </div>
                 </div>
 
-                <form method="post" action="profile.html">
+                <div
+                  id="form-message"
+                  style="
+                    display: none;
+                    margin-bottom: 20px;
+                    padding: 10px 14px;
+                    border-radius: 5px;
+                    font-size: 0.9em;
+                  "
+                ></div>
+
+                <form id="auth-form" onsubmit="return handleSubmit(event)">
                   <div style="margin-bottom: 20px">
+                    <label
+                      style="
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        display: block;
+                      "
+                      >Ім'я користувача</label
+                    >
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      placeholder="username"
+                      required
+                      style="border-radius: 5px; width: 100%"
+                    />
+                  </div>
+
+                  <div
+                    id="email-group"
+                    style="display: none; margin-bottom: 20px"
+                  >
                     <label
                       style="
                         font-weight: bold;
@@ -98,9 +131,9 @@
                     >
                     <input
                       type="email"
+                      id="email"
                       name="email"
                       placeholder="mail@example.com"
-                      required
                       style="border-radius: 5px; width: 100%"
                     />
                   </div>
@@ -116,6 +149,7 @@
                     >
                     <input
                       type="password"
+                      id="password"
                       name="password"
                       placeholder="••••••••"
                       required
@@ -137,6 +171,7 @@
                     >
                     <input
                       type="password"
+                      id="password_confirm"
                       name="password_confirm"
                       placeholder="••••••••"
                       style="border-radius: 5px; width: 100%"
@@ -146,6 +181,7 @@
                   <button
                     class="button"
                     id="submit-btn"
+                    type="submit"
                     style="
                       width: 100%;
                       background-color: #cc0000 !important;
@@ -169,10 +205,11 @@
 
       <script>
         fetch("/components/header.html", { cache: "no-store" })
-          .then((response) => response.text())
-          .then((data) => {
-            document.getElementById("header-placeholder").innerHTML = data;
-          });
+            .then((response) => response.text())
+            .then((data) => {
+                document.getElementById("header-placeholder").innerHTML = data;
+                if (typeof updateAuthSlot === "function") updateAuthSlot();
+            });
 
         fetch("/components/footer.html", { cache: "no-store" })
           .then((response) => response.text())
@@ -188,11 +225,22 @@
       <script src="../assets/js/main.js"></script>
 
       <script>
+        // TODO: point this at the production API before deploying.
+        const API_BASE = "http://localhost:5220";
+
+        let currentTab = "login";
+
         function switchTab(tab) {
+          currentTab = tab;
+
           var tabLogin = document.getElementById("tab-login");
           var tabRegister = document.getElementById("tab-register");
+          var emailGroup = document.getElementById("email-group");
           var confirmGroup = document.getElementById("confirm-password-group");
           var submitBtn = document.getElementById("submit-btn");
+          var emailInput = document.getElementById("email");
+
+          hideMessage();
 
           if (tab === "login") {
             tabLogin.style.borderBottomColor = "#cc0000";
@@ -200,6 +248,8 @@
             tabRegister.style.borderBottomColor = "transparent";
             tabRegister.style.color = "#888888";
 
+            emailGroup.style.display = "none";
+            emailInput.required = false;
             confirmGroup.style.display = "none";
             submitBtn.innerText = "Увійти у WatchDiary";
           } else {
@@ -208,8 +258,176 @@
             tabLogin.style.borderBottomColor = "transparent";
             tabLogin.style.color = "#888888";
 
+            emailGroup.style.display = "block";
+            emailInput.required = true;
             confirmGroup.style.display = "block";
             submitBtn.innerText = "Створити акаунт";
+          }
+        }
+
+        function showMessage(text, type) {
+          var el = document.getElementById("form-message");
+          el.textContent = text;
+          el.style.display = "block";
+          if (type === "error") {
+            el.style.background = "#fdecea";
+            el.style.color = "#b91c1c";
+            el.style.border = "1px solid #f5c2c0";
+          } else {
+            el.style.background = "#eafaf0";
+            el.style.color = "#15803d";
+            el.style.border = "1px solid #b7e4c7";
+          }
+        }
+
+        function hideMessage() {
+          var el = document.getElementById("form-message");
+          el.style.display = "none";
+        }
+
+        function setLoading(isLoading) {
+          var btn = document.getElementById("submit-btn");
+          btn.disabled = isLoading;
+          btn.style.opacity = isLoading ? "0.6" : "1";
+        }
+
+        async function apiFetch(method, path, body) {
+          const res = await fetch(API_BASE + path, {
+            method: method,
+            headers: { "Content-Type": "application/json" },
+            body: body ? JSON.stringify(body) : undefined,
+          });
+          const text = await res.text();
+          let data = null;
+          try {
+            data = text ? JSON.parse(text) : null;
+          } catch (e) {
+            data = null;
+          }
+          return { status: res.status, data: data, raw: text };
+        }
+
+        function saveSession(token) {
+          if (token) {
+            localStorage.setItem("watchdiary_token", token);
+          }
+        }
+
+        function handleSubmit(event) {
+          event.preventDefault();
+          hideMessage();
+
+          if (currentTab === "login") {
+            doLogin();
+          } else {
+            doRegister();
+          }
+
+          return false;
+        }
+
+        async function doLogin() {
+          var username = document.getElementById("username").value.trim();
+          var password = document.getElementById("password").value;
+
+          if (!username || !password) {
+            showMessage("Введіть ім'я користувача та пароль", "error");
+            return;
+          }
+
+          setLoading(true);
+          try {
+            var r = await apiFetch("POST", "/User/login", {
+              username: username,
+              password: password,
+            });
+
+            if (r.status === 200 && r.data && r.data.token) {
+              saveSession(r.data.token);
+              showMessage("Успішний вхід! Перенаправлення...", "success");
+              window.location.href = "profile.html";
+            } else if (r.status === 401 || r.status === 400) {
+              showMessage("Невірне ім'я користувача або пароль", "error");
+            } else {
+              showMessage(
+                "Помилка входу (код " + r.status + "). Спробуйте пізніше.",
+                "error"
+              );
+            }
+          } catch (err) {
+            showMessage(
+              "Не вдалося з'єднатися з сервером. Перевірте підключення.",
+              "error"
+            );
+          } finally {
+            setLoading(false);
+          }
+        }
+
+        async function doRegister() {
+          var username = document.getElementById("username").value.trim();
+          var email = document.getElementById("email").value.trim();
+          var password = document.getElementById("password").value;
+          var passwordConfirm = document.getElementById("password_confirm").value;
+
+          if (!username || !email || !password || !passwordConfirm) {
+            showMessage("Заповніть усі поля", "error");
+            return;
+          }
+
+          if (password !== passwordConfirm) {
+            showMessage("Паролі не збігаються", "error");
+            return;
+          }
+
+          setLoading(true);
+          try {
+            var r = await apiFetch("POST", "/User", {
+              username: username,
+              userEmail: email,
+              userPassword: password,
+            });
+
+            if (r.status === 200 || r.status === 201) {
+              // Registration succeeded — log the user in right away.
+              var loginResult = await apiFetch("POST", "/User/login", {
+                username: username,
+                password: password,
+              });
+
+              if (
+                loginResult.status === 200 &&
+                loginResult.data &&
+                loginResult.data.token
+              ) {
+                saveSession(loginResult.data.token);
+                showMessage("Акаунт створено! Перенаправлення...", "success");
+                window.location.href = "profile.html";
+              } else {
+                showMessage(
+                  "Акаунт створено. Тепер увійдіть у систему.",
+                  "success"
+                );
+                switchTab("login");
+              }
+            } else if (r.status === 409) {
+              showMessage(
+                "Користувач з таким ім'ям або поштою вже існує",
+                "error"
+              );
+            } else {
+              showMessage(
+                "Помилка реєстрації (код " + r.status + "). Спробуйте пізніше.",
+                "error"
+              );
+            }
+          } catch (err) {
+            showMessage(
+              "Не вдалося з'єднатися з сервером. Перевірте підключення.",
+              "error"
+            );
+          } finally {
+            setLoading(false);
           }
         }
       </script>

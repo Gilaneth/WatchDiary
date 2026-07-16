@@ -64,4 +64,39 @@
 					visibleClass: 'navPanel-visible'
 				});
 
+    function decodeJwtPayload(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
+        return JSON.parse(atob(padded));
+    }
+
+    function updateAuthSlot() {
+        var slot = document.getElementById('auth-slot');
+        if (!slot) return;
+        var token = localStorage.getItem('watchdiary_token');
+        if (!token) {
+            slot.innerHTML = '<a href="/pages/login.html">УВІЙТИ</a>';
+            return;
+        }
+        try {
+            var payload = decodeJwtPayload(token);
+            var username = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+            slot.innerHTML =
+                '<a href="/pages/profile.html">' + username + '</a> &nbsp;' +
+                    '<a href="#" onclick="logout(); return false;" style="opacity:0.7;">ВИЙТИ</a>';
+        } catch (e) {
+            localStorage.removeItem('watchdiary_token');
+            slot.innerHTML = '<a href="/pages/login.html">УВІЙТИ</a>';
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('watchdiary_token');
+        window.location.href = '/index.html';
+    }
+
+    window.updateAuthSlot = updateAuthSlot;
+    window.logout = logout;
+
 })(jQuery);

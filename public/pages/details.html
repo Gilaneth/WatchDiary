@@ -115,6 +115,17 @@
                     </p>
                   </div>
 
+                  <div
+                    id="action-message"
+                    style="
+                      display: none;
+                      margin-bottom: 15px;
+                      padding: 10px 14px;
+                      border-radius: 5px;
+                      font-size: 0.85em;
+                    "
+                  ></div>
+
                   <ul
                     class="actions"
                     style="
@@ -130,6 +141,7 @@
                     <li style="width: 100%; padding: 0; margin: 0">
                       <a
                         href="#"
+                        id="fav-btn"
                         class="button icon solid fa-heart"
                         style="
                           box-sizing: border-box;
@@ -151,9 +163,10 @@
                       </a>
                     </li>
 
-                    <li style="width: 100%; padding: 0; margin: 0">
+                    <li style="width: 100%; padding: 0; margin: 0; position: relative">
                       <a
                         href="#"
+                        id="collection-btn"
                         class="button icon solid fa-folder"
                         style="
                           box-sizing: border-box;
@@ -173,6 +186,67 @@
                       >
                         В КОЛЕКЦІЮ
                       </a>
+
+                      <div
+                        id="collection-panel"
+                        style="
+                          display: none;
+                          position: absolute;
+                          top: calc(100% + 8px);
+                          left: 0;
+                          width: 100%;
+                          background: #ffffff;
+                          border: 1px solid #ddd;
+                          border-radius: 5px;
+                          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+                          padding: 12px;
+                          z-index: 20;
+                          text-align: left;
+                        "
+                      >
+                        <div
+                          id="collection-list"
+                          style="
+                            max-height: 180px;
+                            overflow-y: auto;
+                            margin-bottom: 10px;
+                          "
+                        >
+                          <p style="color: #888; font-size: 0.85em; margin: 0">
+                            Завантаження колекцій...
+                          </p>
+                        </div>
+                        <div style="display: flex; gap: 6px">
+                          <input
+                            id="new-collection-name"
+                            type="text"
+                            placeholder="Нова колекція..."
+                            style="
+                              flex: 1;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              padding: 8px 10px;
+                              font-size: 0.85em;
+                            "
+                          />
+                          <button
+                            id="create-collection-btn"
+                            type="button"
+                            style="
+                              background: #cc0000;
+                              color: white;
+                              border: none;
+                              border-radius: 4px;
+                              padding: 8px 12px;
+                              font-size: 0.85em;
+                              font-weight: bold;
+                              cursor: pointer;
+                            "
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -474,6 +548,326 @@
         }
       }
 
+      // ---- Auth helpers ----
+
+      function decodeJwtPayload(token) {
+        var base64Url = token.split(".")[1];
+        var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        var padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+        return JSON.parse(atob(padded));
+      }
+
+      function getCurrentUser() {
+        var token = localStorage.getItem("watchdiary_token");
+        if (!token) return null;
+        try {
+          var payload = decodeJwtPayload(token);
+          var userId =
+            payload[
+              "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+            ] ||
+            payload["nameid"] ||
+            payload["sub"];
+          if (!userId) return null;
+          return { token: token, userId: parseInt(userId, 10) };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function requireLogin() {
+        var user = getCurrentUser();
+        if (!user) {
+          window.location.href = "login.html";
+          return null;
+        }
+        return user;
+      }
+
+      function getMovieId() {
+        var titleEl = document.getElementById("movie-title");
+        var id = titleEl ? titleEl.dataset.movieId : null;
+        return id ? parseInt(id, 10) : null;
+      }
+
+      function showActionMessage(text, type) {
+        var el = document.getElementById("action-message");
+        el.textContent = text;
+        el.style.display = "block";
+        if (type === "error") {
+          el.style.background = "#fdecea";
+          el.style.color = "#b91c1c";
+          el.style.border = "1px solid #f5c2c0";
+        } else {
+          el.style.background = "#eafaf0";
+          el.style.color = "#15803d";
+          el.style.border = "1px solid #b7e4c7";
+        }
+      }
+
+      // ---- Favorites (WatchList) ----
+
+      function markFavoriteAdded() {
+        var btn = document.getElementById("fav-btn");
+        btn.textContent = "✓ У ВАШОМУ СПИСКУ";
+        btn.style.setProperty("background", "#555", "important");
+        btn.style.pointerEvents = "none";
+      }
+
+      async function initFavoriteButton(user) {
+        if (!user) return;
+        var movieId = getMovieId();
+        if (!movieId) return;
+        try {
+          var res = await fetch(API + "/WatchList/user/" + user.userId, {
+            headers: { Authorization: "Bearer " + user.token },
+          });
+          if (!res.ok) return;
+          var items = await res.json();
+          var already =
+            Array.isArray(items) &&
+            items.some(function (i) {
+              return i.movieId === movieId;
+            });
+          if (already) markFavoriteAdded();
+        } catch (err) {
+          // Not critical — button just stays in its default state.
+        }
+      }
+
+      async function addToFavorites(e) {
+        e.preventDefault();
+        var user = requireLogin();
+        if (!user) return;
+
+        var movieId = getMovieId();
+        if (!movieId) return;
+
+        var btn = document.getElementById("fav-btn");
+        btn.style.opacity = "0.6";
+
+        try {
+          var res = await fetch(API + "/WatchList", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + user.token,
+            },
+            body: JSON.stringify({ movieId: movieId, status: "Planning" }),
+          });
+
+          if (res.status === 200 || res.status === 201) {
+            markFavoriteAdded();
+            showActionMessage("Додано до вашого списку перегляду", "success");
+          } else if (res.status === 401) {
+            window.location.href = "login.html";
+          } else if (res.status === 409) {
+            markFavoriteAdded();
+            showActionMessage("Фільм вже у вашому списку", "error");
+          } else {
+            showActionMessage(
+              "Не вдалося додати фільм (код " + res.status + ")",
+              "error",
+            );
+          }
+        } catch (err) {
+          showActionMessage("Помилка з'єднання із сервером", "error");
+        } finally {
+          btn.style.opacity = "1";
+        }
+      }
+
+      // ---- Collections ----
+
+      async function togglePanel(e) {
+        e.preventDefault();
+        var user = requireLogin();
+        if (!user) return;
+
+        var panel = document.getElementById("collection-panel");
+        var isOpen = panel.style.display === "block";
+        if (isOpen) {
+          panel.style.display = "none";
+          return;
+        }
+
+        panel.style.display = "block";
+        await loadCollections(user);
+      }
+
+      async function loadCollections(user) {
+        var list = document.getElementById("collection-list");
+        list.innerHTML =
+          '<p style="color:#888;font-size:0.85em;margin:0;">Завантаження колекцій...</p>';
+
+        try {
+          var res = await fetch(API + "/Collection/user/" + user.userId, {
+            headers: { Authorization: "Bearer " + user.token },
+          });
+
+          if (res.status === 401) {
+            window.location.href = "login.html";
+            return;
+          }
+          if (!res.ok) {
+            list.innerHTML =
+              '<p style="color:#b91c1c;font-size:0.85em;margin:0;">Помилка завантаження колекцій</p>';
+            return;
+          }
+
+          var collections = await res.json();
+          if (!collections || collections.length === 0) {
+            list.innerHTML =
+              '<p style="color:#888;font-size:0.85em;margin:0;">У вас ще немає колекцій</p>';
+            return;
+          }
+
+          var movieId = getMovieId();
+          list.innerHTML = "";
+          collections.forEach(function (c) {
+            var alreadyIn =
+              c.movies &&
+              c.movies.some(function (m) {
+                return m.movieId === movieId;
+              });
+
+            var item = document.createElement("div");
+            item.textContent = c.collectionName + (alreadyIn ? " ✓" : "");
+            item.style.padding = "8px 10px";
+            item.style.borderRadius = "4px";
+            item.style.fontSize = "0.85em";
+            item.style.marginBottom = "4px";
+            item.style.cursor = alreadyIn ? "default" : "pointer";
+            item.style.color = alreadyIn ? "#15803d" : "#333";
+            item.style.background = alreadyIn ? "#eafaf0" : "#f5f5f5";
+
+            if (!alreadyIn) {
+              item.addEventListener("click", function () {
+                addMovieToCollection(user, c.collectionId, item);
+              });
+              item.addEventListener("mouseenter", function () {
+                item.style.background = "#eee";
+              });
+              item.addEventListener("mouseleave", function () {
+                item.style.background = "#f5f5f5";
+              });
+            }
+
+            list.appendChild(item);
+          });
+        } catch (err) {
+          list.innerHTML =
+            '<p style="color:#b91c1c;font-size:0.85em;margin:0;">Помилка з\'єднання</p>';
+        }
+      }
+
+      async function addMovieToCollection(user, collectionId, itemEl) {
+        var movieId = getMovieId();
+        if (!movieId) return;
+
+        var originalText = itemEl.textContent;
+        itemEl.textContent = "Додавання...";
+
+        try {
+          var res = await fetch(API + "/Collection/movie", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + user.token,
+            },
+            body: JSON.stringify({
+              collectionId: collectionId,
+              movieId: movieId,
+            }),
+          });
+
+          if (res.status === 200 || res.status === 201) {
+            itemEl.textContent = originalText + " ✓";
+            itemEl.style.background = "#eafaf0";
+            itemEl.style.color = "#15803d";
+            itemEl.style.cursor = "default";
+            showActionMessage("Фільм додано до колекції", "success");
+            document.getElementById("collection-panel").style.display = "none";
+          } else if (res.status === 409) {
+            itemEl.textContent = originalText + " (вже додано)";
+            itemEl.style.cursor = "default";
+          } else if (res.status === 401) {
+            window.location.href = "login.html";
+          } else {
+            itemEl.textContent = originalText;
+            showActionMessage(
+              "Не вдалося додати до колекції (код " + res.status + ")",
+              "error",
+            );
+          }
+        } catch (err) {
+          itemEl.textContent = originalText;
+          showActionMessage("Помилка з'єднання із сервером", "error");
+        }
+      }
+
+      async function createCollectionAndAdd(user) {
+        var input = document.getElementById("new-collection-name");
+        var name = input.value.trim();
+        if (!name) return;
+
+        var createBtn = document.getElementById("create-collection-btn");
+        createBtn.disabled = true;
+
+        try {
+          var res = await fetch(API + "/Collection", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + user.token,
+            },
+            body: JSON.stringify({ collectionName: name }),
+          });
+
+          if (res.status === 401) {
+            window.location.href = "login.html";
+            return;
+          }
+          if (res.status !== 200 && res.status !== 201) {
+            showActionMessage(
+              "Не вдалося створити колекцію (код " + res.status + ")",
+              "error",
+            );
+            return;
+          }
+
+          var collection = await res.json();
+          var movieId = getMovieId();
+
+          var addRes = await fetch(API + "/Collection/movie", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + user.token,
+            },
+            body: JSON.stringify({
+              collectionId: collection.collectionId,
+              movieId: movieId,
+            }),
+          });
+
+          if (addRes.status === 200 || addRes.status === 201) {
+            input.value = "";
+            showActionMessage("Колекцію створено, фільм додано", "success");
+            document.getElementById("collection-panel").style.display = "none";
+          } else {
+            showActionMessage(
+              "Колекцію створено, але не вдалося додати фільм",
+              "error",
+            );
+          }
+        } catch (err) {
+          showActionMessage("Помилка з'єднання із сервером", "error");
+        } finally {
+          createBtn.disabled = false;
+        }
+      }
+
       window.addEventListener("DOMContentLoaded", () => {
         loadContext();
 
@@ -481,6 +875,40 @@
         if (aiBtn) {
           aiBtn.addEventListener("click", describeFrame);
         }
+
+        const user = getCurrentUser();
+        initFavoriteButton(user);
+
+        const favBtn = document.getElementById("fav-btn");
+        if (favBtn) {
+          favBtn.addEventListener("click", addToFavorites);
+        }
+
+        const collectionBtn = document.getElementById("collection-btn");
+        if (collectionBtn) {
+          collectionBtn.addEventListener("click", togglePanel);
+        }
+
+        const createCollectionBtn = document.getElementById(
+          "create-collection-btn",
+        );
+        if (createCollectionBtn) {
+          createCollectionBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const currentUser = requireLogin();
+            if (!currentUser) return;
+            createCollectionAndAdd(currentUser);
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          const panel = document.getElementById("collection-panel");
+          const btn = document.getElementById("collection-btn");
+          if (!panel || panel.style.display !== "block") return;
+          if (!panel.contains(e.target) && e.target !== btn) {
+            panel.style.display = "none";
+          }
+        });
       });
     </script>
   </body>
