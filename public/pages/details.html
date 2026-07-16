@@ -29,6 +29,9 @@
         color: transparent;
         text-indent: -10000px;
     }
+    .poster-container img[src=""] {
+        visibility: hidden;
+    }
     .tag {
         display: inline-block;
         background: #e0e0e0;
@@ -72,46 +75,33 @@
 
               <div class="row">
                 <div class="col-4 col-12-mobile">
-                  <div
-                    style="
-                      width: 100%;
-                      aspect-ratio: 2/3;
-                      background-color: #e0e0e0;
-                      border-radius: 10px;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      margin-bottom: 1.5em;
-                      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                    "
-                  >
-                    <span
-                      style="
-                        color: #888;
-                        font-weight: bold;
-                        font-size: 1.1em;
-                        text-align: center;
-                        padding: 10px;
-                      "
-                    >
-                      МІСЦЕ ДЛЯ ПОСТЕРА
-                    </span>
-                  </div>
+                <div class="poster-container">
+                    <img id="movie-poster" src="" alt="Постер фільму" />
+                </div>
 
-                  <div
+                    <div
                     style="
-                      background: #f8f8f8;
-                      padding: 15px;
-                      border-radius: 5px;
-                      border-left: 4px solid #cc0000;
-                      margin-bottom: 20px;
+                    background: #f8f8f8;
+                    padding: 15px;
+                    border-radius: 5px;
+                    border-left: 4px solid #cc0000;
+                    margin-bottom: 20px;
                     "
-                  >
-                    <p style="margin: 0 0 10px 0; color: #111">
-                      <strong>Жанр:</strong> ---
+                    >
+                    <p id="movie-category" style="margin: 0 0 10px 0; color: #111">
+                        <strong>Категорія:</strong> ---
                     </p>
                     <p style="margin: 0; color: #111">
-                      <strong>Актори:</strong> ---
+                      <strong>Головні герої:</strong>
+                      <ul
+                        id="cast-list"
+                        style="
+                          font-size: 14px;
+                          color: #555;
+                          list-style: none;
+                          padding: 0;
+                        "
+                      ></ul>
                     </p>
                   </div>
 
@@ -253,27 +243,24 @@
 
                 <div class="col-8 col-12-mobile">
                   <header style="margin-bottom: 1.5em; text-align: left">
-                    <h2
+                  <h2
                       id="movie-title"
                       data-movie-id="7"
                       style="
-                        font-size: 2.2em;
-                        line-height: 1.2;
-                        margin-bottom: 0;
+                      font-size: 2.2em;
+                      line-height: 1.2;
+                      margin-bottom: 0;
                       "
-                    >
-                      ІНТЕРСТЕЛЛАР
-                    </h2>
-                    <p
+                  ></h2>
+                  <p
+                      id="movie-subtitle"
                       style="
-                        color: #888;
-                        margin-top: 5px;
-                        font-size: 1.1em;
-                        margin-bottom: 0;
+                      color: #888;
+                      margin-top: 5px;
+                      font-size: 1.1em;
+                      margin-bottom: 0;
                       "
-                    >
-                      INTERSTELLAR (2014)
-                    </p>
+                  ></p>
                   </header>
 
                   <div
@@ -320,7 +307,7 @@
                         "
                       >
                         <source
-                          src="../assets/videos/interstellar.mp4"
+                          src="./../movies/K-ON! 01.mov"
                           type="video/mp4"
                         />
                         Ваш браузер не підтримує відео.
@@ -399,15 +386,7 @@
                         вчених вирушає крізь нещодавно виявлену червоточину, щоб
                         знайти планету з відповідними умовами для життя людства
                       </p>
-                      <ul
-                        id="cast-list"
-                        style="
-                          font-size: 14px;
-                          color: #555;
-                          list-style: none;
-                          padding: 0;
-                        "
-                      ></ul>
+                      <br>
                     </div>
                   </div>
                 </div>
@@ -441,7 +420,7 @@
     </div>
     <script>
       const MODEL =
-        "hf.co/mradermacher/Qwen3-VL-8B-Abliterated-Caption-it-GGUF";
+        "gemma4:e4b";
       const OLLAMA = "http://localhost:11434";
       const API = "http://localhost:5220";
 
@@ -449,20 +428,53 @@
       let castText = "";
 
       async function loadContext() {
-        const titleElement = document.getElementById("movie-title");
-        if (!titleElement || !titleElement.dataset.movieId) return;
+          const titleElement = document.getElementById("movie-title");
+          if (!titleElement || !titleElement.dataset.movieId) return;
 
-        const movieId = titleElement.dataset.movieId;
-        try {
-          const res = await fetch(API + "/Movie/" + movieId);
-          if (!res.ok) return;
-          const movie = await res.json();
-          if (movie.description) {
-            context = movie.description;
-            const descEl = document.getElementById("movie-description");
-            if (descEl) descEl.textContent = movie.description;
-          }
-          renderCast(movie.actors);
+          const movieId = titleElement.dataset.movieId;
+          try {
+              const res = await fetch(API + "/Movie/" + movieId);
+              if (!res.ok) return;
+              const movie = await res.json();
+
+              // Load cover image
+              const posterEl = document.getElementById("movie-poster");
+              if (posterEl && movie.coverUrl) {
+                  posterEl.src = movie.coverUrl;
+              }
+
+              // Load title and subtitle
+              if (movie.movieName) {
+                  const titleEl = document.getElementById("movie-title");
+                  if (titleEl) titleEl.textContent = movie.movieName.toUpperCase();
+              }
+
+              // Load subtitle (original title + year)
+              const subtitleEl = document.getElementById("movie-subtitle");
+              if (subtitleEl) {
+                  const parts = [];
+                  if (movie.originalTitle) parts.push(movie.originalTitle.toUpperCase());
+                  if (movie.releaseYear) parts.push(`(${movie.releaseYear})`);
+                  if (parts.length > 0) {
+                      subtitleEl.textContent = parts.join(" ");
+                  }
+              }
+
+              // Load category
+              if (movie.category) {
+                  const categoryEl = document.getElementById("movie-category");
+                  if (categoryEl) {
+                      categoryEl.innerHTML =
+                          '<strong>Категорія:</strong> ' + movie.category.toUpperCase();
+                  }
+              }
+
+              if (movie.description) {
+                  context = movie.description;
+                  const descEl = document.getElementById("movie-description");
+                  if (descEl) descEl.textContent = movie.description;
+              }
+              renderCast(movie.actors);
 
           if (movie.actors && movie.actors.length > 0) {
             castText = movie.actors
