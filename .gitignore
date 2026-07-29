@@ -55,3 +55,9 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Visual Studio cache & temporary files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
