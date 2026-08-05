@@ -2,7 +2,7 @@ namespace WatchDiary.Models;
 
 public class Collection
 {
-    public int CollectionId { get; set; }
+    public int Id { get; set; }
     public string CollectionName { get; set; } = null!;
 
     public int UserId { get; set; }
